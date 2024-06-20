@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'luciole' : ['Luciole', 'sans-serif']
+        'Luciole' : ['Luciole', 'sans-serif']
       }
     },
   },

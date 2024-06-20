@@ -2,27 +2,27 @@
 
 namespace App\Entity;
 
-use App\Repository\GameRepository;
+use App\Repository\DisabilityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: GameRepository::class)]
-class Game
+#[ORM\Entity(repositoryClass: DisabilityRepository::class)]
+class Disability
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(unique: true)]
-    private ?int $id_game_api = null;
-
     /**
      * @var Collection<int, Subtype>
      */
-    #[ORM\OneToMany(targetEntity: Subtype::class, mappedBy: 'Game')]
+    #[ORM\OneToMany(targetEntity: Subtype::class, mappedBy: 'Disability')]
     private Collection $subtypes;
+
+    #[ORM\Column(length: 50)]
+    private ?string $name = null;
 
     public function __construct()
     {
@@ -32,18 +32,6 @@ class Game
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdGameApi(): ?int
-    {
-        return $this->id_game_api;
-    }
-
-    public function setIdGameApi(int $id_game_api): static
-    {
-        $this->id_game_api = $id_game_api;
-
-        return $this;
     }
 
     /**
@@ -58,7 +46,7 @@ class Game
     {
         if (!$this->subtypes->contains($subtype)) {
             $this->subtypes->add($subtype);
-            $subtype->setGame($this);
+            $subtype->setDisability($this);
         }
 
         return $this;
@@ -68,11 +56,28 @@ class Game
     {
         if ($this->subtypes->removeElement($subtype)) {
             // set the owning side to null (unless already changed)
-            if ($subtype->getGame() === $this) {
-                $subtype->setGame(null);
+            if ($subtype->getDisability() === $this) {
+                $subtype->setDisability(null);
             }
         }
 
         return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function __toString(): String
+    {
+        return $this->name;
     }
 }
