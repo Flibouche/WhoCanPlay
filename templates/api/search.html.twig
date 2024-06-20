@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApiController!{% endblock %}
+
+{% block body %}
+    <h1>Search Results</h1>
+    {% if games is empty %}
+        <p>No games found.</p>
+    {% else %}
+        <ul>
+            {% for game in games %}
+                <a href="{{ path('show_api_game', {'id': game.id}) }}">{{ game.name }}</a> <br>
+                {# <li>{{ game.name }}</li> #}
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
