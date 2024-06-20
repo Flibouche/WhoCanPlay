@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'Luciole';
+    src: url('/public/Fonts/Visual_Impairment/LucioleFont/Luciole-Bold-Italic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
