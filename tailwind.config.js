@@ -7,8 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'Luciole' : ['Luciole', 'sans-serif']
-      }
+        'luciole': ['Luciole', 'sans-serif'],
+      },
     },
   },
   plugins: [],

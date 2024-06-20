@@ -3,8 +3,24 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'Luciole';
-    src: url('/public/Fonts/Visual_Impairment/LucioleFont/Luciole-Bold-Italic.ttf') format('truetype');
-    font-weight: bold;
-    font-style: italic;
+    font-family: "Luciole";
+    src: url('/Fonts/Visual_Impairment/LucioleFont/Luciole-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: 100;
 }
+
+/* @font-face {
+    font-family: "Luciole Italic";
+    src: url('/Fonts/Visual_Impairment/LucioleFont/Luciole-Regular-Italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: "Luciole Bold";
+    src: url('/Fonts/Visual_Impairment/LucioleFont/Luciole-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: "Luciole Bold Italic";
+    src: url('/Fonts/Visual_Impairment/LucioleFont/Luciole-Bold-Italic.ttf') format('truetype');
+} */
