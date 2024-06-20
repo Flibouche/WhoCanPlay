@@ -24,6 +24,9 @@ class Disability
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $icon = null;
+
     public function __construct()
     {
         $this->subtypes = new ArrayCollection();
@@ -79,5 +82,17 @@ class Disability
     public function __toString(): String
     {
         return $this->name;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): static
+    {
+        $this->icon = $icon;
+
+        return $this;
     }
 }
