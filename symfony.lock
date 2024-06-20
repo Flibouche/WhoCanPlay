@@ -276,6 +276,9 @@
             "./config/routes/web_profiler.yaml"
         ]
     },
+    "symfonycasts/tailwind-bundle": {
+        "version": "v0.5.3"
+    },
     "twig/extra-bundle": {
         "version": "v3.10.0"
     }
