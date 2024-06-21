@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApiController!{% endblock %}
+
+{% block body %}
+    <h1>Search Results</h1>
+
+    {% if games is empty %}
+        <p>No games found.</p>
+    {% else %}
+        <form action="{{ path('add_subtype') }}" method="GET">
+            <label for="game">Choose a game</label>
+            <select name="game" id="game">
+                {% for game in games %}            
+                    <option value="{{ game.id }}">{{ game.name }}</option>    
+                {% endfor %}
+            </select>
+            <button type="submit">Submit game</button>
+        </form>
+    {% endif %}
+{% endblock %}

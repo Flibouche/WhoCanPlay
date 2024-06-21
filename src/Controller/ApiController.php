@@ -31,20 +31,20 @@ class ApiController extends AbstractController
         ]);
     }
 
-    #[Route('/search/{name}', name: 'search_api_game')]
-    public function search(Request $request, $name = null): Response
-    {
-        // Récupère la clé de recherche 'game' depuis la requête
-        $name = $request->query->get('game');
+    // #[Route('/search/{name}', name: 'search_api_game')]
+    // public function search(Request $request, $name = null): Response
+    // {
+    //     // Récupère la clé de recherche 'game' depuis la requête
+    //     $name = $request->query->get('game');
 
-        // Appel du service pour récupérer les jeux basés sur le nom
-        $games = $this->igdbApiService->getGames($name);
+    //     // Appel du service pour récupérer les jeux basés sur le nom
+    //     $games = $this->igdbApiService->getGames($name);
 
-        // Rendu du template 'api/search.html.twig' avec les données des jeux
-        return $this->render('api/search.html.twig', [
-            'games' => $games,
-        ]);
-    }
+    //     // Rendu du template 'api/search.html.twig' avec les données des jeux
+    //     return $this->render('api/search.html.twig', [
+    //         'games' => $games,
+    //     ]);
+    // }
 
     #[Route('/api/show', name: 'show_api_game')]
     public function getGameDetails(Request $request): Response

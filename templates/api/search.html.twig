@@ -4,13 +4,17 @@
 
 {% block body %}
     <h1>Search Results</h1>
+
+    {# {{ dump(games) }} #}
+
     {% if games is empty %}
         <p>No games found.</p>
     {% else %}
         <ul>
             {% for game in games %}
-                <a href="{{ path('show_api_game', {'id': game.id}) }}">{{ game.name }}</a> <br>
-                {# <li>{{ game.name }}</li> #}
+            <li>
+                <a href="{{ path('show_api_game', {'id': game.id}) }}">{{ game.name }}</a><br>
+            </li>
             {% endfor %}
         </ul>
     {% endif %}

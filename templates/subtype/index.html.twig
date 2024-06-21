@@ -4,17 +4,17 @@
 
 {% block body %}
 
-<form action="" method="POST">
-
-    {# {{ form_errors(subtypeForm) }} #}
-
-    {{ form_start(formAddSubtypeToGame) }}
-    {{ form_row(formAddSubtypeToGame.id_game_api) }}
-
-
-    <button type="submit" class="mt-5 mb-5 text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit feature</button>
-    {{ form_end(formAddSubtypeToGame) }}
-
+<form action="{{ path('search_api_game') }}" method="GET" enctype="multipart/form-data">   
+    <label for="search" class="sr-only">Search</label>
+    <div>
+        <input type="search" name="game" id="search"  placeholder="Search by keyword" required />
+    </div>
+    <button type="submit">
+        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+        </svg>
+        <span class="sr-only">Search</span>
+    </button>
 </form>
 
 {% endblock %}
