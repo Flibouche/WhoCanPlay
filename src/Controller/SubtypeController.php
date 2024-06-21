@@ -28,7 +28,7 @@ class SubtypeController extends AbstractController
         $form->handleRequest($request);
 
         return $this->render('subtype/index.html.twig', [
-            'formAddSubtype' => $form,
+            'formAddSubtypeToGame' => $form,
         ]);
     }
 }

@@ -8,12 +8,12 @@
 
     {# {{ form_errors(subtypeForm) }} #}
 
-    {{ form_start(formAddSubtype) }}
-    {# {{ form_row(subtypeForm.email) }} #}
+    {{ form_start(formAddSubtypeToGame) }}
+    {{ form_row(formAddSubtypeToGame.id_game_api) }}
 
 
     <button type="submit" class="mt-5 mb-5 text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit feature</button>
-    {{ form_end(formAddSubtype) }}
+    {{ form_end(formAddSubtypeToGame) }}
 
 </form>
 
