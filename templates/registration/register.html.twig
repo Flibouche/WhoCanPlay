@@ -7,17 +7,20 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+
+    <h1 class="h3 mb-3 font-weight-normal">Register</h1>
 
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    {{ form_row(registrationForm.email) }}
+    {{ form_row(registrationForm.pseudo) }}
+    {{ form_row(registrationForm.plainPassword) }}
+    {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn">Register</button>
+    <button type="submit" class="mt-5 mb-5 text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Register</button>
     {{ form_end(registrationForm) }}
+
+    <p>Already have an account ? <a href="{{ path('app_login') }}" class="text-blue-700 hover:text-blue-500">Sign in</a></p>
+
 {% endblock %}
