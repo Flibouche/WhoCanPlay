@@ -10,42 +10,48 @@
     <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% endblock %}
 
-    {% block javascripts %}
-    {% block importmap %}{{ importmap('app') }}{% endblock %}
-    {% endblock %}
 </head>
 
-<header class="w-full min-h-[75px] flex justify-center items-center border-b-2">
-    <nav class="w-full max-w-[1120px] flex justify-between items-center px-[10px]">
-
-        <div class="navLogo">
-            <a href="{{ path('app_home') }}">Logo WhoCanPlay</a>
-        </div>
-
-        <div class="navLinks">
-            <a href="{{ path('app_home') }}">Home</a>
-            <a href="{{ path('app_api') }}">Game API</a>
-            <a href="{{ path('app_game') }}">My DB</a>
-        </div>
-
-        <div class="navAuth">
-
-        </div>
-
-        <div class="mobileMenu">
-
-        </div>
-        
-    </nav>
-</header>
-
 <body>
+
+    <header class="w-full min-h-[75px] flex justify-center items-center border-b-2">
+        <nav class="w-full max-w-[1120px] flex justify-between items-center px-[10px]">
+
+            <div class="navLogo">
+                <a href="{{ path('app_home') }}">Logo WhoCanPlay</a>
+            </div>
+
+            <div class="navLinks">
+                <a href="{{ path('app_home') }}">Home</a>
+                <a href="{{ path('app_api') }}">Game API</a>
+                <a href="{{ path('app_game') }}">My DB</a>
+            </div>
+
+            <div class="navAuth">
+
+            </div>
+
+            <div class="mobileMenu">
+
+            </div>
+
+        </nav>
+    </header>
+
     {% block body %}
     {% endblock %}
+
+    <footer>
+
+    </footer>
+
+    {% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    {% block importmap %}
+        {{ importmap('app') }}
+    {% endblock %}
+    {% endblock %}
+
 </body>
-
-<footer>
-
-</footer>
 
 </html>

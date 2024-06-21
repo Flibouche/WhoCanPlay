@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\SubtypeRepository;
+use App\Enum\SubtypeState;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SubtypeRepository;
 
 #[ORM\Entity(repositoryClass: SubtypeRepository::class)]
 class Subtype
@@ -31,6 +32,9 @@ class Subtype
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
+
+    #[ORM\Column(type: 'string', enumType: SubtypeState::class)]
+    private SubtypeState $state;
 
     public function getId(): ?int
     {
@@ -105,6 +109,18 @@ class Subtype
     public function setContent(string $content): static
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getState(): SubtypeState
+    {
+        return $this->state;
+    }
+
+    public function setState(SubtypeState $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }
