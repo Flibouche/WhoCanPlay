@@ -34,7 +34,8 @@ class Subtype
     private ?string $content = null;
 
     #[ORM\Column(type: 'string', enumType: SubtypeState::class)]
-    private SubtypeState $state;
+    // Set the SubtypeState to Accepted for testing purposes
+    private SubtypeState $state = SubtypeState::ACCEPTED;
 
     public function getId(): ?int
     {

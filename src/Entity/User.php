@@ -39,10 +39,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $pseudo = null;
 
     #[ORM\Column]
-    private ?bool $isBanned = null;
+    private ?bool $isBanned = false;
 
     #[ORM\Column]
-    private ?bool $isVerified = null;
+    private ?bool $isVerified = false;
 
     /**
      * @var Collection<int, Topic>
