@@ -4,27 +4,18 @@
 
 {% block body %}
 
-<form action="{{ path('add_subtype') }}" method="POST" enctype="multipart/form-data">
+{{ form_start(formAddSubtypeToGame) }}
 
-    {# {{ form_errors(subtypeForm) }} #}
+{# {{ form_row(formAddSubtypeToGame.id_game_api) }} #}
 
-    {{ form_start(formAddSubtypeToGame) }}
+{{ form_row(formAddSubtypeToGame.Disability) }}
 
-    {{ form_row(formAddSubtypeToGame.id_game_api, {
-        'attr': {
-            'value': app.request.query.get('id_game_api')
-        }
-    }) }}
+{{ form_row(formAddSubtypeToGame.name) }}
 
-    {{ form_row(formAddSubtypeToGame.Disability) }}
+{{ form_row(formAddSubtypeToGame.content) }}
 
-    {{ form_row(formAddSubtypeToGame.name) }}
+{{ form_row(formAddSubtypeToGame.submit) }}
 
-    {{ form_row(formAddSubtypeToGame.content) }}
-
-    <button type="submit" class="mt-5 mb-5 text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit feature</button>
-    {{ form_end(formAddSubtypeToGame) }}
-
-</form>
+{{ form_end(formAddSubtypeToGame) }}
 
 {% endblock %}

@@ -45,34 +45,77 @@ class SubtypeController extends AbstractController
         ]);
     }
 
-    #[Route('/subtype', name: 'add_subtype', methods: ['GET', 'POST'])]
-    public function addSubtypeToGame(EntityManagerInterface $entityManager, Subtype $subtype = null, Request $request, Game $game = null): Response
+    #[Route('/subtype/add', name: 'add_subtype')]
+    public function showFormAddSubtypeToGame(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        // Créer une nouvelle instance de l'entité Subtype
+        $idGameApi = $request->query->get('game');
+
         $subtype = new Subtype();
 
-        // Créer le formulaire en utilisant SubtypeType
-        $form = $this->createForm(SubtypeType::class, $subtype);
-
-        // Gérer la soumission du formulaire
+        $form = $this->createForm(SubtypeType::class);
         $form->handleRequest($request);
 
-        // Vérifier si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer l'ID du jeu sélectionné depuis la requête GET
-            $idGameApi = $request->query->get('game');
 
-            // Assigner l'ID récupéré au champ id_game_api de l'entité Subtype
+            $game = $entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
+            if (!$game) {
+                $game = new Game();
+                $game->setIdGameApi($idGameApi);
+                $entityManager->persist($game);
+            }
+            
+            $subtype = $form->getData();
             $subtype->setIdGameApi($idGameApi);
+            $entityManager->persist($subtype);
+            $entityManager->flush();
 
-            // Redirection vers une autre page après enregistrement
-            return $this->redirectToRoute('add_subtype');
-
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('subtype/form.html.twig', [
-            'formAddSubtypeToGame' => $form,
+            'formAddSubtypeToGame' => $form
         ]);
     }
+
+    // #[Route('/subtype/addForm', name: 'addForm_subtype', methods: ['GET', 'POST'])]
+    // public function addSubtypeToGame(EntityManagerInterface $entityManager, Request $request): Response
+    // {
+
+    //     $idGameApi = $request->query->get('game');
+
+    //     if (!$idGameApi) {
+    //         throw $this->createNotFoundException('Game ID is required');
+    //     }
+
+    //     // Créer une nouvelle instance de l'entité Subtype
+    //     $subtype = new Subtype();
+
+    //     // Créer le formulaire en utilisant SubtypeType
+    //     $form = $this->createForm(SubtypeType::class, $subtype);
+    //     $form->handleRequest($request);
+    //     dd($form);
+
+    //     // Vérifier si le formulaire est soumis et valide
+    //     if ($form->isSubmitted() && $form->isValid()) {
+
+    //         // Vérifier si le jeu existe déjà ou créer une nouvelle instance
+    //         $game = $entityManager->getRepository(Game::class)->findOneBy(['idGameApi' => $idGameApi]);
+
+    //         if (!$game) {
+    //             $game = new Game();
+    //             $game->setIdGameApi($idGameApi);
+    //             $entityManager->persist($game);
+    //         }
+
+    //         $subtype = $form->getData();
+    //         $subtype->setIdGameApi($idGameApi);
+    //         $entityManager->persist($subtype);
+
+    //         $entityManager->flush();
+
+    //         // Redirection vers une autre page après enregistrement
+    //         return $this->redirectToRoute('app_home');
+    //     }
+    // }
 }
