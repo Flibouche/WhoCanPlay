@@ -46,7 +46,7 @@ class SubtypeController extends AbstractController
     }
 
     #[Route('/subtype/add', name: 'add_subtype')]
-    public function showFormAddSubtypeToGame(Request $request, EntityManagerInterface $entityManager): Response
+    public function addSubtypeToGame(Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $idGameApi = $request->query->get('game');
