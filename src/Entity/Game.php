@@ -30,6 +30,9 @@ class Game
     #[ORM\OneToMany(targetEntity: Topic::class, mappedBy: 'game', orphanRemoval: true)]
     private Collection $topics;
 
+    #[ORM\Column]
+    private ?bool $Status = false;
+
     public function __construct()
     {
         $this->subtypes = new ArrayCollection();
@@ -49,6 +52,18 @@ class Game
     public function setIdGameApi(int $id_game_api): static
     {
         $this->id_game_api = $id_game_api;
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->Status;
+    }
+
+    public function setStatus(bool $Status): static
+    {
+        $this->Status = $Status;
 
         return $this;
     }

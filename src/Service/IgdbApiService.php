@@ -119,7 +119,7 @@ class IgdbApiService
         $queryString = '';
 
         if ($gameId !== null) {
-            $queryString = "fields name,genres.name,platforms.name,screenshots.url,screenshots.image_id,cover.url; where id = $gameId;";
+            $queryString = "fields name,genres.name,platforms.name,screenshots.url,screenshots.image_id,cover.url,cover.image_id; where id = $gameId;";
         } elseif ($gameName !== null) {
             $queryString = "fields *; where name ~ \"$gameName\";";
         }

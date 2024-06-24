@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApiController!{% endblock %}
+
+{% block body %}
+
+<h2>Infos de l'API : </h2>
+
+<img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="">
+
+<p>Nom : {{ gameApi[0]["name"] }}</p>
+
+{% for genre in gameApi[0].genres %}
+<p>Genres : {{ genre.name }}</p>
+{% endfor %}
+
+<h2>Infos de ma BDD :</h2>
+
+{# Boucle pour récupérer et trier les subtypes par disabililty sans doublons #}
+{% for disability, subtypes in subtypesByDisability %}
+
+    <h2>{{ disability }}</h2>
+
+    {% for subtype in subtypes %}
+
+    <div>
+        <h3>{{ subtype.getName }}</h3>
+    </div>
+
+    <div>
+        {{ subtype.getContent }}
+    </div>
+
+    {% endfor %}
+
+{% endfor %}
+
+{% endblock %}
