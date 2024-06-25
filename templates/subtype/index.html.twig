@@ -4,10 +4,11 @@
 
 {% block body %}
 
-<form action="{{ path('search_api_game') }}" method="GET" enctype="multipart/form-data">   
+<form action="{{ path('search_api_game') }}" method="GET" enctype="multipart/form-data" id="search-form">   
     <label for="search" class="sr-only">Search</label>
     <div>
-        <input type="search" name="game" id="search"  placeholder="Search by keyword" required />
+        <input type="search" name="game" id="search"  placeholder="Search by name" required />
+        <div id="result"></div>
     </div>
     <button type="submit">
         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">

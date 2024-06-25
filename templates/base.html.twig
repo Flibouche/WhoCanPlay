@@ -76,6 +76,14 @@
             selector: 'textarea.tinymce'
         });
     </script>
+    <script>
+        if (typeof jQuery === 'undefined') {
+            console.log('jQuery is not loaded');
+        } else {
+            console.log('jQuery is loaded');
+        }
+    </script>
+    <script src="/public/js/ajax.js"></script>
     {% block importmap %}
         {{ importmap('app') }}
     {% endblock %}
