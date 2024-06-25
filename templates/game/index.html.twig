@@ -3,12 +3,18 @@
 {% block title %}Hello ApiController!{% endblock %}
 
 {% block body %}
-    <h1>Game in my DB</h1>
-        <ul>
-            {% for game in games %}
-            <a href="{{ path('show_game', {'id': game.db.id}) }}">{{ game.api[0].name }}</a>
-            <p>ID du jeu (BDD) : {{ game.db.id }}</p>
-            <p>ID du jeu (API) : {{ game.db.idGameApi }}</p>
-            {% endfor %}
-        </ul>
+<h1>Game in my DB</h1>
+
+{% for flash_message in app.flashes('warning') %}
+<div class="alert alert-warning bg-red-500 text-center text-black rounded-lg px-8">
+    {{ flash_message }}
+</div>
+{% endfor %}
+
+{% for game in games %}
+<a href="{{ path('show_game', {'id': game.db.id}) }}">{{ game.api[0].name }}</a>
+<p>ID du jeu (BDD) : {{ game.db.id }}</p>
+<p>ID du jeu (API) : {{ game.db.idGameApi }}</p>
+{% endfor %}
+
 {% endblock %}

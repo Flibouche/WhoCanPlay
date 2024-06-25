@@ -68,6 +68,18 @@ class Game
         return $this;
     }
 
+    public function isActive(): bool
+    {
+        return $this->Status === true;
+    }
+
+    public static function filterActiveGames(array $games): array
+    {
+        return array_filter($games, function(Game $game) {
+            return $game->isActive();
+        });
+    }
+
     /**
      * @return Collection<int, Subtype>
      */
