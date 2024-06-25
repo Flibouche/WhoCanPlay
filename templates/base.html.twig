@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     {% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% endblock %}
 
@@ -17,18 +17,21 @@
     <header class="w-full min-h-[75px] flex justify-center items-center border-b-2">
         <nav class="w-full max-w-[1120px] flex justify-between items-center px-[10px]">
 
-            <div class="navLogo">
+            <div id="navLogo" class="">
                 <a href="{{ path('app_home') }}">Logo WhoCanPlay</a>
             </div>
 
-            <div class="navLinks">
+            <div id="navLinks" class="">
                 <a href="{{ path('app_home') }}">Home</a>
                 <a href="{{ path('app_api') }}">Game API</a>
                 <a href="{{ path('app_game') }}">My DB</a>
                 <a href="{{ path('app_subtype') }}">Make a submission</a>
+                {% if isGranted('ROLE_MODERATOR') %}
+                <a href="{{ path('app_subtype') }}">Make a submission</a>
+                {% endif %}
             </div>
 
-            <div class="navAuth">
+            <div id="navAuth" class="hidden md:flex gap-[24px]">
                 {% if app.user %}
                     <a href="{{ path('app_logout') }}">Sign out</a>
                     <a href="{{ path('app_user') }}">My Profile</a>
@@ -38,11 +41,23 @@
                 {% endif %}
             </div>
 
-            <div class="mobileMenu">
-
-            </div>
-
         </nav>
+
+            {# <div id="mobileMenu" class="">
+
+                <div class="md:hidden cursor-pointer">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+
+                <div class="md:hidden fixed top-0 right-0 w-full h-full bg-white z-50 transition-transform duration-300">
+                    <button class="absolute top-4 right-4 text-2xl" id="">&times;</button>
+                    <nav class="flex flex-col items-center mt-16 space-y-4">
+                        
+                    </nav>
+                </div>
+                
+            </div> #}
+
     </header>
 
     {% block body %}

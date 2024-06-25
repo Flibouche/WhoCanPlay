@@ -8,7 +8,6 @@ use App\Repository\GameRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class GameController extends AbstractController
 {
@@ -35,12 +34,9 @@ class GameController extends AbstractController
                 
                 $gameApi = $this->igdbApiService->getGameById($idGameApi);
                 
-                $status = $gameDb->isStatus();
-                
                 $gamesApiInfo[] = [
                     'db' => $gameDb,
                     'api' => $gameApi,
-                    'status' => $status
                 ];
             }
         } else {
