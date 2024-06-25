@@ -5,32 +5,134 @@
 {% block body %}
 
 {{ dump(subtypes) }}
-    
-<table>
-    <thead>
-        <tr>
-            <th>Game</th>
-            <th>Send by</th>
-            <th>Existing game</th>
-            <th>State</th>
-            <th>Disability</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for subtype in subtypes %}
-        <tr>
-            <th>{{ subtype.id }}</th>
-            <td>Utilisateur</td>
-            <td>{% if subtype.game == null %} No {% else %} Yes {% endif %}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        {% endfor %}
-    </tbody>    
-</table>    
 
+<div>
+    <h1>Not Opened</h1>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Game</th>
+                    <th scope="col" class="px-6 py-3">Send by</th>
+                    <th scope="col" class="px-6 py-3">Existing game</th>
+                    <th scope="col" class="px-6 py-3">State</th>
+                    <th scope="col" class="px-6 py-3">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subtype in subtypes %}
+                {% if subtype.state.value == "Not opened" %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+                        subtype.id }}</th>
+                    <td class="px-6 py-4">Utilisateur</td>
+                    <td class="px-6 py-4">{% if subtype.game == null %} No {% else %} Yes {% endif %}</td>
+                    <td class="px-6 py-4">{{ subtype.state }}</td>
+                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}"
+                            title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
+<div>
+    <h1>Pending</h1>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Game</th>
+                    <th scope="col" class="px-6 py-3">Send by</th>
+                    <th scope="col" class="px-6 py-3">Existing game</th>
+                    <th scope="col" class="px-6 py-3">State</th>
+                    <th scope="col" class="px-6 py-3">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subtype in subtypes %}
+                {% if subtype.state.value == "Pending" %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+                        subtype.id }}</th>
+                    <td class="px-6 py-4">Utilisateur</td>
+                    <td class="px-6 py-4">{% if subtype.game == null %} No {% else %} Yes {% endif %}</td>
+                    <td class="px-6 py-4">{{ subtype.state }}</td>
+                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}"
+                            title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
+<div>
+    <h1>Accepted</h1>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Game</th>
+                    <th scope="col" class="px-6 py-3">Send by</th>
+                    <th scope="col" class="px-6 py-3">Existing game</th>
+                    <th scope="col" class="px-6 py-3">State</th>
+                    <th scope="col" class="px-6 py-3">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subtype in subtypes %}
+                {% if subtype.state.value == "Processed" %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+                        subtype.id }}</th>
+                    <td class="px-6 py-4">Utilisateur</td>
+                    <td class="px-6 py-4">{% if subtype.game == null %} No {% else %} Yes {% endif %}</td>
+                    <td class="px-6 py-4">{{ subtype.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}"
+                            title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <h1>Denied</h1>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Game</th>
+                    <th scope="col" class="px-6 py-3">Send by</th>
+                    <th scope="col" class="px-6 py-3">Existing game</th>
+                    <th scope="col" class="px-6 py-3">State</th>
+                    <th scope="col" class="px-6 py-3">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subtype in subtypes %}
+                {% if subtype.state.value == "Denied" %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+                        subtype.id }}</th>
+                    <td class="px-6 py-4">Utilisateur</td>
+                    <td class="px-6 py-4">{% if subtype.game == null %} No {% else %} Yes {% endif %}</td>
+                    <td class="px-6 py-4">{{ subtype.state }}</td>
+                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}"
+                            title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
 

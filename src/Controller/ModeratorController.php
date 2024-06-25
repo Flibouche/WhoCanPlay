@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Enum\SubtypeState;
 use App\Repository\SubtypeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ModeratorController extends AbstractController
 {
@@ -19,6 +20,7 @@ class ModeratorController extends AbstractController
 
         return $this->render('moderator/index.html.twig', [
             'subtypes' => $subtypes,
+            'SubtypeState' => SubtypeState::class,
         ]);
     }
 }
