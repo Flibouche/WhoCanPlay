@@ -4,6 +4,8 @@
 
 {% block body %}
 
+
 <h1>Welcome to your profile {{ app.user.pseudo }} </h1>
+<p>{{ app.user.roles | join(', ') }}</p>
 
 {% endblock %}
