@@ -37,6 +37,14 @@ class Subtype
     // Set the SubtypeState to Accepted for testing purposes
     private SubtypeState $state = SubtypeState::ACCEPTED;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $submissionDate = null;
+
+    public function __construct()
+    {
+        $this->submissionDate = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +130,18 @@ class Subtype
     public function setState(SubtypeState $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+    
+    public function getSubmissionDate(): ?\DateTimeInterface
+    {
+        return $this->submissionDate;
+    }
+
+    public function setSubmissionDate(\DateTimeInterface $submissionDate): static
+    {
+        $this->submissionDate = $submissionDate;
 
         return $this;
     }

@@ -23,11 +23,12 @@
 
             <div id="navLinks" class="">
                 <a href="{{ path('app_home') }}">Home</a>
-                <a href="{{ path('app_api') }}">Game API</a>
                 <a href="{{ path('app_game') }}">My DB</a>
+                {% if app.user %}
                 <a href="{{ path('app_subtype') }}">Make a submission</a>
-                {% if isGranted('ROLE_MODERATOR') %}
-                <a href="{{ path('app_subtype') }}">Make a submission</a>
+                {% endif %}
+                {% if is_granted('ROLE_MODERATOR') %}
+                <a href="{{ path('app_moderator') }}">Treatment</a>
                 {% endif %}
             </div>
 

@@ -70,10 +70,12 @@ class SubtypeController extends AbstractController
                 $game->setIdGameApi($idGameApi);
                 $entityManager->persist($game);
             }
-            
+
             // Récupération des données soumises par le formulaire
             $subtype = $form->getData();
 
+            $subtype->setGame($game);
+            
             // Attribution de l'ID du jeu API au subtype avant de le persister
             $subtype->setIdGameApi($idGameApi);
             $entityManager->persist($subtype);
