@@ -6,6 +6,8 @@
 
 {{ dump(subtype) }}
 
+<a href="{{ path('edit_subtype_moderator', {'id': subtype.id}) }}"><i class="fa-solid fa-pen"></i></a>
+
 <h1>Request n°{{ subtype.id }} :</h1>
 <h2>
     {# Game {{ game.name }} #}

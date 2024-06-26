@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Subtype;
+use App\Form\SubtypeType;
 use App\Enum\SubtypeState;
 use App\Service\IgdbApiService;
 use App\Repository\SubtypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -24,7 +26,7 @@ class ModeratorController extends AbstractController
 
     #[Route('/moderator', name: 'app_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
-    public function index(SubtypeRepository $subtypeRepository): Response
+    public function submissionsBox(SubtypeRepository $subtypeRepository): Response
     {
         // Je définis les états que je veux récupérer
         $states = [SubtypeState::NOT_OPENED, SubtypeState::PENDING, SubtypeState::ACCEPTED, SubtypeState::DENIED];
@@ -74,9 +76,9 @@ class ModeratorController extends AbstractController
         ]);
     }
 
-    #[Route('/moderator/show/{id}', name: 'show_moderator')]
+    #[Route('/moderator/subtype/{id}', name: 'show_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
-    public function show(Subtype $subtype, EntityManagerInterface $entityManager): Response
+    public function showSubtype(Subtype $subtype, EntityManagerInterface $entityManager): Response
     {
         // if($subtype->getState() == "Not opened") {
         //     $pendingState = "Pending";
@@ -89,4 +91,32 @@ class ModeratorController extends AbstractController
             'subtype' => $subtype,
         ]);
     }
+
+    #[Route('/moderator/subtype/{id}/edit', name: 'edit_subtype_moderator')]
+    #[IsGranted('ROLE_MODERATOR')]
+    public function editSubtype(Subtype $subtype = null, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        
+        $form = $this->createForm(SubtypeType::class, $subtype);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $subtype = $form->getData();
+
+            $entityManager->persist($subtype);
+            $entityManager->flush();
+            
+            return $this->redirectToRoute('app_home');
+    }
+
+        return $this->render('subtype/add.html.twig', [
+            'formSendSubtypeToGame' => $form,
+            'edit' => $subtype->getId(),
+        ]);
+    }
+
+    // public function addSubtypeToGame(): Response
+    // {
+
+    // }
 }

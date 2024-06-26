@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SubtypeController!{% endblock %}
+
+{% block body %}
+
+{% if edit %}
+<h1>Edit subtype</h1>
+{% else %}
+<h1>Send a subtype to a game</h1>
+{% endif %}
+
+{{ form_start(formSendSubtypeToGame) }}
+
+{# {{ form_row(formSendSubtypeToGame.id_game_api) }} #}
+
+{{ form_row(formSendSubtypeToGame.Disability) }}
+
+{{ form_row(formSendSubtypeToGame.name) }}
+
+{{ form_row(formSendSubtypeToGame.content) }}
+
+{{ form_row(formSendSubtypeToGame.submit) }}
+
+{{ form_end(formSendSubtypeToGame) }}
+
+{% endblock %}
