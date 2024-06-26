@@ -3,6 +3,9 @@
 {% block title %}Hello ApiController!{% endblock %}
 
 {% block body %}
+
+{{ dump(games) }}
+
 <h1>Game in my DB</h1>
 
 {% for flash_message in app.flashes('warning') %}

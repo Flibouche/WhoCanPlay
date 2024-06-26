@@ -79,11 +79,6 @@ class Disability
         return $this;
     }
 
-    public function __toString(): String
-    {
-        return $this->name;
-    }
-
     public function getIcon(): ?string
     {
         return $this->icon;
@@ -94,5 +89,10 @@ class Disability
         $this->icon = $icon;
 
         return $this;
+    }
+
+    public function __toString(): String
+    {
+        return $this->name;
     }
 }
