@@ -4,7 +4,7 @@
 
 {% block body %}
 
-{# {{ dump(subtypes) }} #}
+{{ dump(subtypes) }}
 
 <div>
     <h1>Not Opened</h1>
@@ -14,16 +14,17 @@
                 <tr>
                     <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
-                    <th scope="col" class="px-6 py-3 w-[20%]">Existing game</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">State</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">Disability</th>
                 </tr>
             </thead>
             <tbody>
-                {% for subtypeData in subtypes %}
+                {% if subtypes.notOpened %}
+
+                {% for subtypeData in subtypes.notOpened %}
                 {% set subtype = subtypeData.subtype %}
                 {% set game = subtypeData.gameApi %}
-                {% if subtype.state.value == "Not opened" %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': subtype.id}) }}">{{ game.name }}</a></th>
                     <td class="px-6 py-4">{{ subtype.user }}</td>
@@ -31,8 +32,16 @@
                     <td class="px-6 py-4">{{ subtype.state.value }}</td>
                     <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50"></td>
                 </tr>
-                {% endif %}
                 {% endfor %}
+                {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No subtype found.</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>
@@ -46,25 +55,34 @@
                 <tr>
                     <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
-                    <th scope="col" class="px-6 py-3 w-[20%]">Existing game</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">State</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">Disability</th>
                 </tr>
             </thead>
             <tbody>
-                {% for subtypeData in subtypes %}
+                {% if subtypes.pending %}
+
+                {% for subtypeData in subtypes.pending %}
                 {% set subtype = subtypeData.subtype %}
                 {% set game = subtypeData.gameApi %}
-                {% if subtype.state.value == "Pending" %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ game.name }}</th>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': subtype.id}) }}">{{ game.name }}</a></th>
                     <td class="px-6 py-4">{{ subtype.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ subtype.state.value }}</td>
                     <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50"></td>
                 </tr>
-                {% endif %}
                 {% endfor %}
+                {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No subtype found.</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>
@@ -78,25 +96,34 @@
                 <tr>
                     <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
-                    <th scope="col" class="px-6 py-3 w-[20%]">Existing game</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">State</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">Disability</th>
                 </tr>
             </thead>
             <tbody>
-                {% for subtypeData in subtypes %}
+                {% if subtypes.processed %}
+
+                {% for subtypeData in subtypes.processed %}
                 {% set subtype = subtypeData.subtype %}
                 {% set game = subtypeData.gameApi %}
-                {% if subtype.state.value == "Processed" %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ game.name }}</th>
-                        <td class="px-6 py-4">{{ subtype.user }}</td>
-                        <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
-                        <td class="px-6 py-4">{{ subtype.state.value }}</td>
-                        <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': subtype.id}) }}">{{ game.name }}</a></th>
+                    <td class="px-6 py-4">{{ subtype.user }}</td>
+                    <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
+                    <td class="px-6 py-4">{{ subtype.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No subtype found.</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
                 </tr>
                 {% endif %}
-                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -110,25 +137,34 @@
                 <tr>
                     <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
-                    <th scope="col" class="px-6 py-3 w-[20%]">Existing game</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">State</th>
                     <th scope="col" class="px-6 py-3 w-[20%]">Disability</th>
                 </tr>
             </thead>
             <tbody>
-                {% for subtypeData in subtypes %}
+                {% if subtypes.denied %}
+
+                {% for subtypeData in subtypes.denied %}
                 {% set subtype = subtypeData.subtype %}
                 {% set game = subtypeData.gameApi %}
-                {% if subtype.state.value == "Denied" %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ game.name }}</th>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': subtype.id}) }}">{{ game.name }}</a></th>
                     <td class="px-6 py-4">{{ subtype.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ subtype.state.value }}</td>
                     <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50"></td>
                 </tr>
-                {% endif %}
                 {% endfor %}
+                {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No subtype found.</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
     </div>

@@ -31,7 +31,7 @@ class Game
     private Collection $topics;
 
     #[ORM\Column]
-    private ?bool $Status = false;
+    private ?bool $status = false;
 
     public function __construct()
     {
@@ -58,26 +58,14 @@ class Game
 
     public function isStatus(): ?bool
     {
-        return $this->Status;
+        return $this->status;
     }
 
-    public function setStatus(bool $Status): static
+    public function setStatus(bool $status): static
     {
-        $this->Status = $Status;
+        $this->status = $status;
 
         return $this;
-    }
-
-    public function isActive(): bool
-    {
-        return $this->Status === true;
-    }
-
-    public static function filterActiveGames(array $games): array
-    {
-        return array_filter($games, function(Game $game) {
-            return $game->isActive();
-        });
     }
 
     /**

@@ -34,8 +34,7 @@ class Subtype
     private ?string $content = null;
 
     #[ORM\Column(type: 'string', enumType: SubtypeState::class)]
-    // Set the SubtypeState to Accepted for testing purposes
-    private SubtypeState $state = SubtypeState::ACCEPTED;
+    private SubtypeState $state = SubtypeState::NOT_OPENED;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $submissionDate = null;

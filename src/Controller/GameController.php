@@ -22,9 +22,8 @@ class GameController extends AbstractController
     #[Route('/game', name: 'app_game')]
     public function index(GameRepository $gameRepository): Response
     {
-        $gamesDb = $gameRepository->findAll();
-
-        $activeGames = Game::filterActiveGames($gamesDb);
+        // Je cherche directement les jeux ayant le status 1, soit les jeux actifs.
+        $activeGames = $gameRepository->findBy(['status' => 1]);
 
         $gamesApiInfo = [];
 
