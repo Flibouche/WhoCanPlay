@@ -16,6 +16,16 @@ class SubtypeRepository extends ServiceEntityRepository
         parent::__construct($registry, Subtype::class);
     }
 
+    // Méthode qui me permet de rechercher les Subtypes par States
+    public function findSubtypesByStates(array $states): array
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.state IN (:states)')
+            ->setParameter('states', $states);
+        
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Subtype[] Returns an array of Subtype objects
     //     */

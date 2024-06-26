@@ -6,6 +6,7 @@
 
 {{ dump(subtypes) }}
 
+{# Not Opened Subtypes  #}
 <div>
     <h1>Not Opened</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -30,7 +31,7 @@
                     <td class="px-6 py-4">{{ subtype.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ subtype.state.value }}</td>
-                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="25" height="25"></td>
                 </tr>
                 {% endfor %}
                 {% else %}
@@ -47,6 +48,7 @@
     </div>
 </div>
 
+{# Pending Subtypes  #}
 <div>
     <h1>Pending</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -71,7 +73,7 @@
                     <td class="px-6 py-4">{{ subtype.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ subtype.state.value }}</td>
-                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="25" height="25"></td>
                 </tr>
                 {% endfor %}
                 {% else %}
@@ -88,6 +90,7 @@
     </div>
 </div>
 
+{# Accepted Subtypes  #}
 <div>
     <h1>Accepted</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -112,7 +115,7 @@
                     <td class="px-6 py-4">{{ subtype.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ subtype.state.value }}</td>
-                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="25" height="25"></td>
                 </tr>
                 {% endfor %}
                 {% else %}
@@ -129,6 +132,7 @@
     </div>
 </div>
 
+{# Denied Subtypes  #}
 <div>
     <h1>Denied</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -153,7 +157,7 @@
                     <td class="px-6 py-4">{{ subtype.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ subtype.state.value }}</td>
-                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50"></td>
+                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="25" height="25"></td>
                 </tr>
                 {% endfor %}
                 {% else %}
