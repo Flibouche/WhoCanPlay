@@ -33,6 +33,9 @@ class Game
     #[ORM\Column]
     private ?bool $status = false;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->subtypes = new ArrayCollection();
@@ -124,6 +127,18 @@ class Game
                 $topic->setGame(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
