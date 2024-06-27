@@ -33,7 +33,7 @@ class ModeratorController extends AbstractController
 
         // J'utilise la méthode findSubtypesByStates pour récupérer les Subtypes par état
         $subtypes = $subtypeRepository->findSubtypesByStates($states);
-        
+
         // J'initialise un tableau vide pour stocker les Subtypes avec les jeux associés
         $subtypesGames = [
             'notOpened' => [],
@@ -41,15 +41,15 @@ class ModeratorController extends AbstractController
             'processed' => [],
             'denied' => [],
         ];
-        
+
         // Je fais une boucle foreach pour chaque Subtype récupéré
         foreach ($subtypes as $subtype) {
             // Je récupère l'ID idGameApi à partir de $subtype
             $idGameApi = $subtype->getIdGameApi();
-            
+
             // J'utilise le service igdbApiService pour obtenir les informations du jeu en utilisant $idGameApi
             $gameApi = $this->igdbApiService->getGameById($idGameApi);
-            
+
             // Je détermine l'état du Subtype pour le classer correctement
             // Utilisation de match plutôt que de switch pour rendre le code plus lisible
             $stateKey = match ($subtype->getState()) {
@@ -80,23 +80,24 @@ class ModeratorController extends AbstractController
     #[IsGranted('ROLE_MODERATOR')]
     public function showSubtype(Subtype $subtype, EntityManagerInterface $entityManager): Response
     {
-        // if($subtype->getState() == "Not opened") {
-        //     $pendingState = "Pending";
-        //     $subtype->setState($pendingState);
-        //     $entityManager->persist($subtype);
-        //     $entityManager->flush();
-        // }
+
+        // Dès que j'accède à un Subtype, si son state est "Not opened", il passe automatiquement en "Pending"
+        if ($subtype->getState() == SubtypeState::NOT_OPENED) {
+            $subtype->setState(SubtypeState::PENDING);
+            $entityManager->persist($subtype);
+            $entityManager->flush();
+        }
 
         return $this->render('moderator/show.html.twig', [
             'subtype' => $subtype,
         ]);
     }
 
-    #[Route('/moderator/subtype/{id}/edit', name: 'edit_subtype_moderator')]
+    #[Route('/moderator/subtype/{id}/{slug}/edit', name: 'edit_subtype_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
     public function editSubtype(Subtype $subtype = null, EntityManagerInterface $entityManager, Request $request): Response
     {
-        
+
         $form = $this->createForm(SubtypeType::class, $subtype);
         $form->handleRequest($request);
 
@@ -105,15 +106,34 @@ class ModeratorController extends AbstractController
 
             $entityManager->persist($subtype);
             $entityManager->flush();
-            
+
             return $this->redirectToRoute('app_home');
-    }
+        }
 
         return $this->render('subtype/add.html.twig', [
             'formSendSubtypeToGame' => $form,
             'edit' => $subtype->getId(),
         ]);
     }
+
+    #[Route('/moderator/subtype/{id}/{slug}/validate', name: 'validate_subtype_moderator')]
+    #[IsGranted('ROLE_MODERATOR')]
+    public function validateSubtype(Subtype $subtype = null, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $subtype->setState(SubtypeState::ACCEPTED);
+
+        $entityManager->persist($subtype);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_moderator');
+    }
+    
+    // #[Route('/moderator/subtype/validate', name: 'deny_subtype_moderator')]
+    // #[IsGranted('ROLE_MODERATOR')]
+    // public function denySubtype(Subtype $subtype = null, EntityManagerInterface $entityManager)
+    // {
+
+    // }
 
     // public function addSubtypeToGame(): Response
     // {

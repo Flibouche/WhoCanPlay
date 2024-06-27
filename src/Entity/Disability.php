@@ -11,6 +11,10 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 #[ORM\Entity(repositoryClass: DisabilityRepository::class)]
 class Disability
 {
+    // =======================================
+    // ========== Section : FIELDS ===========
+    // =======================================
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -37,16 +41,85 @@ class Disability
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'Disability')]
     private Collection $images;
 
+    // =======================================
+    // ========= Section : CONSTRUCT =========
+    // =======================================
+
     public function __construct()
     {
         $this->subtypes = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
 
+    // =======================================
+    // ===== Section : GETTERS & SETTERS =====
+    // =======================================
+
+    // ******************* ID *******************
+    
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    // ******************* Name *******************
+    
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+    
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+        $this->updateSlug();
+        
+        return $this;
+    }
+
+    // ******************* Icon *******************
+    
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+    
+    public function setIcon(string $icon): static
+    {
+        $this->icon = $icon;
+        
+        return $this;
+    }
+
+    // ******************* Slug *******************
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updateSlug(): void
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->name ?? '')->lower();
+    }
+
+    // ****************************************************
+    // ******************* Colletion(s) *******************
+    // ****************************************************
+
+    // ******************* Subtypes *******************
 
     /**
      * @return Collection<int, Subtype>
@@ -78,57 +151,7 @@ class Disability
         return $this;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-        $this->updateSlug();
-
-        return $this;
-    }
-
-    public function getIcon(): ?string
-    {
-        return $this->icon;
-    }
-
-    public function setIcon(string $icon): static
-    {
-        $this->icon = $icon;
-
-        return $this;
-    }
-
-    public function __toString(): String
-    {
-        return $this->name;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function updateSlug(): void
-    {
-        $slugger = new AsciiSlugger();
-        $this->slug = $slugger->slug($this->name ?? '')->lower();
-    }
+    // ******************* Images *******************
 
     /**
      * @return Collection<int, Image>
@@ -158,5 +181,14 @@ class Disability
         }
 
         return $this;
+    }
+
+    // =======================================
+    // ==== Section : MAGIC(S) METHOD(S) =====
+    // =======================================
+
+    public function __toString(): String
+    {
+        return $this->name;
     }
 }
