@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\ImageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ImageRepository;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -36,13 +37,13 @@ class Image
     private ?string $slug = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
-    private ?Disability $Disability = null;
+    private ?Disability $disability = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
-    private ?Subtype $Subtype = null;
+    private ?Subtype $subtype = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
-    private ?User $User = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -69,6 +70,7 @@ class Image
     public function setTitle(string $title): static
     {
         $this->title = $title;
+        $this->updateSlug();
 
         return $this;
     }
@@ -133,38 +135,48 @@ class Image
         return $this;
     }
 
-    public function getDisability(): ?Disability
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updateSlug(): void
     {
-        return $this->Disability;
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->title ?? '')->lower();
     }
 
-    public function setDisability(?Disability $Disability): static
+    public function getDisability(): ?Disability
     {
-        $this->Disability = $Disability;
+        return $this->disability;
+    }
+
+    public function setDisability(?Disability $disability): static
+    {
+        $this->disability = $disability;
 
         return $this;
     }
 
     public function getSubtype(): ?Subtype
     {
-        return $this->Subtype;
+        return $this->subtype;
     }
 
-    public function setSubtype(?Subtype $Subtype): static
+    public function setSubtype(?Subtype $subtype): static
     {
-        $this->Subtype = $Subtype;
+        $this->subtype = $subtype;
 
         return $this;
     }
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
-    public function setUser(?User $User): static
+    public function setUser(?User $user): static
     {
-        $this->User = $User;
+        $this->user = $user;
 
         return $this;
     }

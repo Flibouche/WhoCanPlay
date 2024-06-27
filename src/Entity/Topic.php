@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: TopicRepository::class)]
 class Topic
@@ -31,7 +32,7 @@ class Topic
 
     #[ORM\ManyToOne(inversedBy: 'topics')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $User = null;
+    private ?User $user = null;
 
     /**
      * @var Collection<int, Post>
@@ -60,6 +61,7 @@ class Topic
     public function setTitle(string $title): static
     {
         $this->title = $title;
+        $this->updateSlug();
 
         return $this;
     }
@@ -102,12 +104,12 @@ class Topic
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
-    public function setUser(?User $User): static
+    public function setUser(?User $user): static
     {
-        $this->User = $User;
+        $this->user = $user;
 
         return $this;
     }
@@ -152,5 +154,15 @@ class Topic
         $this->slug = $slug;
 
         return $this;
+    }
+
+        /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updateSlug(): void
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->title ?? '')->lower();
     }
 }

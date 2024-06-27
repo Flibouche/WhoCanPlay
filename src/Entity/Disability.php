@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\DisabilityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DisabilityRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: DisabilityRepository::class)]
 class Disability
@@ -85,6 +86,7 @@ class Disability
     public function setName(string $name): static
     {
         $this->name = $name;
+        $this->updateSlug();
 
         return $this;
     }
@@ -116,6 +118,16 @@ class Disability
         $this->slug = $slug;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updateSlug(): void
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->name ?? '')->lower();
     }
 
     /**

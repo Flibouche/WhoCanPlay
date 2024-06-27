@@ -76,7 +76,7 @@ class ModeratorController extends AbstractController
         ]);
     }
 
-    #[Route('/moderator/subtype/{id}', name: 'show_moderator')]
+    #[Route('/moderator/subtype/{id}/{slug}', name: 'show_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
     public function showSubtype(Subtype $subtype, EntityManagerInterface $entityManager): Response
     {

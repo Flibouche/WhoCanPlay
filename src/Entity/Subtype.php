@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use App\Enum\SubtypeState;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SubtypeRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: SubtypeRepository::class)]
 class Subtype
@@ -18,13 +19,13 @@ class Subtype
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'subtypes')]
-    private ?Disability $Disability = null;
+    private ?Disability $disability = null;
 
     #[ORM\ManyToOne(inversedBy: 'subtypes')]
-    private ?Game $Game = null;
+    private ?Game $game = null;
 
     #[ORM\ManyToOne(inversedBy: 'subtypes')]
-    private ?User $User = null;
+    private ?User $user = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $id_game_api = null;
@@ -66,36 +67,36 @@ class Subtype
 
     public function getDisability(): ?Disability
     {
-        return $this->Disability;
+        return $this->disability;
     }
 
-    public function setDisability(?Disability $Disability): static
+    public function setDisability(?Disability $disability): static
     {
-        $this->Disability = $Disability;
+        $this->disability = $disability;
 
         return $this;
     }
 
     public function getGame(): ?Game
     {
-        return $this->Game;
+        return $this->game;
     }
 
-    public function setGame(?Game $Game): static
+    public function setGame(?Game $game): static
     {
-        $this->Game = $Game;
+        $this->game = $game;
 
         return $this;
     }
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
-    public function setUser(?User $User): static
+    public function setUser(?User $user): static
     {
-        $this->User = $User;
+        $this->user = $user;
 
         return $this;
     }
@@ -120,6 +121,7 @@ class Subtype
     public function setName(string $name): static
     {
         $this->name = $name;
+        $this->updateSlug();
 
         return $this;
     }
@@ -175,6 +177,16 @@ class Subtype
         $this->slug = $slug;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updateSlug(): void
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->name ?? '')->lower();
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
