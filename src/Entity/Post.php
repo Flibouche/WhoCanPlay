@@ -9,6 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
 {
+    #region FIELDS
+    // =======================================
+    // =========== Region : FIELDS ===========
+    // =======================================
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -20,7 +25,10 @@ class Post
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $publicationDate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'Posts')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Topic $topic = null;
 
@@ -28,13 +36,21 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
+    #endregion
+
+    #region SIMPLE FIELDS
+    // =======================================
+    // ======== Region : SIMPLE FIELDS =======
+    // =======================================
+
+    // =================== ID ===================
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    // =================== Content ===================
 
     public function getContent(): ?string
     {
@@ -48,6 +64,8 @@ class Post
         return $this;
     }
 
+    // =================== Publication Date ===================
+
     public function getPublicationDate(): ?\DateTimeInterface
     {
         return $this->publicationDate;
@@ -59,6 +77,29 @@ class Post
 
         return $this;
     }
+
+    // =================== Updated At ===================
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    #endregion
+
+    #region COLLECTION(S)
+    // =======================================
+    // ======== Region : COLLECTION(S) =======
+    // =======================================
+
+    // =================== Topic ===================
 
     public function getTopic(): ?Topic
     {
@@ -72,6 +113,8 @@ class Post
         return $this;
     }
 
+    // =================== User ===================
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -84,15 +127,5 @@ class Post
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
+    #endregion
 }

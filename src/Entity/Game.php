@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: GameRepository::class)]
 class Game
 {
+    #region FIELDS
+    // =======================================
+    // =========== Region : FIELDS ===========
+    // =======================================
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -36,16 +41,34 @@ class Game
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+    #endregion
+
+    #region CONSTRUCT
+    // =======================================
+    // ========== Region : CONSTRUCT =========
+    // =======================================
+
     public function __construct()
     {
         $this->features = new ArrayCollection();
         $this->topics = new ArrayCollection();
     }
 
+    #endregion
+
+    #region SIMPLE FIELDS
+    // =======================================
+    // ======== Region : SIMPLE FIELDS =======
+    // =======================================
+
+    // =================== ID ===================
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    // =================== ID Game API ===================
 
     public function getIdGameApi(): ?int
     {
@@ -59,6 +82,8 @@ class Game
         return $this;
     }
 
+    // =================== Status ===================
+
     public function isStatus(): ?bool
     {
         return $this->status;
@@ -70,6 +95,29 @@ class Game
 
         return $this;
     }
+
+    // =================== Slug ===================
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    #endregion
+
+    #region COLLECTION(S)
+    // =======================================
+    // ======== Region : COLLECTION(S) =======
+    // =======================================
+
+    // =================== Features ===================
 
     /**
      * @return Collection<int, Feature>
@@ -101,6 +149,8 @@ class Game
         return $this;
     }
 
+    // =================== Topics ===================
+
     /**
      * @return Collection<int, Topic>
      */
@@ -131,15 +181,5 @@ class Game
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
+    #endregion
 }

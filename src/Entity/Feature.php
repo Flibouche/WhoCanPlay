@@ -11,13 +11,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: FeatureRepository::class)]
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\FeatureRepository")
- * @ORM\Table(name="Feature")
- */
 class Feature
 {
+    #region FIELDS
+    // =======================================
+    // =========== Region : FIELDS ===========
+    // =======================================
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -56,8 +56,15 @@ class Feature
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'Feature')]
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'feature')]
     private Collection $images;
+
+    #endregion
+
+    #region CONSTRUCT
+    // =======================================
+    // ========== Region : CONSTRUCT =========
+    // =======================================
 
     public function __construct()
     {
@@ -65,10 +72,21 @@ class Feature
         $this->images = new ArrayCollection();
     }
 
+    #endregion
+
+    #region SIMPLE FIELDS
+    // =======================================
+    // ======== Region : SIMPLE FIELDS =======
+    // =======================================
+
+    // =================== ID ===================
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    // =================== Disability ===================
 
     public function getDisability(): ?Disability
     {
@@ -82,6 +100,8 @@ class Feature
         return $this;
     }
 
+    // =================== Game ===================
+
     public function getGame(): ?Game
     {
         return $this->game;
@@ -93,6 +113,8 @@ class Feature
 
         return $this;
     }
+
+    // =================== User ===================
 
     public function getUser(): ?User
     {
@@ -106,6 +128,8 @@ class Feature
         return $this;
     }
 
+    // =================== ID Game API ===================
+
     public function getIdGameApi(): ?int
     {
         return $this->id_game_api;
@@ -117,6 +141,8 @@ class Feature
 
         return $this;
     }
+
+    // =================== Name ===================
 
     public function getName(): ?string
     {
@@ -131,6 +157,8 @@ class Feature
         return $this;
     }
 
+    // =================== Content ===================
+
     public function getContent(): ?string
     {
         return $this->content;
@@ -143,6 +171,8 @@ class Feature
         return $this;
     }
 
+    // =================== State ===================
+
     public function getState(): FeatureState
     {
         return $this->state;
@@ -154,7 +184,9 @@ class Feature
 
         return $this;
     }
-    
+
+    // =================== Submission Date ===================
+
     public function getSubmissionDate(): ?\DateTimeInterface
     {
         return $this->submissionDate;
@@ -167,10 +199,7 @@ class Feature
         return $this;
     }
 
-    public function __toString(): String
-    {
-        return $this->name;
-    }
+    // =================== Slug ===================
 
     public function getSlug(): ?string
     {
@@ -194,6 +223,8 @@ class Feature
         $this->slug = $slugger->slug($this->name ?? '')->lower();
     }
 
+    // =================== Updated At ===================
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -205,6 +236,15 @@ class Feature
 
         return $this;
     }
+
+    #endregion
+
+    #region COLLECTION(S)
+    // =======================================
+    // ======== Region : COLLECTION(S) =======
+    // =======================================
+
+    // =================== Images ===================
 
     /**
      * @return Collection<int, Image>
@@ -235,4 +275,18 @@ class Feature
 
         return $this;
     }
+
+    #endregion
+
+    #region MAGIC(S) METHOD(S)
+    // =======================================
+    // ===== Region : MAGIC(S) METHOD(S) =====
+    // =======================================
+
+    public function __toString(): String
+    {
+        return $this->name;
+    }
+
+    #endregion
 }

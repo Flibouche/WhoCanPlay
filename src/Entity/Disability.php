@@ -11,20 +11,15 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 #[ORM\Entity(repositoryClass: DisabilityRepository::class)]
 class Disability
 {
+    #region FIELDS
     // =======================================
-    // ========== Section : FIELDS ===========
+    // =========== Region : FIELDS ===========
     // =======================================
-    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    /**
-     * @var Collection<int, Feature>
-     */
-    #[ORM\OneToMany(targetEntity: Feature::class, mappedBy: 'Disability')]
-    private Collection $features;
 
     #[ORM\Column(length: 50)]
     private ?string $name = null;
@@ -36,62 +31,75 @@ class Disability
     private ?string $slug = null;
 
     /**
+     * @var Collection<int, Feature>
+     */
+    #[ORM\OneToMany(targetEntity: Feature::class, mappedBy: 'Disability')]
+    private Collection $features;
+
+    /**
      * @var Collection<int, Image>
      */
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'Disability')]
     private Collection $images;
 
+    #endregion
+
+    #region CONSTRUCT
     // =======================================
-    // ========= Section : CONSTRUCT =========
+    // ========== Region : CONSTRUCT =========
     // =======================================
+
+    // =================== CONSTRUCT ===================
 
     public function __construct()
     {
         $this->features = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
+    #endregion
 
+    #region SIMPLE FIELDS
     // =======================================
-    // ===== Section : GETTERS & SETTERS =====
+    // ======== Region : SIMPLE FIELDS =======
     // =======================================
 
-    // ******************* ID *******************
-    
+    // =================== ID ===================
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    // ******************* Name *******************
-    
+    // =================== Name ===================
+
     public function getName(): ?string
     {
         return $this->name;
     }
-    
+
     public function setName(string $name): static
     {
         $this->name = $name;
         $this->updateSlug();
-        
+
         return $this;
     }
 
-    // ******************* Icon *******************
-    
+    // =================== Icon ===================
+
     public function getIcon(): ?string
     {
         return $this->icon;
     }
-    
+
     public function setIcon(string $icon): static
     {
         $this->icon = $icon;
-        
+
         return $this;
     }
 
-    // ******************* Slug *******************
+    // =================== Slug ===================
 
     public function getSlug(): ?string
     {
@@ -114,12 +122,14 @@ class Disability
         $slugger = new AsciiSlugger();
         $this->slug = $slugger->slug($this->name ?? '')->lower();
     }
+    #endregion
 
-    // ****************************************************
-    // ******************* Colletion(s) *******************
-    // ****************************************************
+    #region COLLECTION(S)
+    // =======================================
+    // ======== Region : COLLECTION(S) =======
+    // =======================================
 
-    // ******************* Features *******************
+    // =================== Features ===================
 
     /**
      * @return Collection<int, Feature>
@@ -151,7 +161,7 @@ class Disability
         return $this;
     }
 
-    // ******************* Images *******************
+    // =================== Images ===================
 
     /**
      * @return Collection<int, Image>
@@ -182,13 +192,16 @@ class Disability
 
         return $this;
     }
+    #endregion
 
+    #region MAGIC(S) METHOD(S)
     // =======================================
-    // ==== Section : MAGIC(S) METHOD(S) =====
+    // ===== Region : MAGIC(S) METHOD(S) =====
     // =======================================
 
     public function __toString(): String
     {
         return $this->name;
     }
+    #endregion
 }

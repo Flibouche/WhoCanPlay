@@ -10,6 +10,11 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
 {
+    #region FIELDS
+    // =======================================
+    // =========== Region : FIELDS ===========
+    // =======================================
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -45,10 +50,21 @@ class Image
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?User $user = null;
 
+    #endregion
+
+    #region SIMPLE FIELDS
+    // =======================================
+    // ======== Region : SIMPLE FIELDS =======
+    // =======================================
+
+    // =================== ID ===================
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    // =================== URL ===================
 
     public function getUrl(): ?string
     {
@@ -61,6 +77,8 @@ class Image
 
         return $this;
     }
+
+    // =================== Title ===================
 
     public function getTitle(): ?string
     {
@@ -75,6 +93,8 @@ class Image
         return $this;
     }
 
+    // =================== AltText ===================
+
     public function getAltText(): ?string
     {
         return $this->altText;
@@ -86,6 +106,8 @@ class Image
 
         return $this;
     }
+
+    // =================== Description ===================
 
     public function getDescription(): ?string
     {
@@ -99,6 +121,8 @@ class Image
         return $this;
     }
 
+    // =================== Submission Date ===================
+
     public function getSubmissionDate(): ?\DateTimeInterface
     {
         return $this->submission_date;
@@ -111,6 +135,8 @@ class Image
         return $this;
     }
 
+    // =================== Updated At ===================
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -122,6 +148,8 @@ class Image
 
         return $this;
     }
+
+    // =================== Slug ===================
 
     public function getSlug(): ?string
     {
@@ -145,6 +173,15 @@ class Image
         $this->slug = $slugger->slug($this->title ?? '')->lower();
     }
 
+    #endregion
+
+    #region COLLECTION(S)
+    // =======================================
+    // ======== Region : COLLECTION(S) =======
+    // =======================================
+
+    // =================== Disability ===================
+
     public function getDisability(): ?Disability
     {
         return $this->disability;
@@ -156,6 +193,8 @@ class Image
 
         return $this;
     }
+
+    // =================== Feature ===================
 
     public function getFeature(): ?Feature
     {
@@ -169,6 +208,8 @@ class Image
         return $this;
     }
 
+    // =================== User ===================
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -180,4 +221,6 @@ class Image
 
         return $this;
     }
+
+    #endregion
 }

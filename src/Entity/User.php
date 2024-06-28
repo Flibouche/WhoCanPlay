@@ -15,6 +15,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #region FIELDS
+    // =======================================
+    // =========== Region : FIELDS ===========
+    // =======================================
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -69,10 +74,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->images = new ArrayCollection();
     }
 
+    #endregion
+
+    #region SIMPLE FIELDS
+    // =======================================
+    // ======== Region : SIMPLE FIELDS =======
+    // =======================================
+
+    // =================== ID ===================
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    // =================== Email ===================
 
     public function getEmail(): ?string
     {
@@ -95,6 +111,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string) $this->email;
     }
+
+    // =================== Roles ===================
 
     /**
      * @see UserInterface
@@ -120,6 +138,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // =================== Password ===================
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -144,6 +164,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    // =================== Pseudo ===================
+
     public function getPseudo(): ?string
     {
         return $this->pseudo;
@@ -155,6 +177,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    // =================== Banned ===================
 
     public function isBanned(): ?bool
     {
@@ -168,6 +192,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // =================== Verified ===================
+
     public function isVerified(): ?bool
     {
         return $this->isVerified;
@@ -179,6 +205,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    #endregion
+
+    #region COLLECTION(S)
+    // =======================================
+    // ======== Region : COLLECTION(S) =======
+    // =======================================
+
+    // =================== Topics ===================
 
     /**
      * @return Collection<int, Topic>
@@ -210,6 +245,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // =================== Posts ===================
+
     /**
      * @return Collection<int, Post>
      */
@@ -240,10 +277,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->pseudo;
-    }
+    // =================== Images ===================
 
     /**
      * @return Collection<int, Image>
@@ -274,4 +308,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    #endregion
+
+    #region MAGIC(S) METHOD(S)
+    // =======================================
+    // ===== Region : MAGIC(S) METHOD(S) =====
+    // =======================================
+    public function __toString()
+    {
+        return $this->pseudo;
+    }
+
+    #endregion
 }

@@ -12,6 +12,11 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 #[ORM\Entity(repositoryClass: TopicRepository::class)]
 class Topic
 {
+    #region FIELDS
+    // =======================================
+    // =========== Region : FIELDS ===========
+    // =======================================
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,24 +39,35 @@ class Topic
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
     /**
      * @var Collection<int, Post>
      */
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'topic', orphanRemoval: true)]
     private Collection $Posts;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug = null;
-
     public function __construct()
     {
         $this->Posts = new ArrayCollection();
     }
 
+    #endregion
+
+    #region SIMPLE FIELDS
+    // =======================================
+    // ======== Region : SIMPLE FIELDS =======
+    // =======================================
+
+    // =================== ID ===================
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    // =================== Title ===================
 
     public function getTitle(): ?string
     {
@@ -66,6 +82,8 @@ class Topic
         return $this;
     }
 
+    // =================== Creation Date ===================
+
     public function getCreationDate(): ?\DateTimeInterface
     {
         return $this->creationDate;
@@ -77,6 +95,8 @@ class Topic
 
         return $this;
     }
+
+    // =================== Locked ===================
 
     public function isLocked(): ?bool
     {
@@ -90,6 +110,39 @@ class Topic
         return $this;
     }
 
+    // =================== Slug ===================
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updateSlug(): void
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->title ?? '')->lower();
+    }
+
+    #endregion
+
+    #region COLLECTION(S)
+    // =======================================
+    // ======== Region : COLLECTION(S) =======
+    // =======================================
+
+    // =================== Game ===================
+
     public function getGame(): ?Game
     {
         return $this->game;
@@ -102,6 +155,8 @@ class Topic
         return $this;
     }
 
+    // =================== User ===================
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -113,6 +168,8 @@ class Topic
 
         return $this;
     }
+
+    // =================== Posts ===================
 
     /**
      * @return Collection<int, Post>
@@ -144,25 +201,5 @@ class Topic
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-        /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function updateSlug(): void
-    {
-        $slugger = new AsciiSlugger();
-        $this->slug = $slugger->slug($this->title ?? '')->lower();
-    }
+    #endregion
 }

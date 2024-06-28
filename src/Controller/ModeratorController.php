@@ -181,6 +181,7 @@ class ModeratorController extends AbstractController
         if (!$game) {
             $game = new Game();
             $game->setIdGameApi($idGameApi);
+            // TODO : enlever le strval ? Enlever la création du slug pour mon jeu et récupérer directement le slug de l'API ?
             $game->setSlug(strval($slug));
             $entityManager->persist($game);
             $entityManager->flush();
