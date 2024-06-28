@@ -6,18 +6,48 @@
 
 {{ dump(games) }}
 
-<h1>Game in my DB</h1>
+<section id="game"  class="w-full">
 
-{% for flash_message in app.flashes('warning') %}
-<div class="alert alert-warning bg-red-500 text-center text-black rounded-lg px-8">
-    {{ flash_message }}
-</div>
-{% endfor %}
+    <h1>Gamelist</h1>
 
-{% for game in games %}
-<a href="{{ path('show_game', {'id': game.db.id}) }}">{{ game.api[0].name }}</a>
-<p>ID du jeu (BDD) : {{ game.db.id }}</p>
-<p>ID du jeu (API) : {{ game.db.idGameApi }}</p>
-{% endfor %}
+    {% for flash_message in app.flashes('warning') %}
+    <div class="alert alert-warning bg-red-500 text-center text-black rounded-lg px-8">
+        {{ flash_message }}
+    </div>
+    {% endfor %}
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 w-[35%]">Game</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Developer</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Genres</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Platforms</th>
+                    <th scope="col" class="px-6 py-3 w-[5%]">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                <tr>
+                    <th scope="row" class="flex items-center gap-5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_game', {'id': game.db.id}) }}"><img src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.api[0].cover.image_id }}.jpg" alt="">{{ game.api[0].name }}</a></th>
+                    <td class="px-6 py-4">TDDeveloper</td>
+                    <td class="px-6 py-4">TDGenres</td>
+                    <td class="px-6 py-4">TDPlatforms</td>
+                    <td class="px-6 py-4">TDDisability</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    {# {% for game in games %}
+    <a href="{{ path('show_game', {'id': game.db.id}) }}">{{ game.api[0].name }}</a>
+    <p>ID du jeu (BDD) : {{ game.db.id }}</p>
+    <img src="https://images.igdb.com/igdb/image/upload/t_cover_small/{{ game.api[0].cover.image_id }}.jpg" alt="">
+    <p>ID du jeu (API) : {{ game.db.idGameApi }}</p>
+    {% endfor %} #}
+
+</section>
 
 {% endblock %}

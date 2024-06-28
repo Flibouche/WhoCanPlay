@@ -4,9 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% endblock %}
 
@@ -34,42 +37,47 @@
 
             <div id="navAuth" class="hidden md:flex gap-[24px]">
                 {% if app.user %}
-                    <a href="{{ path('app_logout') }}">Sign out</a>
-                    <a href="{{ path('app_user') }}">My Profile</a>
+                <a href="{{ path('app_logout') }}">Sign out</a>
+                <a href="{{ path('app_user') }}">My Profile</a>
                 {% else %}
-                    <a href="{{ path('app_login') }}">Sign in</a>
-                    <a href="{{ path('app_register') }}">Sign up</a>
+                <a href="{{ path('app_login') }}">Sign in</a>
+                <a href="{{ path('app_register') }}">Sign up</a>
                 {% endif %}
             </div>
 
         </nav>
 
-            {# <div id="mobileMenu" class="">
+        {# <div id="mobileMenu" class="">
 
-                <div class="md:hidden cursor-pointer">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
+            <div class="md:hidden cursor-pointer">
+                <i class="fa-solid fa-bars"></i>
+            </div>
 
-                <div class="md:hidden fixed top-0 right-0 w-full h-full bg-white z-50 transition-transform duration-300">
-                    <button class="absolute top-4 right-4 text-2xl" id="">&times;</button>
-                    <nav class="flex flex-col items-center mt-16 space-y-4">
-                        
-                    </nav>
-                </div>
-                
-            </div> #}
+            <div class="md:hidden fixed top-0 right-0 w-full h-full bg-white z-50 transition-transform duration-300">
+                <button class="absolute top-4 right-4 text-2xl" id="">&times;</button>
+                <nav class="flex flex-col items-center mt-16 space-y-4">
+
+                </nav>
+            </div>
+
+        </div> #}
 
     </header>
 
-    {% block body %}
-    {% endblock %}
+    <main class="flex justify-center flex-1">
+        <div class="w-full max-w-[1120px] flex flex-col items-center justify-around gap-[30px] px-[10px] py-[20px]">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </main>
 
     <footer>
 
     </footer>
 
     {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
     <script>
         tinymce.init({
@@ -85,7 +93,7 @@
     </script>
     <script src="/public/js/ajax.js"></script>
     {% block importmap %}
-        {{ importmap('app') }}
+    {{ importmap('app') }}
     {% endblock %}
     {% endblock %}
 
