@@ -69,9 +69,12 @@ class FeatureController extends AbstractController
     {
         // Récupération de l'ID du jeu depuis les paramètres de requête
         $idGameApi = $request->query->get('game');
-
+        
         // Création d'une nouvelle instance de Feature
         $feature = new Feature();
+        
+        // Je récupère l'User qui envoie la Feature en traitement
+        $user = $this->getUser();
 
         // Création du formulaire en utilisant FeatureType comme formulaire de type
         $form = $this->createForm(FeatureType::class);
@@ -86,10 +89,13 @@ class FeatureController extends AbstractController
             // Récupération des données soumises par le formulaire
             $feature = $form->getData();
 
-            // Si le jeu exsite, on ajoute l'ID du jeu à la Feature
+            // Si le jeu existe, on ajoute l'ID du jeu à la Feature
             if ($game) {
                 $feature->setGame($game);
             }
+
+            // J'ajoute le bon utilisateur à l'objet Feature que je vais créer
+            $feature->setUser($user);
 
             // Attribution de l'ID du jeu API au feature avant de le persister
             $feature->setIdGameApi($idGameApi);

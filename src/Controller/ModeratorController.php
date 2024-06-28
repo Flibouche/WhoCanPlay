@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class ModeratorController extends AbstractController
 {
@@ -82,7 +83,7 @@ class ModeratorController extends AbstractController
     public function showFeature(Feature $feature, EntityManagerInterface $entityManager): Response
     {
 
-        // Dès que j'accède à un Feature, si son state est "Not opened", il passe automatiquement en "Pending"
+        // Dès que j'accède à un objet Feature, si son State est "Not opened", il passe automatiquement en "Pending"
         if ($feature->getState() == FeatureState::NOT_OPENED) {
             $feature->setState(FeatureState::PENDING);
             $entityManager->persist($feature);
@@ -119,41 +120,75 @@ class ModeratorController extends AbstractController
 
     #[Route('/moderator/feature/{id}/{slug}/validate', name: 'validate_feature_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
-    public function validateFeature(Feature $feature = null, EntityManagerInterface $entityManager, Request $request): Response
+    public function validateFeature(Feature $feature = null, EntityManagerInterface $entityManager): Response
     {
-        $feature->setState(FeatureState::ACCEPTED);
 
-        if ($feature->getState() == FeatureState::ACCEPTED) {
-            $idGameApi = $feature->getIdGameApi();
-
-            $game = $entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
-    
-            if (!$game) {
-                $game = new Game();
-                $game->setIdGameApi($idGameApi);
-                $entityManager->persist($game);
-                $entityManager->flush();
-
-                $game->getId();
-                $feature->setGame($game);
-            }
-
-            if ($game->isStatus() == 0) {
-                $status = 1;
-                $game->setStatus($status);
-            }
-    
-            $entityManager->persist($feature);
-            $entityManager->flush();
-    
-            return $this->redirectToRoute('app_moderator');
+        // Je vérifie si la feature est null et je lance une exception si c'est le cas
+        if (!$feature) {
+            throw $this->createNotFoundException('Feature not found');
         }
+
+        try {
+            // Je commence une transaction pour garantir l'atomicité des opérations pour l'ajout en BDD
+            // Atomicité : ensemble d'opérations d'un programme qui s'exécutent entièrement sans pouvoir être interrompues avant la fin de leur déroulement
+            $entityManager->beginTransaction();
+
+            // Je change le State de mon objet Feature à ACCEPTED
+            $feature->setState(FeatureState::ACCEPTED);
+
+            // Je vérifie si le State de mon objet Feature a bien été changé en ACCEPTED
+            if ($feature->getState() == FeatureState::ACCEPTED) {
+                // Je récupère ou je crée le jeu associé à l'IDGameApi de mon objet Feature
+                $game = $this->getOrCreateGame($entityManager, $feature->getIdGameApi());
+
+                // Je vérifie si le Statut de mon objet Game est false et je le change en true 
+                if (!$game->isStatus()) {
+                    $game->setStatus(true);
+                    // Je prépare mes données à être insérées dans mon objet Game
+                    $entityManager->persist($game);
+                }
+
+                // J'associe enfin mon objet Game à mon objet Feature
+                $feature->setGame($game);
+                // Je prépare mes données à être insérées dans mon objet Feature
+                $entityManager->persist($feature);
+            }
+
+            // Je flush mes opérations en attente (persist) vers ma base de données
+            $entityManager->flush();
+            // J'envoie la transaction
+            $entityManager->commit();
+        } catch (\Exception $e) {
+            // En cas d'exception, j'annule toutes les opérations de la transaction
+            $entityManager->rollback();
+            throw $e;
+        }
+
+        // Je redirige l'utilisateur vers la route 'app_moderator' après la validation des opérations
+        return $this->redirectToRoute('app_moderator');
     }
 
-    // private function getOrCreateGame(EntityManagerInterface $entityManager, $idGameApi): Game
-    // {
+    // Méthode privée pour obtenir ou créer un jeu basé sur l'ID de l'API du jeu
+    private function getOrCreateGame(EntityManagerInterface $entityManager, $idGameApi): Game
+    {
+        // Je cherche le jeu dans ma base de données en utilisant l'ID de l'API du jeu
+        $game = $entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
+        
+        $slugger = new AsciiSlugger();
+        $slug = $slugger->slug($this->igdbApiService->getGameById($idGameApi)[0]["name"]);
 
-    // }
+        // Si aucun jeu n'est trouvé, je crée un nouveau jeu
+        if (!$game) {
+            $game = new Game();
+            $game->setIdGameApi($idGameApi);
+            $game->setSlug(strval($slug));
+            $entityManager->persist($game);
+            $entityManager->flush();
+        }
+
+        // Je retourne le jeu trouvé ou crée
+        return $game;
+    }
 
     #[Route('/moderator/feature/{id}/{slug}/deny', name: 'deny_feature_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
