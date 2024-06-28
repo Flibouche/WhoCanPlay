@@ -83,18 +83,14 @@ class FeatureController extends AbstractController
             // Recherche du jeu correspondant à l'ID du jeu API dans la base de données
             $game = $entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
 
-            // Si le jeu n'existe pas, création d'une nouvelle instance de Game
-            if (!$game) {
-                $game = new Game();
-                $game->setIdGameApi($idGameApi);
-                $entityManager->persist($game);
-            }
-
             // Récupération des données soumises par le formulaire
             $feature = $form->getData();
 
-            $feature->setGame($game);
-            
+            // Si le jeu exsite, on ajoute l'ID du jeu à la Feature
+            if ($game) {
+                $feature->setGame($game);
+            }
+
             // Attribution de l'ID du jeu API au feature avant de le persister
             $feature->setIdGameApi($idGameApi);
             $entityManager->persist($feature);

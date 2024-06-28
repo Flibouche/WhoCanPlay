@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
 use App\Entity\Feature;
 use App\Form\FeatureType;
 use App\Enum\FeatureState;
 use App\Service\IgdbApiService;
 use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use DOMDocument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -119,15 +119,41 @@ class ModeratorController extends AbstractController
 
     #[Route('/moderator/feature/{id}/{slug}/validate', name: 'validate_feature_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
-    public function validateFeature(Feature $feature = null, EntityManagerInterface $entityManager): Response
+    public function validateFeature(Feature $feature = null, EntityManagerInterface $entityManager, Request $request): Response
     {
         $feature->setState(FeatureState::ACCEPTED);
 
-        $entityManager->persist($feature);
-        $entityManager->flush();
+        if ($feature->getState() == FeatureState::ACCEPTED) {
+            $idGameApi = $feature->getIdGameApi();
 
-        return $this->redirectToRoute('app_moderator');
+            $game = $entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
+    
+            if (!$game) {
+                $game = new Game();
+                $game->setIdGameApi($idGameApi);
+                $entityManager->persist($game);
+                $entityManager->flush();
+
+                $game->getId();
+                $feature->setGame($game);
+            }
+
+            if ($game->isStatus() == 0) {
+                $status = 1;
+                $game->setStatus($status);
+            }
+    
+            $entityManager->persist($feature);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('app_moderator');
+        }
     }
+
+    // private function getOrCreateGame(EntityManagerInterface $entityManager, $idGameApi): Game
+    // {
+
+    // }
 
     #[Route('/moderator/feature/{id}/{slug}/deny', name: 'deny_feature_moderator')]
     #[IsGranted('ROLE_MODERATOR')]

@@ -29,7 +29,7 @@
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
                     <td class="px-6 py-4">{{ feature.user }}</td>
-                    <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
+                    <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
                     <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25"></td>
                 </tr>
@@ -71,7 +71,7 @@
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
                     <td class="px-6 py-4">{{ feature.user }}</td>
-                    <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
+                    <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
                     <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25"></td>
                 </tr>
@@ -113,7 +113,7 @@
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
                     <td class="px-6 py-4">{{ feature.user }}</td>
-                    <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
+                    <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
                     <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25"></td>
                 </tr>
@@ -155,7 +155,7 @@
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
                     <td class="px-6 py-4">{{ feature.user }}</td>
-                    <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
+                    <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
                     <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25"></td>
                 </tr>
