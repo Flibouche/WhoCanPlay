@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum SubtypeState: string
+enum FeatureState: string
 {
     case NOT_OPENED = 'Not opened';
     case PENDING = 'Pending';

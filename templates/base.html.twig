@@ -25,7 +25,7 @@
                 <a href="{{ path('app_home') }}">Home</a>
                 <a href="{{ path('app_game') }}">My DB</a>
                 {% if app.user %}
-                <a href="{{ path('app_subtype') }}">Make a submission</a>
+                <a href="{{ path('app_feature') }}">Make a submission</a>
                 {% endif %}
                 {% if is_granted('ROLE_MODERATOR') %}
                 <a href="{{ path('app_moderator') }}">Treatment</a>

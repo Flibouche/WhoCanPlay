@@ -51,16 +51,16 @@ class GameController extends AbstractController
     public function showGame(Game $game = null): Response
     {
 
-        $subtypesByDisability = [];
+        $featuresByDisability = [];
 
-        foreach ($game->getSubtypes() as $subtype) {
-            $disability = $subtype->getDisability();
+        foreach ($game->getFeatures() as $feature) {
+            $disability = $feature->getDisability();
             $disabilityName = $disability ? $disability->getName() : 'No Disability';
 
-            if (!isset($subtypesByDisability[$disabilityName])) {
-                $subtypesByDisability[$disabilityName] = [];
+            if (!isset($featuresByDisability[$disabilityName])) {
+                $featuresByDisability[$disabilityName] = [];
             }
-            $subtypesByDisability[$disabilityName][] = $subtype;
+            $featuresByDisability[$disabilityName][] = $feature;
         }
 
         $idGameApi = $game->getIdGameApi();
@@ -70,7 +70,7 @@ class GameController extends AbstractController
         return $this->render('game/show.html.twig', [
             'game' => $game,
             'gameApi' => $gameApi,
-            'subtypesByDisability' => $subtypesByDisability,
+            'featuresByDisability' => $featuresByDisability,
         ]);
     }
 }

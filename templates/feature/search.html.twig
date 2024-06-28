@@ -8,7 +8,7 @@
     {% if games is empty %}
         <p>No games found.</p>
     {% else %}
-        <form action="{{ path('add_subtype') }}" method="GET">
+        <form action="{{ path('add_feature') }}" method="GET">
             <label for="game">Choose a game</label>
             <select name="game" id="game">
                 {% for game in games %}            

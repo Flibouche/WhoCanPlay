@@ -19,10 +19,10 @@ class Game
     private ?int $id_game_api = null;
 
     /**
-     * @var Collection<int, Subtype>
+     * @var Collection<int, Feature>
      */
-    #[ORM\OneToMany(targetEntity: Subtype::class, mappedBy: 'Game')]
-    private Collection $subtypes;
+    #[ORM\OneToMany(targetEntity: Feature::class, mappedBy: 'game')]
+    private Collection $features;
 
     /**
      * @var Collection<int, Topic>
@@ -38,7 +38,7 @@ class Game
 
     public function __construct()
     {
-        $this->subtypes = new ArrayCollection();
+        $this->features = new ArrayCollection();
         $this->topics = new ArrayCollection();
     }
 
@@ -72,29 +72,29 @@ class Game
     }
 
     /**
-     * @return Collection<int, Subtype>
+     * @return Collection<int, Feature>
      */
-    public function getSubtypes(): Collection
+    public function getFeatures(): Collection
     {
-        return $this->subtypes;
+        return $this->features;
     }
 
-    public function addSubtype(Subtype $subtype): static
+    public function addFeature(Feature $feature): static
     {
-        if (!$this->subtypes->contains($subtype)) {
-            $this->subtypes->add($subtype);
-            $subtype->setGame($this);
+        if (!$this->features->contains($feature)) {
+            $this->features->add($feature);
+            $feature->setGame($this);
         }
 
         return $this;
     }
 
-    public function removeSubtype(Subtype $subtype): static
+    public function removeFeature(Feature $feature): static
     {
-        if ($this->subtypes->removeElement($subtype)) {
+        if ($this->features->removeElement($feature)) {
             // set the owning side to null (unless already changed)
-            if ($subtype->getGame() === $this) {
-                $subtype->setGame(null);
+            if ($feature->getGame() === $this) {
+                $feature->setGame(null);
             }
         }
 

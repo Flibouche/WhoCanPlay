@@ -2,29 +2,34 @@
 
 namespace App\Entity;
 
-use App\Enum\SubtypeState;
+use App\Enum\FeatureState;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\SubtypeRepository;
+use App\Repository\FeatureRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
-#[ORM\Entity(repositoryClass: SubtypeRepository::class)]
-class Subtype
+#[ORM\Entity(repositoryClass: FeatureRepository::class)]
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\FeatureRepository")
+ * @ORM\Table(name="Feature")
+ */
+class Feature
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'subtypes')]
+    #[ORM\ManyToOne(inversedBy: 'features')]
     private ?Disability $disability = null;
 
-    #[ORM\ManyToOne(inversedBy: 'subtypes')]
+    #[ORM\ManyToOne(inversedBy: 'features')]
     private ?Game $game = null;
 
-    #[ORM\ManyToOne(inversedBy: 'subtypes')]
+    #[ORM\ManyToOne(inversedBy: 'features')]
     private ?User $user = null;
 
     #[ORM\Column(nullable: true)]
@@ -36,8 +41,8 @@ class Subtype
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\Column(type: 'string', enumType: SubtypeState::class)]
-    private SubtypeState $state = SubtypeState::NOT_OPENED;
+    #[ORM\Column(type: 'string', enumType: FeatureState::class)]
+    private FeatureState $state = FeatureState::NOT_OPENED;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $submissionDate = null;
@@ -51,7 +56,7 @@ class Subtype
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'Subtype')]
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'Feature')]
     private Collection $images;
 
     public function __construct()
@@ -138,12 +143,12 @@ class Subtype
         return $this;
     }
 
-    public function getState(): SubtypeState
+    public function getState(): FeatureState
     {
         return $this->state;
     }
 
-    public function setState(SubtypeState $state): self
+    public function setState(FeatureState $state): self
     {
         $this->state = $state;
 
@@ -213,7 +218,7 @@ class Subtype
     {
         if (!$this->images->contains($image)) {
             $this->images->add($image);
-            $image->setSubtype($this);
+            $image->setFeature($this);
         }
 
         return $this;
@@ -223,8 +228,8 @@ class Subtype
     {
         if ($this->images->removeElement($image)) {
             // set the owning side to null (unless already changed)
-            if ($image->getSubtype() === $this) {
-                $image->setSubtype(null);
+            if ($image->getFeature() === $this) {
+                $image->setFeature(null);
             }
         }
 

@@ -16,19 +16,19 @@
 
 <h2>Infos de ma BDD :</h2>
 
-{# Boucle pour récupérer et trier les subtypes par disabililty sans doublons #}
-{% for disability, subtypes in subtypesByDisability %}
+{# Boucle pour récupérer et trier les features par disabililty sans doublons #}
+{% for disability, features in featuresByDisability %}
 
     <h2>{{ disability }}</h2>
 
-    {% for subtype in subtypes %}
+    {% for feature in features %}
 
     <div>
-        <h3>{{ subtype.getName }}</h3>
+        <h3>{{ feature.getName }}</h3>
     </div>
 
     <div>
-        {{ subtype.getContent }}
+        {{ feature.getContent }}
     </div>
 
     {% endfor %}

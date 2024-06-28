@@ -16,11 +16,11 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
-    public function findGamesWithProcessedSubtypes()
+    public function findGamesWithProcessedFeatures()
     {
         $qb = $this->createQueryBuilder('g')
-        ->leftJoin('subtype', 's')
-        ->where('s.state = Processed');
+        ->leftJoin('feature', 'f')
+        ->where('f.state = Processed');
     
     return $qb->getQuery()->getResult();
     }

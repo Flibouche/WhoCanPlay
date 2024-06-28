@@ -4,9 +4,9 @@
 
 {% block body %}
 
-{{ dump(subtypes) }}
+{{ dump(features) }}
 
-{# Not Opened Subtypes  #}
+{# Not Opened Features  #}
 <div>
     <h1>Not Opened</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -21,22 +21,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% if subtypes.notOpened %}
+                {% if features.notOpened %}
 
-                {% for subtypeData in subtypes.notOpened %}
-                {% set subtype = subtypeData.subtype %}
-                {% set game = subtypeData.gameApi %}
+                {% for featureData in features.notOpened %}
+                {% set feature = featureData.feature %}
+                {% set game = featureData.gameApi %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}">{{ game.name }}</a></th>
-                    <td class="px-6 py-4">{{ subtype.user }}</td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
+                    <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
-                    <td class="px-6 py-4">{{ subtype.state.value }}</td>
-                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="25" height="25"></td>
+                    <td class="px-6 py-4">{{ feature.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25"></td>
                 </tr>
                 {% endfor %}
                 {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No subtype found.</th>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</th>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
@@ -48,7 +48,7 @@
     </div>
 </div>
 
-{# Pending Subtypes  #}
+{# Pending Features  #}
 <div>
     <h1>Pending</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -63,22 +63,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% if subtypes.pending %}
+                {% if features.pending %}
 
-                {% for subtypeData in subtypes.pending %}
-                {% set subtype = subtypeData.subtype %}
-                {% set game = subtypeData.gameApi %}
+                {% for featureData in features.pending %}
+                {% set feature = featureData.feature %}
+                {% set game = featureData.gameApi %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}">{{ game.name }}</a></th>
-                    <td class="px-6 py-4">{{ subtype.user }}</td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
+                    <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
-                    <td class="px-6 py-4">{{ subtype.state.value }}</td>
-                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="25" height="25"></td>
+                    <td class="px-6 py-4">{{ feature.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25"></td>
                 </tr>
                 {% endfor %}
                 {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No subtype found.</th>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</th>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
@@ -90,7 +90,7 @@
     </div>
 </div>
 
-{# Accepted Subtypes  #}
+{# Accepted Features  #}
 <div>
     <h1>Accepted</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -105,22 +105,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% if subtypes.processed %}
+                {% if features.processed %}
 
-                {% for subtypeData in subtypes.processed %}
-                {% set subtype = subtypeData.subtype %}
-                {% set game = subtypeData.gameApi %}
+                {% for featureData in features.processed %}
+                {% set feature = featureData.feature %}
+                {% set game = featureData.gameApi %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}">{{ game.name }}</a></th>
-                    <td class="px-6 py-4">{{ subtype.user }}</td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
+                    <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
-                    <td class="px-6 py-4">{{ subtype.state.value }}</td>
-                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="25" height="25"></td>
+                    <td class="px-6 py-4">{{ feature.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25"></td>
                 </tr>
                 {% endfor %}
                 {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No subtype found.</th>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</th>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
@@ -132,7 +132,7 @@
     </div>
 </div>
 
-{# Denied Subtypes  #}
+{# Denied Features  #}
 <div>
     <h1>Denied</h1>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -147,22 +147,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% if subtypes.denied %}
+                {% if features.denied %}
 
-                {% for subtypeData in subtypes.denied %}
-                {% set subtype = subtypeData.subtype %}
-                {% set game = subtypeData.gameApi %}
+                {% for featureData in features.denied %}
+                {% set feature = featureData.feature %}
+                {% set game = featureData.gameApi %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}">{{ game.name }}</a></th>
-                    <td class="px-6 py-4">{{ subtype.user }}</td>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
+                    <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ game ? 'Yes' : 'No' }}</td>
-                    <td class="px-6 py-4">{{ subtype.state.value }}</td>
-                    <td class="px-6 py-4"><img src="{{ subtype.disability.icon }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="25" height="25"></td>
+                    <td class="px-6 py-4">{{ feature.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25"></td>
                 </tr>
                 {% endfor %}
                 {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No subtype found.</th>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</th>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>

@@ -40,7 +40,7 @@ class Image
     private ?Disability $disability = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
-    private ?Subtype $subtype = null;
+    private ?Feature $feature = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?User $user = null;
@@ -157,14 +157,14 @@ class Image
         return $this;
     }
 
-    public function getSubtype(): ?Subtype
+    public function getFeature(): ?Feature
     {
-        return $this->subtype;
+        return $this->feature;
     }
 
-    public function setSubtype(?Subtype $subtype): static
+    public function setFeature(?Feature $feature): static
     {
-        $this->subtype = $subtype;
+        $this->feature = $feature;
 
         return $this;
     }

@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Game;
-use App\Entity\Subtype;
-use App\Form\SubtypeType;
+use App\Entity\Feature;
+use App\Form\FeatureType;
 use App\Service\IgdbApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class SubtypeController extends AbstractController
+class FeatureController extends AbstractController
 {
 
     private $igdbApiService;
@@ -23,11 +23,11 @@ class SubtypeController extends AbstractController
         $this->igdbApiService = $igdbApiService;
     }
 
-    #[Route('/subtype', name: 'app_subtype')]
+    #[Route('/feature', name: 'app_feature')]
     public function index(): Response
     {
-        return $this->render('subtype/index.html.twig', [
-            'controller_name' => 'SubtypeController',
+        return $this->render('feature/index.html.twig', [
+            'controller_name' => 'FeatureController',
         ]);
     }
 
@@ -44,7 +44,7 @@ class SubtypeController extends AbstractController
     //     return new JsonResponse($games);
 
     //     // Rendu du template 'api/search.html.twig' avec les données des jeux
-    //     // return $this->render('subtype/search.html.twig', [
+    //     // return $this->render('feature/search.html.twig', [
     //     //     'games' => $games,
     //     // ]);
     // }
@@ -59,22 +59,22 @@ class SubtypeController extends AbstractController
         $games = $this->igdbApiService->getGames($name);
 
         // Rendu du template 'api/search.html.twig' avec les données des jeux
-        return $this->render('subtype/search.html.twig', [
+        return $this->render('feature/search.html.twig', [
             'games' => $games,
         ]);
     }
 
-    #[Route('/subtype/add', name: 'add_subtype')]
-    public function sendSubtypeToTreatment(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/feature/add', name: 'add_feature')]
+    public function sendFeatureToTreatment(Request $request, EntityManagerInterface $entityManager): Response
     {
         // Récupération de l'ID du jeu depuis les paramètres de requête
         $idGameApi = $request->query->get('game');
 
-        // Création d'une nouvelle instance de Subtype
-        $subtype = new Subtype();
+        // Création d'une nouvelle instance de Feature
+        $feature = new Feature();
 
-        // Création du formulaire en utilisant SubtypeType comme formulaire de type
-        $form = $this->createForm(SubtypeType::class);
+        // Création du formulaire en utilisant FeatureType comme formulaire de type
+        $form = $this->createForm(FeatureType::class);
         $form->handleRequest($request);
 
         // Vérification si le formulaire a été soumis et est valide
@@ -91,23 +91,23 @@ class SubtypeController extends AbstractController
             }
 
             // Récupération des données soumises par le formulaire
-            $subtype = $form->getData();
+            $feature = $form->getData();
 
-            $subtype->setGame($game);
+            $feature->setGame($game);
             
-            // Attribution de l'ID du jeu API au subtype avant de le persister
-            $subtype->setIdGameApi($idGameApi);
-            $entityManager->persist($subtype);
+            // Attribution de l'ID du jeu API au feature avant de le persister
+            $feature->setIdGameApi($idGameApi);
+            $entityManager->persist($feature);
             $entityManager->flush();
 
-            // Redirection vers la page d'accueil après l'ajout du subtype
+            // Redirection vers la page d'accueil après l'ajout du feature
             return $this->redirectToRoute('app_home');
         }
 
         // Si le formulaire n'a pas été soumis ou n'est pas valide, affichage du formulaire
-        return $this->render('subtype/add.html.twig', [
-            'formSendSubtypeToGame' => $form,
-            'edit' => $subtype->getId(),
+        return $this->render('feature/add.html.twig', [
+            'formSendFeatureToGame' => $form,
+            'edit' => $feature->getId(),
         ]);
     }
 }

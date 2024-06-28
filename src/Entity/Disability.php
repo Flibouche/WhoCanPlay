@@ -21,10 +21,10 @@ class Disability
     private ?int $id = null;
 
     /**
-     * @var Collection<int, Subtype>
+     * @var Collection<int, Feature>
      */
-    #[ORM\OneToMany(targetEntity: Subtype::class, mappedBy: 'Disability')]
-    private Collection $subtypes;
+    #[ORM\OneToMany(targetEntity: Feature::class, mappedBy: 'Disability')]
+    private Collection $features;
 
     #[ORM\Column(length: 50)]
     private ?string $name = null;
@@ -47,7 +47,7 @@ class Disability
 
     public function __construct()
     {
-        $this->subtypes = new ArrayCollection();
+        $this->features = new ArrayCollection();
         $this->images = new ArrayCollection();
     }
 
@@ -119,32 +119,32 @@ class Disability
     // ******************* Colletion(s) *******************
     // ****************************************************
 
-    // ******************* Subtypes *******************
+    // ******************* Features *******************
 
     /**
-     * @return Collection<int, Subtype>
+     * @return Collection<int, Feature>
      */
-    public function getSubtypes(): Collection
+    public function getFeatures(): Collection
     {
-        return $this->subtypes;
+        return $this->features;
     }
 
-    public function addSubtype(Subtype $subtype): static
+    public function addFeature(Feature $feature): static
     {
-        if (!$this->subtypes->contains($subtype)) {
-            $this->subtypes->add($subtype);
-            $subtype->setDisability($this);
+        if (!$this->features->contains($feature)) {
+            $this->features->add($feature);
+            $feature->setDisability($this);
         }
 
         return $this;
     }
 
-    public function removeSubtype(Subtype $subtype): static
+    public function removeFeature(Feature $feature): static
     {
-        if ($this->subtypes->removeElement($subtype)) {
+        if ($this->features->removeElement($feature)) {
             // set the owning side to null (unless already changed)
-            if ($subtype->getDisability() === $this) {
-                $subtype->setDisability(null);
+            if ($feature->getDisability() === $this) {
+                $feature->setDisability(null);
             }
         }
 

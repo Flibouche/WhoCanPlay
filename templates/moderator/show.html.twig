@@ -4,16 +4,16 @@
 
 {% block body %}
 
-{{ dump(subtype) }}
+{{ dump(feature) }}
 
-<a href="{{ path('edit_subtype_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}"><i class="fa-solid fa-pen"></i></a>
+<a href="{{ path('edit_feature_moderator', {'id': feature.id, 'slug': feature.slug}) }}"><i class="fa-solid fa-pen"></i></a>
 
-<h1>Request n°{{ subtype.id }} :</h1>
+<h1>Request n°{{ feature.id }} :</h1>
 <h2>
     {# Game {{ game.name }} #}
-    Diability category : {{ subtype.disability.name }}
+    Diability category : {{ feature.disability.name }}
 </h2>
-<h3>From : {{ subtype.user }} send the : {{ subtype.submissionDate | date('d.m.Y \\a\\t H:i:s') }}</h3>
+<h3>From : {{ feature.user }} send the : {{ feature.submissionDate | date('d.m.Y \\a\\t H:i:s') }}</h3>
 <br>
 <br>
 
@@ -24,29 +24,29 @@
     <br>
 
     <h4>Disability category</h4>
-    <img src="{{ asset(subtype.disability.icon) }}" alt="{{ subtype.disability.name }}" title="{{ subtype.disability.name }}" width="50" height="50">
-    {{ subtype.disability }}
+    <img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="50" height="50">
+    {{ feature.disability }}
     <br>
     <br>
 
-    <h4>Subtype title</h4>
-    {{ subtype }}
+    <h4>Feature title</h4>
+    {{ feature }}
     <br>
     <br>
 
-    <h4>Subtype content</h4>
-    {{ subtype.content }}
+    <h4>Feature content</h4>
+    {{ feature.content }}
     <br>
     <br>
 
     <h4>Content image</h4>
 
     <div>
-        <form action="{{ path('validate_subtype_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}">
+        <form action="{{ path('validate_feature_moderator', {'id': feature.id, 'slug': feature.slug}) }}">
             <input type="submit" name="Validate" id="validate" class="bg-green-500 px-3 py-1" value="Validate">
         </form>
 
-        <form action="{{ path('deny_subtype_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}">
+        <form action="{{ path('deny_feature_moderator', {'id': feature.id, 'slug': feature.slug}) }}">
             <input type="submit" name="Validate" id="validate" class="bg-red-500 px-3 py-1" value="Deny">
         </form>
         
