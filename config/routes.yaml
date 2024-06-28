@@ -1,3 +1,7 @@
+index:
+    path: /
+    controller: App\Controller\HomeController::index
+
 controllers:
     resource:
         path: ../src/Controller/

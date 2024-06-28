@@ -8,6 +8,7 @@ use App\Enum\SubtypeState;
 use App\Service\IgdbApiService;
 use App\Repository\SubtypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use DOMDocument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -118,7 +119,7 @@ class ModeratorController extends AbstractController
 
     #[Route('/moderator/subtype/{id}/{slug}/validate', name: 'validate_subtype_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
-    public function validateSubtype(Subtype $subtype = null, EntityManagerInterface $entityManager, Request $request): Response
+    public function validateSubtype(Subtype $subtype = null, EntityManagerInterface $entityManager): Response
     {
         $subtype->setState(SubtypeState::ACCEPTED);
 
@@ -127,16 +128,16 @@ class ModeratorController extends AbstractController
 
         return $this->redirectToRoute('app_moderator');
     }
-    
-    // #[Route('/moderator/subtype/validate', name: 'deny_subtype_moderator')]
-    // #[IsGranted('ROLE_MODERATOR')]
-    // public function denySubtype(Subtype $subtype = null, EntityManagerInterface $entityManager)
-    // {
 
-    // }
+    #[Route('/moderator/subtype/{id}/{slug}/deny', name: 'deny_subtype_moderator')]
+    #[IsGranted('ROLE_MODERATOR')]
+    public function denySubtype(Subtype $subtype = null, EntityManagerInterface $entityManager): Response
+    {
+        $subtype->setState(SubtypeState::DENIED);
 
-    // public function addSubtypeToGame(): Response
-    // {
+        $entityManager->persist($subtype);
+        $entityManager->flush();
 
-    // }
+        return $this->redirectToRoute('app_moderator');
+    }
 }

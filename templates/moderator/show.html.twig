@@ -18,7 +18,7 @@
 <br>
 
 <div>
-    <h4>Game</h4>
+    <h4 id="test">Game</h4>
     {# Game {{ game.name }} #}
     <br>
     <br>
@@ -42,14 +42,14 @@
     <h4>Content image</h4>
 
     <div>
-        {# <a href="{{ path('validate_subtype_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}">qsdqsd</a> #}
         <form action="{{ path('validate_subtype_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}">
             <input type="submit" name="Validate" id="validate" class="bg-green-500 px-3 py-1" value="Validate">
         </form>
+
+        <form action="{{ path('deny_subtype_moderator', {'id': subtype.id, 'slug': subtype.slug}) }}">
+            <input type="submit" name="Validate" id="validate" class="bg-red-500 px-3 py-1" value="Deny">
+        </form>
         
-        {# <form action="{{ path('deny_subtype_moderator') }}">
-            <input type="submit" name="Deny" id="deny" class="bg-red-500 px-3 py-1" value="Deny">
-        </form> #}
     </div>
 </div>
 
