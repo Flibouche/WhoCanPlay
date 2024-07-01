@@ -108,11 +108,12 @@ class ModeratorController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $feature = $form->getData();
+            $feature->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
 
             $entityManager->persist($feature);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_moderator');
         }
 
         return $this->render('feature/add.html.twig', [

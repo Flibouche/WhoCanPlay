@@ -47,35 +47,8 @@ class GameController extends AbstractController
         ]);
     }
 
-    // #[Route('/game/{id}', name: 'show_game')]
-    // public function showGame(Game $game = null, GameRepository $gameRepository): Response
-    // {
-
-    //     $featuresByDisability = [];
-
-    //     foreach ($game->getFeatures() as $feature) {
-    //         $disability = $feature->getDisability();
-    //         $disabilityName = $disability ? $disability->getName() : 'No Disability';
-
-    //         if (!isset($featuresByDisability[$disabilityName])) {
-    //             $featuresByDisability[$disabilityName] = [];
-    //         }
-    //         $featuresByDisability[$disabilityName][] = $feature;
-    //     }
-
-    //     $idGameApi = $game->getIdGameApi();
-
-    //     $gameApi = $this->igdbApiService->getGameDetails($idGameApi);
-
-    //     return $this->render('game/show.html.twig', [
-    //         'game' => $game,
-    //         'gameApi' => $gameApi,
-    //         'featuresByDisability' => $featuresByDisability,
-    //     ]);
-    // }
-
     #[Route('/game/{id}', name: 'show_game')]
-    public function showGame(Game $game = null, GameRepository $gameRepository): Response
+    public function showGame(?Game $game, GameRepository $gameRepository): Response
     {
 
         $gameId = $game->getId();
