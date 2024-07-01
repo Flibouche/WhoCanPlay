@@ -16,14 +16,14 @@
             {# Not Opened Features #}
             <section id="tab1" class="w-full tab-content hidden">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <table id="dataTable1" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">State</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Disability</th>
+                                <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,14 +65,14 @@
             {# Pending Features #}
             <section id="tab2" class="w-full tab-content hidden">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <table id="dataTable2" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">State</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Disability</th>
+                                <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -110,14 +110,14 @@
             {# Accepted Features #}
             <section id="tab3" class="w-full tab-content hidden">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <table id="dataTable3" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">State</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Disability</th>
+                                <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -155,14 +155,14 @@
             {# Denied Features #}
             <section id="tab4" class="w-full tab-content hidden">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <table id="dataTable4" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
                                 <th scope="col" class="px-6 py-3 w-[20%]">State</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Disability</th>
+                                <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -199,6 +199,17 @@
 
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
+<script>
+    $('#dataTable1').DataTable();
+    $('#dataTable2').DataTable();
+    $('#dataTable3').DataTable();
+    $('#dataTable4').DataTable();
+</script>
+
 
 <script>
     const tabs = document.querySelectorAll('[data-tab-target]');

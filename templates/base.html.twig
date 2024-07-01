@@ -3,13 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}WhoCanPlay{% endblock %}</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     {% block stylesheets %}
+    {# FONT AWESOME #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {# DATATABLES #}
+    <link href="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.css" rel="stylesheet">
+    {# MY CSS #}
     <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% endblock %}
 
@@ -76,25 +80,23 @@
     </footer>
 
     {% block javascripts %}
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
-    <script>
-        tinymce.init({
-            selector: 'textarea.tinymce'
-        });
-    </script>
-    <script>
-        if (typeof jQuery === 'undefined') {
-            console.log('jQuery is not loaded');
-        } else {
-            console.log('jQuery is loaded');
-        }
-    </script>
-    <script src="/public/js/ajax.js"></script>
-    {% block importmap %}
-    {{ importmap('app') }}
-    {% endblock %}
+        {# Jquery #}
+        
+        {# TinyMCE #}
+        <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+        <script defer>
+            tinymce.init({
+                selector: 'textarea.tinymce'
+            });
+        </script>
+        {# AJAX #}
+        {# DATATABLES #}
+        
+        {% block importmap %}
+        {{ importmap('app') }}
+        {% endblock %}
+        <script src="/public/js/ajax.js"></script>
+
     {% endblock %}
 
 </body>
