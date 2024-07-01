@@ -26,6 +26,7 @@ class ModeratorController extends AbstractController
         $this->igdbApiService = $igdbApiService;
     }
 
+    #region SUBMISSIONS BOX
     #[Route('/moderator', name: 'app_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
     public function submissionsBox(FeatureRepository $featureRepository): Response
@@ -77,7 +78,9 @@ class ModeratorController extends AbstractController
             'features' => $featuresGames,
         ]);
     }
+    #endregion
 
+    #region INFORMATIONS AND EDITION
     #[Route('/moderator/feature/{id}/{slug}', name: 'show_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
     public function showFeature(Feature $feature, EntityManagerInterface $entityManager): Response
@@ -97,7 +100,7 @@ class ModeratorController extends AbstractController
 
     #[Route('/moderator/feature/{id}/{slug}/edit', name: 'edit_feature_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
-    public function editFeature(Feature $feature = null, EntityManagerInterface $entityManager, Request $request): Response
+    public function editFeature(?Feature $feature, EntityManagerInterface $entityManager, Request $request): Response
     {
 
         $form = $this->createForm(FeatureType::class, $feature);
@@ -117,10 +120,12 @@ class ModeratorController extends AbstractController
             'edit' => $feature->getId(),
         ]);
     }
+    #endregion
 
+    #region VALIDATE
     #[Route('/moderator/feature/{id}/{slug}/validate', name: 'validate_feature_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
-    public function validateFeature(Feature $feature = null, EntityManagerInterface $entityManager): Response
+    public function validateFeature(?Feature $feature, EntityManagerInterface $entityManager): Response
     {
 
         // Je vérifie si la feature est null et je lance une exception si c'est le cas
@@ -173,16 +178,15 @@ class ModeratorController extends AbstractController
     {
         // Je cherche le jeu dans ma base de données en utilisant l'ID de l'API du jeu
         $game = $entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
-        
+
         $slugger = new AsciiSlugger();
-        $slug = $slugger->slug($this->igdbApiService->getGameById($idGameApi)[0]["name"]);
+        $slug = $slugger->slug($this->igdbApiService->getGameById($idGameApi)[0]["slug"]);
 
         // Si aucun jeu n'est trouvé, je crée un nouveau jeu
         if (!$game) {
             $game = new Game();
             $game->setIdGameApi($idGameApi);
-            // TODO : enlever le strval ? Enlever la création du slug pour mon jeu et récupérer directement le slug de l'API ?
-            $game->setSlug(strval($slug));
+            $game->setSlug($slug);
             $entityManager->persist($game);
             $entityManager->flush();
         }
@@ -190,16 +194,49 @@ class ModeratorController extends AbstractController
         // Je retourne le jeu trouvé ou crée
         return $game;
     }
+    #endregion
 
+    #region DENIED
     #[Route('/moderator/feature/{id}/{slug}/deny', name: 'deny_feature_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
-    public function denyFeature(Feature $feature = null, EntityManagerInterface $entityManager): Response
+    public function denyFeature(?Feature $feature, EntityManagerInterface $entityManager): Response
     {
+        // Je passe le State de mon objet Feature à DENIED, je persist et je flush les informations
         $feature->setState(FeatureState::DENIED);
-
         $entityManager->persist($feature);
         $entityManager->flush();
 
+        // Ensuite je met à jour le Status du jeu associé si besoin
+        $this->updateGameStatus($feature->getGame(), $entityManager);
+
+        // Je redirige l'utilisateur vers la route 'app_moderator' après la validation des opérations
         return $this->redirectToRoute('app_moderator');
     }
+
+    // Méthode privée qui me permet de mettre à jour le statut du jeu de true à false si aucune feature d'accessibilité ne lui est attribué suite à des modifications parvenues, ou en cas de mauvaise manipulation.
+    // Le jeu reste dans la base de données, si le jeu possède minimum une Feature en State "ACCEPTED", le jeu restera en Status "1", autrement il passe à 0 et n'est donc pas visible dans la gamelist.
+    private function updateGameStatus(?Game $game, EntityManagerInterface $entityManager): void
+    {
+        // Si $game est null, la méthode se termine ici car il n'y a rien à mettre à jour
+        if ($game === null) {
+            return;
+        }
+
+        // Je filtre les Features acceptées du jeu
+        $acceptedFeatures = $game->getFeatures()->filter(function (Feature $feature) {
+            return $feature->getState() === FeatureState::ACCEPTED;
+        });
+
+        // Si aucune fonctionnalité dans le State "ACCEPTED" n'est trouvée, le statut du jeu est mis à false, sinon à true
+        if ($acceptedFeatures->isEmpty()) {
+            $game->setStatus(false);
+        } else {
+            $game->setStatus(true);
+        }
+
+        // Je persist et je flush les informations
+        $entityManager->persist($game);
+        $entityManager->flush();
+    }
+    #endregion
 }

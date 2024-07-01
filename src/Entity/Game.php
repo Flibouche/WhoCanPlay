@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\FeatureState;
 use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

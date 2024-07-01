@@ -30,9 +30,9 @@ class GameController extends AbstractController
         if ($activeGames) {
             foreach ($activeGames as $gameDb) {
                 $idGameApi = $gameDb->getIdGameApi();
-                
+
                 $gameApi = $this->igdbApiService->getGameById($idGameApi);
-                
+
                 $gamesApiInfo[] = [
                     'db' => $gameDb,
                     'api' => $gameApi,
@@ -80,20 +80,16 @@ class GameController extends AbstractController
 
         $gameId = $game->getId();
         $processedFeatures = $gameRepository->findProcessedFeaturesByGame($gameId);
-        // dd($processedFeatures);
 
         $featuresByDisability = [];
 
         foreach ($processedFeatures as $feature) {
             $disability = $feature['disabilityName'];
-            dd($disability);
-            
-            $disabilityName = $disability ? $disability->getName() : 'No Disability';
 
-            if (!isset($featuresByDisability[$disabilityName])) {
-                $featuresByDisability[$disabilityName] = [];
+            if (!isset($featuresByDisability[$disability])) {
+                $featuresByDisability[$disability] = [];
             }
-            $featuresByDisability[$disabilityName][] = $feature;
+            $featuresByDisability[$disability][] = $feature;
         }
 
         $idGameApi = $game->getIdGameApi();

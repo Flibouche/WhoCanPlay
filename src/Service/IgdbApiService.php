@@ -72,7 +72,7 @@ class IgdbApiService
         $this->logger->info('Access token obtained', ['access_token' => $accessToken]);
     
         // Construction de la requête pour l'API IGDB
-        $queryString = "fields id,name,cover.image_id; where id = $idGameApi;";
+        $queryString = "fields id,name,cover.image_id,slug; where id = $idGameApi;";
     
         // Envoi de la requête à l'API IGDB
         $response = $this->httpClient->request('POST', 'https://api.igdb.com/v4/games', [
