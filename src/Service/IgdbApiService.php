@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Exception;
+use InvalidArgumentException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Psr\Log\LoggerInterface;
 
@@ -148,6 +149,52 @@ class IgdbApiService
             throw new Exception('Failed to fetch game details');
         }
 
+        // Retourne les données obtenues
+        return $data;
+    }
+
+    public function getGameByIds(array $ids = []): array
+    {
+        // Obtention du token d'accès via le service d'authentification
+        $accessToken = $this->authService->getAccessToken();
+        // Log du token d'accès
+        $this->logger->info('Access token obtained', ['access_token' => $accessToken]);
+
+        foreach ($ids as $id) {
+            if (!is_int($id)) {
+                throw new InvalidArgumentException('All game IDs must be integers !');
+            }
+        }
+        
+        $idsString = implode(',', $ids);
+        
+        // Construction de la requête pour l'API IGDB
+        $queryString = "fields id,name,cover.image_id,slug; limit 500; where id = ($idsString);";
+        
+        // Envoi de la requête à l'API IGDB
+        $response = $this->httpClient->request('POST', 'https://api.igdb.com/v4/games', [
+            'headers' => [
+                'Client-ID' => $this->authService->getClientId(),
+                'Authorization' => 'Bearer ' . $accessToken,
+            ],
+            'body' => $queryString,
+        ]);
+        
+        // Traitement de la réponse de l'API
+        $statusCode = $response->getStatusCode();
+        $data = $response->toArray(false);
+        
+        // Vérification du statut de la réponse
+        if ($statusCode !== 200) {
+            // Log de l'erreur si le statut n'est pas 200
+            $this->logger->error('Failed to fetch game details', [
+                'status_code' => $statusCode,
+                'response' => $data,
+            ]);
+            // Lève une exception en cas d'échec
+            throw new Exception('Failed to fetch game details');
+        }
+    
         // Retourne les données obtenues
         return $data;
     }

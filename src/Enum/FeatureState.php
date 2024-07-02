@@ -6,7 +6,7 @@ enum FeatureState: string
 {
     case NOT_OPENED = 'Not opened';
     case PENDING = 'Pending';
-    case ACCEPTED = 'Processed';
+    case PROCESSED = 'Processed';
     case DENIED = 'Denied';
 
 }

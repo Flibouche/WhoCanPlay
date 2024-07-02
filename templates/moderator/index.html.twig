@@ -4,6 +4,8 @@
 
 {% block body %}
 
+{{ dump(features) }}
+
 <div class="m-auto grid">
     <div class="tab-section bg-gray-100 rounded-lg p-5 border-2 border-indigo-200 w-[1120px] min-h-[400px] backdrop-filter backdrop-blur-lg bg-opacity-40">
         <div class="flex flex-wrap gap-1">
@@ -33,11 +35,7 @@
                             {% set feature = featureData.feature %}
                             {% set game = featureData.gameApi %}
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
-                                        href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{
-                                        game.name
-                                        }}</a></th>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
                                 <td class="px-6 py-4">{{ feature.user }}</td>
                                 <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                 <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -127,9 +125,11 @@
                             {% set feature = featureData.feature %}
                             {% set game = featureData.gameApi %}
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
+                                {% if game is not null %}
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
                                         href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name
                                         }}</a></th>
+                                {% endif %}
                                 <td class="px-6 py-4">{{ feature.user }}</td>
                                 <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                 <td class="px-6 py-4">{{ feature.state.value }}</td>

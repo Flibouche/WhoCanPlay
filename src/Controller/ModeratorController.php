@@ -32,10 +32,23 @@ class ModeratorController extends AbstractController
     public function submissionsBox(FeatureRepository $featureRepository): Response
     {
         // Je définis les états que je veux récupérer
-        $states = [FeatureState::NOT_OPENED, FeatureState::PENDING, FeatureState::ACCEPTED, FeatureState::DENIED];
-
-        // J'utilise la méthode findFeaturesByStates pour récupérer les Features par état
+        $states = [FeatureState::NOT_OPENED, FeatureState::PENDING, FeatureState::PROCESSED, FeatureState::DENIED];
+        
+        // J'utilise la méthode findFeaturesByStates pour récupérer les Features par State
         $features = $featureRepository->findFeaturesByStates($states);
+        
+        // J'extrait les ID des jeux associés aux Features et j'enlève les doublons avec array_unique
+        // Je crée donc un tableau d'ID unique à partir des Features
+        $gameApiIds = array_unique(array_map(fn($feature) => $feature->getIdGameApi(), $features));
+        
+        // J'utilise le service pour obtenir les informations des jeux en utilisant les ID que j'ai récupéré plus haut
+        $gamesApiData = $this->igdbApiService->getGameByIds($gameApiIds);
+
+        // Je crée un nouveau tableau pour pouvoir indexer les jeux par leur ID correspondante grâce aux ID que j'ai récupéré de mon service 
+        $gamesApiDataById = [];
+        foreach ($gamesApiData as $game) {
+            $gamesApiDataById[$game['id']] = $game;
+        }
 
         // J'initialise un tableau vide pour stocker les Features avec les jeux associés
         $featuresGames = [
@@ -50,25 +63,25 @@ class ModeratorController extends AbstractController
             // Je récupère l'ID idGameApi à partir de $feature
             $idGameApi = $feature->getIdGameApi();
 
-            // J'utilise le service igdbApiService pour obtenir les informations du jeu en utilisant $idGameApi
-            $gameApi = $this->igdbApiService->getGameById($idGameApi);
-
             // Je détermine l'état du Feature pour le classer correctement
             // Utilisation de match plutôt que de switch pour rendre le code plus lisible
             $stateKey = match ($feature->getState()) {
                 FeatureState::NOT_OPENED => 'notOpened',
                 FeatureState::PENDING => 'pending',
-                FeatureState::ACCEPTED => 'processed',
+                FeatureState::PROCESSED => 'processed',
                 FeatureState::DENIED => 'denied',
                 default => null,
             };
-
+            
             // Vérification si $stateKey est différent de null
             if ($stateKey !== null) {
+                // JE récupère les informations du jeu à partir du tableau indexé que j'ai crée plus haut
+                $gameApi = $gamesApiDataById[$idGameApi] ?? null;
+                
                 // J'ajoute le Feature et les informations du jeu associé dans le tableau
                 $featuresGames[$stateKey][] = [
                     'feature' => $feature,
-                    'gameApi' => $gameApi ? $gameApi[0] : null, // On utilise le premier élément de $gameApi ou null s'il est vide
+                    'gameApi' => $gameApi,
                 ];
             } // TODO : gérer le cas où $stateKey est null
         }
@@ -140,10 +153,10 @@ class ModeratorController extends AbstractController
             $entityManager->beginTransaction();
 
             // Je change le State de mon objet Feature à ACCEPTED
-            $feature->setState(FeatureState::ACCEPTED);
+            $feature->setState(FeatureState::PROCESSED);
 
             // Je vérifie si le State de mon objet Feature a bien été changé en ACCEPTED
-            if ($feature->getState() == FeatureState::ACCEPTED) {
+            if ($feature->getState() == FeatureState::PROCESSED) {
                 // Je récupère ou je crée le jeu associé à l'IDGameApi de mon objet Feature
                 $game = $this->getOrCreateGame($entityManager, $feature->getIdGameApi());
 
@@ -225,7 +238,7 @@ class ModeratorController extends AbstractController
 
         // Je filtre les Features acceptées du jeu
         $acceptedFeatures = $game->getFeatures()->filter(function (Feature $feature) {
-            return $feature->getState() === FeatureState::ACCEPTED;
+            return $feature->getState() === FeatureState::PROCESSED;
         });
 
         // Si aucune fonctionnalité dans le State "ACCEPTED" n'est trouvée, le statut du jeu est mis à false, sinon à true
