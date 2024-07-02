@@ -50,25 +50,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $isVerified = false;
 
     /**
+     * @var Collection<int, Feature>
+     */
+    #[ORM\OneToMany(targetEntity: Feature::class, mappedBy: 'user')]
+    private Collection $features;
+
+    /**
      * @var Collection<int, Topic>
      */
-    #[ORM\OneToMany(targetEntity: Topic::class, mappedBy: 'User')]
+    #[ORM\OneToMany(targetEntity: Topic::class, mappedBy: 'user')]
     private Collection $topics;
 
     /**
      * @var Collection<int, Post>
      */
-    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'User')]
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user')]
     private Collection $posts;
 
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'User')]
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'user')]
     private Collection $images;
 
     public function __construct()
     {
+        $this->features = new ArrayCollection();
         $this->topics = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->images = new ArrayCollection();
@@ -212,6 +219,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // =======================================
     // ======== Region : COLLECTION(S) =======
     // =======================================
+
+    // =================== Features ===================
+
+    /**
+     * @return Collection<int, Subtype>
+     */
+    public function getFeatures(): Collection
+    {
+        return $this->features;
+    }
+
+    public function addFeature(Feature $feature): static
+    {
+        if (!$this->features->contains($feature)) {
+            $this->features->add($feature);
+            $feature->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubtype(Feature $feature): static
+    {
+        if ($this->features->removeElement($feature)) {
+            // set the owning side to null (unless already changed)
+            if ($feature->getUser() === $this) {
+                $feature->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 
     // =================== Topics ===================
 

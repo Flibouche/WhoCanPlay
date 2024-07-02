@@ -33,13 +33,13 @@ class Disability
     /**
      * @var Collection<int, Feature>
      */
-    #[ORM\OneToMany(targetEntity: Feature::class, mappedBy: 'Disability')]
+    #[ORM\OneToMany(targetEntity: Feature::class, mappedBy: 'disability')]
     private Collection $features;
 
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'Disability')]
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'disability')]
     private Collection $images;
 
     #endregion
