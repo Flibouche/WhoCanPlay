@@ -30,7 +30,7 @@
             <tbody>
                 {% for game in games %}
                 <tr>
-                    <th scope="row" class="flex items-center gap-5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_game', {'id': game.db.id}) }}"><img src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.api[0].cover.image_id }}.jpg" alt="">{{ game.api[0].name }}</a></th>
+                    <th scope="row" class="flex items-center gap-5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_game', {'id': game.db.id}) }}"><img src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.api.cover.image_id }}.jpg" alt="">{{ game.api.name }}</a></th>
                     <td class="px-6 py-4">TDDeveloper</td>
                     <td class="px-6 py-4">TDGenres</td>
                     <td class="px-6 py-4">TDPlatforms</td>

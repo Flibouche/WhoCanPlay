@@ -44,7 +44,7 @@ class ModeratorController extends AbstractController
         // J'utilise le service pour obtenir les informations des jeux en utilisant les ID que j'ai récupéré plus haut
         $gamesApiData = $this->igdbApiService->getGameByIds($gameApiIds);
 
-        // Je crée un nouveau tableau pour pouvoir indexer les jeux par leur ID correspondante grâce aux ID que j'ai récupéré de mon service 
+        // Je crée un nouveau tableau pour pouvoir indexer les jeux par leur ID correspondante grâce aux ID que j'ai récupérés du service 
         $gamesApiDataById = [];
         foreach ($gamesApiData as $game) {
             $gamesApiDataById[$game['id']] = $game;
@@ -75,7 +75,7 @@ class ModeratorController extends AbstractController
             
             // Vérification si $stateKey est différent de null
             if ($stateKey !== null) {
-                // JE récupère les informations du jeu à partir du tableau indexé que j'ai crée plus haut
+                // Je récupère les informations du jeu à partir du tableau indexé que j'ai crée plus haut
                 $gameApi = $gamesApiDataById[$idGameApi] ?? null;
                 
                 // J'ajoute le Feature et les informations du jeu associé dans le tableau
