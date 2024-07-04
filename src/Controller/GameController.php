@@ -103,9 +103,9 @@ class GameController extends AbstractController
     }
 
     #[Route('/forum/{id}/{slug}', name: 'forum_game')]
-    public function forum(?Game $game, Request $request, EntityManagerInterface $entityManager): Response
+    public function showforum(?Game $game, Request $request, EntityManagerInterface $entityManager): Response
     {
-
+        
         $user = $this->getUser();
 
         $topic = new Topic();
@@ -121,14 +121,13 @@ class GameController extends AbstractController
                 $topic->setUser($user);
 
                 $entityManager->persist($topic);
-                $entityManager->flush();              
-                
-                $entityManager->commit();              
+                $entityManager->flush();
+
+                $entityManager->commit();
             } catch (\Exception $e) {
                 $entityManager->rollback();
                 throw $e;
             }
-
         }
 
         return $this->render('game/forum.html.twig', [
@@ -138,4 +137,12 @@ class GameController extends AbstractController
         ]);
     }
 
+    #[Route('/forum/{id}/{slug}/{idTopic}', name: 'topic_game')]
+    public function showTopic(Topic $topic): Response
+    {
+
+        return $this->render('game/topic.html.twig', [
+            'topic' => $topic,
+        ]);
+    }
 }
