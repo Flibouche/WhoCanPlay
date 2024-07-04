@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\Topic;
+use App\Form\TopicType;
 use App\Service\IgdbApiService;
 use App\Repository\GameRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,28 +34,28 @@ class GameController extends AbstractController
         foreach ($activeGames as $game) {
             $gameApiIds[] = $game->getIdGameApi();
         }
-        
+
         // Avec mon nouveau tableau, je récupère les informations via le service de l'API en y passant mon tableau en argument
         $gamesApiData = $this->igdbApiService->getGameByIds($gameApiIds);
-        
+
         // Je crée un nouveau tableau pour pouvoir indexer les jeux par leur ID correspondante grâce aux ID que j'ai récupéré de mon service 
         $gamesApiDataById = [];
         foreach ($gamesApiData as $game) {
             $gamesApiDataById[$game['id']] = $game;
         }
-        
+
         // Je crée un tableau vide pour y stocker les informations combinées des jeux de ma BDD et des jeux de l'API
         $gamesApiInfo = [];
-        
+
         // Je vérifie si la liste des jeux actifs n'est pas vide
         if ($activeGames) {
             foreach ($activeGames as $gameDb) {
                 // Pour chaque jeu actif, je récupère l'idGameApi
                 $idGameApi = $gameDb->getIdGameApi();
-                
+
                 // Je récupère les informations du jeu à partir du tableau indexé que j'ai crée plus haut
                 $gameApi = $gamesApiDataById[$idGameApi] ?? null;
-                
+
                 // J'ajoute un tableau associatif à mon tableau $gamesApiInfo qui contient maintenant les informations combinées des jeux de ma BDD et des jeux de l'API
                 $gamesApiInfo[] = [
                     'db' => $gameDb,
@@ -69,7 +73,7 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/game/{id}', name: 'show_game')]
+    #[Route('/game/{id}/{slug}', name: 'show_game')]
     public function showGame(?Game $game, GameRepository $gameRepository): Response
     {
 
@@ -97,4 +101,41 @@ class GameController extends AbstractController
             'featuresByDisability' => $featuresByDisability,
         ]);
     }
+
+    #[Route('/forum/{id}/{slug}', name: 'forum_game')]
+    public function forum(?Game $game, Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $user = $this->getUser();
+
+        $topic = new Topic();
+        $form = $this->createForm(TopicType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $entityManager->beginTransaction();
+
+                $topic = $form->getData();
+                $topic->setGame($game);
+                $topic->setUser($user);
+
+                $entityManager->persist($topic);
+                $entityManager->flush();              
+                
+                $entityManager->commit();              
+            } catch (\Exception $e) {
+                $entityManager->rollback();
+                throw $e;
+            }
+
+        }
+
+        return $this->render('game/forum.html.twig', [
+            'game' => $game,
+            'formAddTopic' => $form,
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
 }

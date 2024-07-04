@@ -6,6 +6,8 @@
 
 {{ dump(game) }}
 
+<a href="{{ path('forum_game', {'id': game.id, 'slug':game.slug}) }}">Forum</a>
+
 <h2>Infos de l'API : </h2>
 
 <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="">

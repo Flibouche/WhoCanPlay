@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApiController!{% endblock %}
+
+{% block body %}
+
+{{ dump(game) }}
+
+<section id="tab1" class="w-full">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table id="dataTable1" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Subject</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">By</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">NB</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Last MSG</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# {% if %} #}
+                {% for topic in game.topics %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ topic }}</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                </tr>
+                {% endfor %}
+                {# {% else %} #}
+                {# <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row"
+                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No topics
+                        found.</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                </tr> #}
+                {# {% endif %} #}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section>
+{{ form_start(formAddTopic) }}
+
+{{ form_row(formAddTopic.title) }}
+
+{{ form_row(formAddTopic.post) }}
+
+{{ form_row(formAddTopic.submit) }}
+
+{{ form_end(formAddTopic) }}
+</section>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
+<script>
+    $('#dataTable1').DataTable();
+    $('#dataTable2').DataTable();
+    $('#dataTable3').DataTable();
+    $('#dataTable4').DataTable();
+</script>
+
+{% endblock %}

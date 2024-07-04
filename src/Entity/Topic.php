@@ -29,7 +29,7 @@ class Topic
     private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column]
-    private ?bool $isLocked = null;
+    private ?bool $isLocked = false;
 
     #[ORM\ManyToOne(inversedBy: 'topics')]
     #[ORM\JoinColumn(nullable: false)]
@@ -50,6 +50,7 @@ class Topic
 
     public function __construct()
     {
+        $this->creationDate = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->posts = new ArrayCollection();
     }
 
@@ -199,6 +200,18 @@ class Topic
         }
 
         return $this;
+    }
+
+    #endregion
+
+    #region MAGIC(S) METHOD(S)
+    // =======================================
+    // ===== Region : MAGIC(S) METHOD(S) =====
+    // =======================================
+
+    public function __toString(): String
+    {
+        return $this->title;
     }
 
     #endregion

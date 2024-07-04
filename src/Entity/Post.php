@@ -36,6 +36,11 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    public function __construct()
+    {
+        $this->publicationDate = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
     #endregion
 
     #region SIMPLE FIELDS
@@ -125,6 +130,18 @@ class Post
         $this->user = $user;
 
         return $this;
+    }
+
+    #endregion
+
+    #region MAGIC(S) METHOD(S)
+    // =======================================
+    // ===== Region : MAGIC(S) METHOD(S) =====
+    // =======================================
+
+    public function __toString(): String
+    {
+        return $this->content;
     }
 
     #endregion
