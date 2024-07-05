@@ -6,37 +6,51 @@
 
 {{ dump(game) }}
 
-<a href="{{ path('forum_game', {'id': game.id, 'slug':game.slug}) }}">Forum</a>
+<div class="flex flex-row flex-wrap w-full gap-[20px]">
 
-<h2>Infos de l'API : </h2>
+    <section id="primary" class="bg-red-500 basis-0 min-w-[70%] max-w-[50rem]">
+        
+        <a href="{{ path('forum_game', {'id': game.id, 'slug':game.slug}) }}">Forum</a>
+        
+        <h2>Infos de l'API : </h2>
+        
+        <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="">
+        
+        <p>Nom : {{ gameApi[0]["name"] }}</p>
+        
+        {% for genre in gameApi[0].genres %}
+        <p>Genres : {{ genre.name }}</p>
+        {% endfor %}
+        
+        <h2>Infos de ma BDD :</h2>
+        
+        {# Boucle pour récupérer et trier les features par disabililty sans doublons #}
+        {% for disability, features in featuresByDisability %}
+        
+        <h2>{{ disability }}</h2>
+        
+        {% for feature in features %}
+        
+        <div>
+            <h3>{{ feature.featureName }}</h3>
+        </div>
+        
+        <div>
+            {{ feature.content }}
+        </div>
+        
+        {% endfor %}
+        
+        {% endfor %}
+        
+    </section>
+    
+    <section id="secondary" class="bg-blue-500 basis-3/12">
+        <div>
+            <p>Test</p>
+        </div>
+    </section>
 
-<img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="">
-
-<p>Nom : {{ gameApi[0]["name"] }}</p>
-
-{% for genre in gameApi[0].genres %}
-<p>Genres : {{ genre.name }}</p>
-{% endfor %}
-
-<h2>Infos de ma BDD :</h2>
-
-{# Boucle pour récupérer et trier les features par disabililty sans doublons #}
-{% for disability, features in featuresByDisability %}
-
-    <h2>{{ disability }}</h2>
-
-    {% for feature in features %}
-
-    <div>
-        <h3>{{ feature.featureName }}</h3>
-    </div>
-
-    <div>
-        {{ feature.content }}
-    </div>
-
-    {% endfor %}
-
-{% endfor %}
+</div>
 
 {% endblock %}
