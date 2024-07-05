@@ -4,210 +4,225 @@
 
 {% block body %}
 
-{{ dump(features) }}
-
-<div class="m-auto grid">
-    <div class="tab-section bg-gray-100 rounded-lg p-5 border-2 border-indigo-200 w-[1120px] min-h-[400px] backdrop-filter backdrop-blur-lg bg-opacity-40">
+<div class="grid">
+    <div
+        class="tab-section bg-gray-100 rounded-lg p-5 border-2 border-indigo-200 w-[1120px] backdrop-filter backdrop-blur-lg bg-opacity-40">
         <div class="flex flex-wrap gap-1">
-            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab1">Not Opened</button>
-            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab2">Pending</button>
-            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab3">Processed</button>
-            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab4">Denied</button>
+            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
+                data-tab-target="#tab1">Not Opened</button>
+            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
+                data-tab-target="#tab2">Pending</button>
+            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
+                data-tab-target="#tab3">Processed</button>
+            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
+                data-tab-target="#tab4">Denied</button>
         </div>
-
-            {# Not Opened Features #}
-            <section id="tab1" class="w-full tab-content hidden">
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table id="dataTable1" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">State</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if features.notOpened %}
-
-                            {% for featureData in features.notOpened %}
-                            {% set feature = featureData.feature %}
-                            {% set game = featureData.gameApi %}
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name }}</a></th>
-                                <td class="px-6 py-4">{{ feature.user }}</td>
-                                <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
-                                <td class="px-6 py-4">{{ feature.state.value }}</td>
-                                <td class="px-6 py-4"><img src="{{ feature.disability.icon }}"
-                                        alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}"
-                                        width="25" height="25"></td>
-                            </tr>
-                            {% endfor %}
-                            {% else %}
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
-                                    feature found.</th>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                            </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            {# Pending Features #}
-            <section id="tab2" class="w-full tab-content hidden">
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table id="dataTable2" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">State</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if features.pending %}
-
-                            {% for featureData in features.pending %}
-                            {% set feature = featureData.feature %}
-                            {% set game = featureData.gameApi %}
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
-                                        href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name
-                                        }}</a></th>
-                                <td class="px-6 py-4">{{ feature.user }}</td>
-                                <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
-                                <td class="px-6 py-4">{{ feature.state.value }}</td>
-                                <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}"
-                                        title="{{ feature.disability.name }}" width="25" height="25"></td>
-                            </tr>
-                            {% endfor %}
-                            {% else %}
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
-                                    feature found.</th>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                            </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            {# Accepted Features #}
-            <section id="tab3" class="w-full tab-content hidden">
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table id="dataTable3" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">State</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if features.processed %}
-
-                            {% for featureData in features.processed %}
-                            {% set feature = featureData.feature %}
-                            {% set game = featureData.gameApi %}
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                {% if game is not null %}
-                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
-                                        href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name
-                                        }}</a></th>
-                                {% endif %}
-                                <td class="px-6 py-4">{{ feature.user }}</td>
-                                <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
-                                <td class="px-6 py-4">{{ feature.state.value }}</td>
-                                <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}"
-                                        title="{{ feature.disability.name }}" width="25" height="25"></td>
-                            </tr>
-                            {% endfor %}
-                            {% else %}
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
-                                    feature found.</th>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                            </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            {# Denied Features #}
-            <section id="tab4" class="w-full tab-content hidden">
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table id="dataTable4" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]">State</th>
-                                <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if features.denied %}
-
-                            {% for featureData in features.denied %}
-                            {% set feature = featureData.feature %}
-                            {% set game = featureData.gameApi %}
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
-                                        href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name
-                                        }}</a></th>
-                                <td class="px-6 py-4">{{ feature.user }}</td>
-                                <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
-                                <td class="px-6 py-4">{{ feature.state.value }}</td>
-                                <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}"
-                                        title="{{ feature.disability.name }}" width="25" height="25"></td>
-                            </tr>
-                            {% endfor %}
-                            {% else %}
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
-                                    feature found.</th>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                                <td class="px-6 py-4"></td>
-                            </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+{# Not Opened Features #}
+<section id="tab1" class="w-full tab-content hidden">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table id="dataTable1" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            style="width:100%">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">State</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if features.notOpened %}
+
+                {% for featureData in features.notOpened %}
+                {% set feature = featureData.feature %}
+                {% set game = featureData.gameApi %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
+                            href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name
+                            }}</a></th>
+                    <td class="px-6 py-4">{{ feature.user }}</td>
+                    <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
+                    <td class="px-6 py-4">{{ feature.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}"
+                            title="{{ feature.disability.name }}" width="25" height="25"></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
+                        feature found.</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{# Pending Features #}
+<section id="tab2" class="w-full tab-content hidden">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table id="dataTable2" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            style="width:100%">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">State</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if features.pending %}
+
+                {% for featureData in features.pending %}
+                {% set feature = featureData.feature %}
+                {% set game = featureData.gameApi %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
+                            href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name
+                            }}</a></th>
+                    <td class="px-6 py-4">{{ feature.user }}</td>
+                    <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
+                    <td class="px-6 py-4">{{ feature.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}"
+                            title="{{ feature.disability.name }}" width="25" height="25"></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
+                        feature found.</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{# Accepted Features #}
+<section id="tab3" class="w-full tab-content hidden">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table id="dataTable3" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            style="width:100%">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">State</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if features.processed %}
+
+                {% for featureData in features.processed %}
+                {% set feature = featureData.feature %}
+                {% set game = featureData.gameApi %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    {% if game is not null %}
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
+                            href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name
+                            }}</a></th>
+                    {% endif %}
+                    <td class="px-6 py-4">{{ feature.user }}</td>
+                    <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
+                    <td class="px-6 py-4">{{ feature.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}"
+                            title="{{ feature.disability.name }}" width="25" height="25"></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
+                        feature found.</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{# Denied Features #}
+<section id="tab4" class="w-full tab-content hidden">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table id="dataTable4" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            style="width:100%">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Send by</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">Game in database</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]">State</th>
+                    <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if features.denied %}
+
+                {% for featureData in features.denied %}
+                {% set feature = featureData.feature %}
+                {% set game = featureData.gameApi %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a
+                            href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ game.name
+                            }}</a></th>
+                    <td class="px-6 py-4">{{ feature.user }}</td>
+                    <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
+                    <td class="px-6 py-4">{{ feature.state.value }}</td>
+                    <td class="px-6 py-4"><img src="{{ feature.disability.icon }}" alt="{{ feature.disability.name }}"
+                            title="{{ feature.disability.name }}" width="25" height="25"></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
+                        feature found.</th>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                    <td class="px-6 py-4"></td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script>
 <script>
-    $('#dataTable1').DataTable();
-    $('#dataTable2').DataTable();
-    $('#dataTable3').DataTable();
-    $('#dataTable4').DataTable();
+    $('#dataTable1').DataTable({
+        responsive: true
+    });
+    $('#dataTable2').DataTable({
+        responsive: true
+    });
+    $('#dataTable3').DataTable({
+        responsive: true
+    });
+    $('#dataTable4').DataTable({
+        responsive: true
+    });
 </script>
 
 <script>

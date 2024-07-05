@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="">
 
 <head>
     <meta charset="UTF-8">
@@ -14,16 +14,19 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     {# DATATABLES #}
     <link href="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css" type="text/css">
+
     {# MY CSS #}
     <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% endblock %}
 
 </head>
 
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen bg-stone-100 dark:bg-zinc-800">
 
-    <header class="w-full min-h-[75px] flex justify-center items-center border-b-2">
-        <nav class="w-full max-w-[1120px] flex justify-between items-center px-[10px]">
+    <header class="w-full min-h-[75px] flex justify-center items-center border-b-2 bg-stone-900">
+        <nav class="w-full max-w-[1120px] flex justify-between items-center px-[10px] text-white">
 
             <div id="navLogo" class="">
                 <a href="{{ path('app_home') }}">Logo WhoCanPlay</a>
@@ -76,7 +79,7 @@
         </div>
     </main>
 
-    <footer class="mt-auto w-full h-[300px] lg:h-[150px] flex justify-center bg-black text-white">
+    <footer class="mt-auto w-full h-[300px] lg:h-[150px] flex justify-center bg-stone-900 text-white">
         <div class="w-full max-w-[1120px] flex flex-col lg:flex-row justify-between items-center px-[10px] py-[20px] lg:py-0 gap-[50px] lg:gap-0">
             <div id="footer__legal" class="flex flex-col-reverse md:flex-row gap-2 items-center">
                 <p>&copy; 2024 WhoCanPlay</p>
@@ -102,8 +105,7 @@
     </footer>
 
     {% block javascripts %}
-        {# Jquery #}
-        
+        {# Jquery #}        
         {# TinyMCE #}
         <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
         <script defer>
