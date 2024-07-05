@@ -9,12 +9,23 @@
 <div class="flex flex-col md:flex-row w-full gap-[20px]">
 
     <section id="primary" class="bg-red-500 basis-0 min-w-[70%] max-w-[50rem]">
-        <div></div>
-        <figure class="">
-            <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="Cover of {{ gameApi[0]['name'] }}">
-        </figure>
-        
-        <p>Nom : {{ gameApi[0]["name"] }}</p>
+        <header>
+            <figure class="grid justify-center text-center">
+                <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="Cover of {{ gameApi[0]['name'] }}" class="rounded-lg">
+                <figcaption>
+                    <h2>{{ gameApi[0]["name"] }}</h2>
+                </figcaption>
+            </figure>
+        </header>
+
+        <article id="game__info">
+            <h3>
+                Developer : {% for developer in gameApi[0].involved_companies %}<span>{{ developer }}</span>{% endfor %}
+            </h3>
+        </article>
+
+        </div>
+        <h3>Dev</h3>
         
         {% for genre in gameApi[0].genres %}
         <p>Genres : {{ genre.name }}</p>
@@ -43,7 +54,7 @@
         
     </section>
     
-    <section id="secondary" class="hidden sm:block bg-blue-500 basis-0 min-w-[100%] md:min-w-[30%] md:basis-3/12">
+    <section id="secondary" class="bg-blue-500 basis-0 min-w-[100%] sm:min-w-[30%] sm:basis-3/12">
         <div>
             <a href="{{ path('forum_game', {'id': game.id, 'slug':game.slug}) }}">Forum</a>
         </div>
