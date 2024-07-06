@@ -1,59 +1,101 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ApiController!{% endblock %}
+{% block title %}{{ gameApi[0]["name"] }}{% endblock %}
 
 {% block body %}
 
+{{ dump(featuresByDisability) }}
 {{ dump(gameApi) }}
 
 <div class="flex flex-col md:flex-row w-full gap-[20px]">
 
-    <section id="primary" class="bg-red-500 basis-0 min-w-[70%] max-w-[50rem]">
-        <header>
-            <figure class="grid justify-center text-center">
-                <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="Cover of {{ gameApi[0]['name'] }}" class="rounded-lg">
-                <figcaption>
-                    <h2>{{ gameApi[0]["name"] }}</h2>
-                </figcaption>
-            </figure>
-        </header>
+    <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem]">
+        <article class="bg-red-500">
+            <header>
+                <figure class="grid justify-center text-center">
+                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg"
+                        alt="Cover of {{ gameApi[0]['name'] }}" class="rounded-lg">
+                    <figcaption>
+                        <h2>{{ gameApi[0]["name"] }}</h2>
+                    </figcaption>
+                </figure>
+            </header>
 
-        <article id="game__info">
-            <h3>
-                Developer : {% for developer in gameApi[0].involved_companies %}<span>{{ developer.company.name }} </span>{% endfor %}
-            </h3>
+            <article id="game__info">
+                <h3>
+                    Developer : {% for developer in gameApi[0].involved_companies %}<span>{{ developer.company.name }}
+                    </span>{% endfor %}
+                </h3>
+                <h3>
+                    Genres : {% for genre in gameApi[0].genres %}<span>{{ genre.name }} </span>{% endfor %}
+                </h3>
+                <h3>
+                    Platforms : {% for platform in gameApi[0].platforms %}<span>{{ platform.name }} </span>{% endfor %}
+                </h3>
+                <h3>
+                    Disabilities : {% for disability in featuresByDisability %}<img src="{{ asset(disability[0].icon) }}" alt="{{ disability[0].disabilityName }}" title="{{ disability[0].disabilityName }}" width="25" height="25"> {% endfor %}
+                </h3>
+            </article>
         </article>
 
+        <div class="grid">
+            <div
+                class="tab-section bg-gray-100 rounded-lg p-5 border-2 border-indigo-200 basis-0 min-w-[70%] max-w-[50rem] backdrop-filter backdrop-blur-lg bg-opacity-40">
+                <div class="flex flex-wrap gap-1">
+                    <button
+                        class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
+                        data-tab-target="#tab1">Accessibility Features</button>
+                    <button
+                        class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
+                        data-tab-target="#tab2">Media</button>
+                    <button
+                        class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
+                        data-tab-target="#tab3">Related Content</button>
+                    <button
+                        class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
+                        data-tab-target="#tab4">Test</button>
+                </div>
+            </div>
         </div>
-        <h3>Dev</h3>
-        
-        {% for genre in gameApi[0].genres %}
-        <p>Genres : {{ genre.name }}</p>
-        {% endfor %}
-        
-        <h2>Infos de ma BDD :</h2>
-        
-        {# Boucle pour récupérer et trier les features par disabililty sans doublons #}
-        {% for disability, features in featuresByDisability %}
-        
-        <h2>{{ disability }}</h2>
-        
-        {% for feature in features %}
-        
-        <div>
-            <h3>{{ feature.featureName }}</h3>
+
+        <div id="tab1" class="w-full tab-content hidden">
+
+            {# Boucle pour récupérer et trier les features par disability sans doublons #}
+            {% for disability, features in featuresByDisability %}
+
+            <img src="{{ asset(features[0].icon) }}" alt="{{ features[0].disabilityName }}" title="{{ features[0].disabilityName }}" width="25" height="25">
+            <h2>{{ disability }}</h2>
+
+            {% for feature in features %}
+
+            <div>
+                <h3>{{ feature.featureName }}</h3>
+            </div>
+
+            <div>
+                {{ feature.content }}
+            </div>
+
+            {% endfor %}
+
+            {% endfor %}
+
         </div>
-        
-        <div>
-            {{ feature.content }}
+
+        <div id="tab2" class="w-full tab-content hidden">
+            <h2>Test 2</h2>
         </div>
-        
-        {% endfor %}
-        
-        {% endfor %}
-        
+
+        <div id="tab3" class="w-full tab-content hidden">
+            <h2>Test 3</h2>
+        </div>
+
+        <div id="tab4" class="w-full tab-content hidden">
+            <h2>Test 4</h2>
+        </div>
+
     </section>
-    
+
     <section id="secondary" class="bg-blue-500 basis-0 min-w-[100%] sm:min-w-[30%] sm:basis-3/12">
         <div>
             <a href="{{ path('forum_game', {'id': game.id, 'slug':game.slug}) }}">Forum</a>
@@ -61,5 +103,32 @@
     </section>
 
 </div>
+
+<script>
+    const tabs = document.querySelectorAll('[data-tab-target]');
+    const activeClass = 'bg-indigo-200';
+
+    // Je sélectionne la première tab par défaut
+    tabs[0].classList.add(activeClass);
+    document.querySelector('#tab1').classList.remove('hidden');
+
+    // J'ajoute un event listener à chaque tab
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetContent = document.querySelector(tab.dataset.tabTarget);
+            // console.log(targetContent)
+
+            // J'ajoute la class "hidden" à la div "tab-content"
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            // J'enlève la class "hidden" à la tab sur laquelle je clique
+            targetContent.classList.remove('hidden')
+
+            // J'enlève la classe active bg-indigo-200 de toutes les tabs
+            document.querySelectorAll('.bg-indigo-200').forEach(activeTab => activeTab.classList.remove(activeClass))
+            // J'ajoute la classe active à l'élément cliqué
+            tab.classList.add(activeClass)
+        })
+    })
+</script>
 
 {% endblock %}
