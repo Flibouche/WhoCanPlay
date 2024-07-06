@@ -4,7 +4,7 @@
 
 {% block body %}
 
-{{ dump(game) }}
+{{ dump(gameApi) }}
 
 <div class="flex flex-col md:flex-row w-full gap-[20px]">
 
@@ -20,7 +20,7 @@
 
         <article id="game__info">
             <h3>
-                Developer : {% for developer in gameApi[0].involved_companies %}<span>{{ developer }}</span>{% endfor %}
+                Developer : {% for developer in gameApi[0].involved_companies %}<span>{{ developer.company.name }} </span>{% endfor %}
             </h3>
         </article>
 

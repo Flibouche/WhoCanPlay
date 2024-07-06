@@ -71,10 +71,10 @@ class IgdbApiService
         $accessToken = $this->authService->getAccessToken();
         // Log du token d'accès
         $this->logger->info('Access token obtained', ['access_token' => $accessToken]);
-    
+
         // Construction de la requête pour l'API IGDB
         $queryString = "fields id,name,cover.image_id,slug; where id = $idGameApi;";
-    
+
         // Envoi de la requête à l'API IGDB
         $response = $this->httpClient->request('POST', 'https://api.igdb.com/v4/games', [
             'headers' => [
@@ -83,11 +83,11 @@ class IgdbApiService
             ],
             'body' => $queryString,
         ]);
-    
+
         // Traitement de la réponse de l'API
         $statusCode = $response->getStatusCode();
         $data = $response->toArray(false);
-    
+
         // Vérification du statut de la réponse
         if ($statusCode !== 200) {
             // Log de l'erreur si le statut n'est pas 200
@@ -98,7 +98,7 @@ class IgdbApiService
             // Lève une exception en cas d'échec
             throw new Exception('Failed to fetch game details');
         }
-    
+
         // Retourne les données obtenues
         return $data;
     }
@@ -120,7 +120,7 @@ class IgdbApiService
         $queryString = '';
 
         if ($gameId !== null) {
-            $queryString = "fields name,genres.name,platforms.name,screenshots.url,screenshots.image_id,cover.url,cover.image_id,involved_companies; where id = $gameId;";
+            $queryString = "fields name,genres.name,platforms.name,screenshots.url,screenshots.image_id,cover.url,cover.image_id,involved_companies.company.name; where id = $gameId;";
         } elseif ($gameName !== null) {
             $queryString = "fields *; where name ~ \"$gameName\";";
         }
@@ -137,7 +137,7 @@ class IgdbApiService
         // Traitement de la réponse de l'API
         $statusCode = $response->getStatusCode();
         $data = $response->toArray(false);
-
+        
         // Vérification du statut de la réponse
         if ($statusCode !== 200) {
             // Log de l'erreur si le statut n'est pas 200
@@ -165,12 +165,12 @@ class IgdbApiService
                 throw new InvalidArgumentException('All game IDs must be integers !');
             }
         }
-        
+
         $idsString = implode(',', $ids);
-        
+
         // Construction de la requête pour l'API IGDB
         $queryString = "fields id,name,cover.image_id,slug; limit 500; where id = ($idsString);";
-        
+
         // Envoi de la requête à l'API IGDB
         $response = $this->httpClient->request('POST', 'https://api.igdb.com/v4/games', [
             'headers' => [
@@ -179,11 +179,11 @@ class IgdbApiService
             ],
             'body' => $queryString,
         ]);
-        
+
         // Traitement de la réponse de l'API
         $statusCode = $response->getStatusCode();
         $data = $response->toArray(false);
-        
+
         // Vérification du statut de la réponse
         if ($statusCode !== 200) {
             // Log de l'erreur si le statut n'est pas 200
@@ -194,7 +194,7 @@ class IgdbApiService
             // Lève une exception en cas d'échec
             throw new Exception('Failed to fetch game details');
         }
-    
+
         // Retourne les données obtenues
         return $data;
     }
