@@ -134,7 +134,7 @@ class GameController extends AbstractController
                 $entityManager->commit();
 
                 $this->addFlash('success', 'Topic successfully created !');
-                return $this->redirectToRoute('show_topic', [
+                return $this->redirectToRoute('topic_game', [
                     'id' => $topic->getId(),
                     'slug' => $topic->getSlug()
                 ]);
