@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Entity\Post;
 use App\Entity\Topic;
+use App\Form\PostType;
 use App\Form\TopicType;
 use App\Service\IgdbApiService;
 use App\Repository\GameRepository;
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,7 +108,7 @@ class GameController extends AbstractController
     #[Route('/forum/{id}/{slug}', name: 'forum_game')]
     public function showforum(?Game $game, Request $request, EntityManagerInterface $entityManager): Response
     {
-        
+
         $user = $this->getUser();
 
         $topic = new Topic();
@@ -153,11 +155,46 @@ class GameController extends AbstractController
     }
 
     #[Route('/topic/{id}/{slug}', name: 'topic_game')]
-    public function showTopic(Topic $topic): Response
+    public function showTopic(?Topic $topic, PostRepository $postRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        $user = $this->getUser();
+
+        $posts = $postRepository->findBy(['topic' => $topic], ["publicationDate" => "ASC"]);
+
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $entityManager->beginTransaction();
+
+                $post = $form->getData();
+                $post->setUser($user);
+                $post->setTopic($topic);
+
+                $entityManager->persist($post);
+                $entityManager->flush();
+
+                $entityManager->commit();
+
+                $this->addFlash('success', 'Topic successfully created !');
+                return $this->redirectToRoute('topic_game', [
+                    'id' => $topic->getId(),
+                    'slug' => $topic->getSlug()
+                ]);
+            } catch (\Exception $e) {
+                $entityManager->rollback();
+                $this->addFlash('error', 'An error occurred !');
+                throw $e;
+            }
+        }
 
         return $this->render('game/topic.html.twig', [
             'topic' => $topic,
+            'posts' => $posts,
+            'formAddPost' => $form,
         ]);
     }
 }

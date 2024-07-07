@@ -4,6 +4,26 @@
 
 {% block body %}
 
-{# {{ dump(topic) }} #}
+{{ dump(posts) }}
+
+<h1>{{ topic.title }}</h1>
+
+{% for post in posts %}    
+<div id="post">
+    <p>Posted by : {{ post.user.pseudo }}</p>
+    <p>{{ post.publicationDate | date('d/m/Y H:i:s') }}</p>
+    <p>{{ post.content }}</p>
+</div>
+{% endfor %}
+
+<section>
+    {{ form_start(formAddPost) }}
+    
+    {{ form_row(formAddPost.content) }}
+    
+    {{ form_row(formAddPost.submit) }}
+    
+    {{ form_end(formAddPost) }}
+    </section>
 
 {% endblock %}
