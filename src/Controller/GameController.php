@@ -15,15 +15,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 
 class GameController extends AbstractController
 {
 
     private $igdbApiService;
+    private $htmlSanitizer;
 
-    public function __construct(IgdbApiService $igdbApiService)
+    public function __construct(IgdbApiService $igdbApiService, HtmlSanitizerInterface $htmlSanitizer)
     {
         $this->igdbApiService = $igdbApiService;
+        $this->htmlSanitizer = $htmlSanitizer;
     }
 
     #[Route('/game', name: 'app_game')]
@@ -125,7 +128,8 @@ class GameController extends AbstractController
 
                 $postData = $form->get('post')->getData();
                 $post = new Post();
-                $post->setContent($postData->getContent());
+                // ! Corriger problème avec le Sanitizer
+                $post->setContent($postData->getContent(), $this->htmlSanitizer);
                 $post->setUser($user);
                 $post->setTopic($topic);
 

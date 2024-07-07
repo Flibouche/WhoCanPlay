@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\PostRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -19,6 +21,11 @@ class Post
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/^(<(p|br|strong|em|u|h[1-6]|ul|ol|li)>.*<\/\2>)*$/',
+        message: 'The content contains unauthorized HTML tags.'
+    )]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
@@ -62,9 +69,9 @@ class Post
         return $this->content;
     }
 
-    public function setContent(string $content): static
+    public function setContent(string $content, HtmlSanitizerInterface $sanitizer): static
     {
-        $this->content = $content;
+        $this->content = $sanitizer->sanitize($content);
 
         return $this;
     }
