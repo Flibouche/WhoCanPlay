@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\Post;
 use App\Entity\Topic;
 use App\Form\TopicType;
 use App\Service\IgdbApiService;
@@ -109,7 +110,7 @@ class GameController extends AbstractController
         $user = $this->getUser();
 
         $topic = new Topic();
-        $form = $this->createForm(TopicType::class);
+        $form = $this->createForm(TopicType::class, $topic);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -120,12 +121,26 @@ class GameController extends AbstractController
                 $topic->setGame($game);
                 $topic->setUser($user);
 
+                $postData = $form->get('post')->getData();
+                $post = new Post();
+                $post->setContent($postData->getContent());
+                $post->setUser($user);
+                $post->setTopic($topic);
+
                 $entityManager->persist($topic);
+                $entityManager->persist($post);
                 $entityManager->flush();
 
                 $entityManager->commit();
+
+                $this->addFlash('success', 'Topic successfully created !');
+                return $this->redirectToRoute('show_topic', [
+                    'id' => $topic->getId(),
+                    'slug' => $topic->getSlug()
+                ]);
             } catch (\Exception $e) {
                 $entityManager->rollback();
+                $this->addFlash('error', 'An error occurred !');
                 throw $e;
             }
         }
@@ -137,7 +152,7 @@ class GameController extends AbstractController
         ]);
     }
 
-    #[Route('/forum/{id}/{slug}/{idTopic}', name: 'topic_game')]
+    #[Route('/topic/{id}/{slug}', name: 'topic_game')]
     public function showTopic(Topic $topic): Response
     {
 
