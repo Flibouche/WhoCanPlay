@@ -4,26 +4,38 @@
 
 {% block body %}
 
-{{ dump(posts) }}
+<article id="topic">
+    <header>
+        <h1>{{ topic.title }}</h1>
+    </header>
 
-<h1>{{ topic.title }}</h1>
-
-{% for post in posts %}    
-<div id="post">
-    <p>Posted by : {{ post.user.pseudo }}</p>
-    <p>{{ post.publicationDate | date('d/m/Y H:i:s') }}</p>
-    <p>{{ post.content }}</p>
-</div>
-{% endfor %}
-
-<section>
-    {{ form_start(formAddPost) }}
-    
-    {{ form_row(formAddPost.content) }}
-    
-    {{ form_row(formAddPost.submit) }}
-    
-    {{ form_end(formAddPost) }}
+    <section id="posts">
+        {% for post in posts %}
+        <article id="post">
+            <header>
+                <p id="username">{{ post.user.pseudo }}</p>
+                <time datetime="{{ post.publicationDate|date('c') }}">
+                    {{ post.publicationDate|date('d/m/y H:i:s') }}
+                </time>
+            </header>
+            <div id="post-content">
+                {# Utilisation de |raw pour afficher le contenu traité par un éditeur WYSIWYG #}
+                {# ! Attention à bien sécuriser le contenu pour éviter les failles XSS #}
+                {{ post.content|raw }}
+            </div>
+        </article>
+        {% endfor %}
     </section>
+
+    <section id="reply-form">
+        {{ form_start(formAddPost) }}
+
+        {{ form_row(formAddPost.content) }}
+
+        {{ form_row(formAddPost.submit) }}
+
+        {{ form_end(formAddPost) }}
+    </section>
+</article>
 
 {% endblock %}
