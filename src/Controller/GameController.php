@@ -174,8 +174,11 @@ class GameController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $entityManager->beginTransaction();
-
                 $post = $form->getData();
+
+                $sanitizedContent = $this->htmlSanitizer->sanitize($post->getContent());
+                $post->setContent($sanitizedContent);
+                
                 $post->setUser($user);
                 $post->setTopic($topic);
 

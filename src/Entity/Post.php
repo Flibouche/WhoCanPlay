@@ -23,7 +23,7 @@ class Post
 
     #[Assert\NotBlank]
     #[Assert\Regex(
-        pattern: '/^(<(p|br|strong|em|u|h[1-6]|ul|ol|li)>.*<\/\2>)*$/',
+        pattern: '/^[\s\S]*(<(p|br|strong|em|u|h[1-6]|ul|ol|li)[^>]*>[\s\S]*<\/\2>|<(br)[^>]*\/?>)*[\s\S]*$/',
         message: 'The content contains unauthorized HTML tags.'
     )]
     #[ORM\Column(type: Types::TEXT)]

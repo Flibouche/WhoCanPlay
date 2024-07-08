@@ -18,13 +18,7 @@ class TopicType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('post', PostType::class, [
-                'data_class' => Post::class,
                 'mapped' => false,
-            ])
-            ->add('submit', SubmitType::class, [
-                'attr' => [
-                    'class' => 'bg-red-500 px-3 py-1'
-                ]
             ])
         ;
     }
