@@ -128,8 +128,9 @@ class GameController extends AbstractController
 
                 $postData = $form->get('post')->getData();
                 $post = new Post();
-                // ! Corriger problème avec le Sanitizer
-                $post->setContent($postData->getContent(), $this->htmlSanitizer);
+                // Créer un service dédié pour le sanitizedContent ?
+                $sanitizedContent = $this->htmlSanitizer->sanitize($postData->getContent());
+                $post->setContent($sanitizedContent);
                 $post->setUser($user);
                 $post->setTopic($topic);
 

@@ -69,9 +69,9 @@ class Post
         return $this->content;
     }
 
-    public function setContent(string $content, HtmlSanitizerInterface $sanitizer): static
+    public function setContent(string $content): static
     {
-        $this->content = $sanitizer->sanitize($content);
+        $this->content = $content;
 
         return $this;
     }
