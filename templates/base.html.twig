@@ -26,13 +26,16 @@
 <body class="flex flex-col min-h-screen bg-stone-100 dark:bg-zinc-800">
 
     <header class="w-full min-h-[75px] flex justify-center items-center border-b-2 bg-stone-900">
-        <nav class="w-full max-w-[1120px] flex justify-between items-center px-[10px] text-white" aria-label="Site menu">
+        <nav class="w-full max-w-[1120px] flex justify-between items-center px-[10px] text-white"
+            aria-label="Site menu">
 
+            {# Nav Logo #}
             <div id="navLogo" class="">
                 <a href="{{ path('app_home') }}">Logo WhoCanPlay</a>
             </div>
 
-            <div id="navLinks" class="">
+            {# Nav Links #}
+            <div id="navLinks" class="hidden md:flex">
                 <a href="{{ path('app_home') }}">Home</a>
                 <a href="{{ path('app_game') }}">My DB</a>
                 {% if app.user %}
@@ -43,6 +46,7 @@
                 {% endif %}
             </div>
 
+            {# Nav Auth #}
             <div id="navAuth" class="hidden md:flex gap-[24px]">
                 {% if app.user %}
                 <a href="{{ path('app_logout') }}">Sign out</a>
@@ -54,7 +58,7 @@
             </div>
 
             {# Dark Mode #}
-            <div>
+            <div class="hidden md:flex">
                 <button id="toggle" class="h-12 w-12 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                     <svg class="fill-sky-600 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -67,22 +71,49 @@
                 </button>
             </div>
 
+            {# Mobile Menu Toggle #}
+            <div id="mobileMenu" class="md:hidden">
+                <button id="menuToggle" class="cursor-pointer">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
         </nav>
 
-        {# <div id="mobileMenu" class="">
+        {# Mobile Menu #}
+        <div id="mobileMenuContent"
+            class="md:hidden absolute top-0 left-0 w-full h-[100vh] bg-stone-900 z-50 transition-transform duration-300 transform translate-x-full">
+            <button id="closeMenu" class="absolute top-4 right-4 text-2xl text-white">&times;</button>
+            <nav class="flex flex-col items-center py-4 space-y-4 text-white">
+                <a href="{{ path('app_home') }}">Home</a>
+                <a href="{{ path('app_game') }}">My DB</a>
+                {% if app.user %}
+                <a href="{{ path('app_feature') }}">Make a submission</a>
+                {% endif %}
+                {% if is_granted('ROLE_MODERATOR') %}
+                <a href="{{ path('app_moderator') }}">Treatment</a>
+                {% endif %}
+                {% if app.user %}
+                <a href="{{ path('app_logout') }}">Sign out</a>
+                <a href="{{ path('app_user') }}">My Profile</a>
+                {% else %}
+                <a href="{{ path('app_login') }}">Sign in</a>
+                <a href="{{ path('app_register') }}">Sign up</a>
+                {% endif %}
 
-            <div class="md:hidden cursor-pointer">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-
-            <div class="md:hidden fixed top-0 right-0 w-full h-full bg-white z-50 transition-transform duration-300">
-                <button class="absolute top-4 right-4 text-2xl" id="">&times;</button>
-                <nav class="flex flex-col items-center mt-16 space-y-4">
-
-                </nav>
-            </div>
-
-        </div> #}
+                <div>
+                    <button id="toggleMobileMenu" class="h-12 w-12 rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg class="fill-sky-600 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                        <svg class="fill-yellow-500 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
 
     </header>
 
