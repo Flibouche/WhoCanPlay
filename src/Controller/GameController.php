@@ -178,7 +178,7 @@ class GameController extends AbstractController
 
                 $sanitizedContent = $this->htmlSanitizer->sanitize($post->getContent());
                 $post->setContent($sanitizedContent);
-                
+
                 $post->setUser($user);
                 $post->setTopic($topic);
 
@@ -204,5 +204,22 @@ class GameController extends AbstractController
             'posts' => $posts,
             'formAddPost' => $form,
         ]);
+    }
+
+    #[Route('/api/topic/{id}/edit', name: 'edit_post_game', methods: ["POST"])]
+    public function editPost(?Post $post, int $id, Request $request, PostRepository $postRepository, EntityManagerInterface $entityManager)
+    {
+        $requestData = json_decode($request->getContent(), true);
+        // dd($requestData);
+        $post = $postRepository->findOneById($requestData['id']);
+
+        $post->setContent($requestData['content']);
+        $post->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+
+        $entityManager->persist($post);
+        $entityManager->flush();
+
+        return $this->json(['success' => true, 'message'=> "Post edité"], 200);
+
     }
 }

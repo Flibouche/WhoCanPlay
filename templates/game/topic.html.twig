@@ -21,9 +21,22 @@
             <div id="post-content">
                 {# Utilisation de |raw pour afficher le contenu traité par un éditeur WYSIWYG #}
                 {# ! Attention à bien sécuriser le contenu pour éviter les failles XSS #}
-                {{ post.content|raw }}
+                {# chaque form sera recup avec postToEdit puis le form voulu sera selectionné avac la class qui utilise l'id #}
+                <form id="{{ post.id }}" class="postToEdit">
+                    <input class="post-content" value="{{ post.content|raw }}" type="text" disabled>
+                    <button class="edit-post" type="button" class="edit-post"><i class="fa-regular fa-pen-to-square"></i></button>
+                    <button type="submit"><i class="fa-solid fa-check"></i></button>
+                </form>
+                {% if post.updatedAt %}
+                    <p>Modifié le : {{ post.updatedAt|date('d/m/y H:i:s') }}</p>
+                {% endif %}
             </div>
         </article>
+
+        <br>
+        <br>
+        <br>
+
         {% endfor %}
     </section>
 
@@ -37,5 +50,10 @@
         {{ form_end(formAddPost) }}
     </section>
 </article>
+
+<script>
+
+</script>
+{# <script src="{{ asset('js/ajax.js') }}"></script> #}
 
 {% endblock %}
