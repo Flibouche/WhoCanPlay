@@ -5,9 +5,12 @@
 @font-face {
     font-family: "Luciole";
     src: url('/fonts/Visual_Impairment/LucioleFont/Luciole-Regular.ttf') format('truetype');
-    font-style: normal;
-    font-weight: 400;
-    font-stretch: 100;
+}
+
+@layer base {
+    * {
+        @apply font-luciole;
+    }
 }
 
 /* @font-face {

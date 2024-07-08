@@ -4,41 +4,46 @@
 
 {% block body %}
 
-{{ dump(featuresByDisability) }}
-{{ dump(gameApi) }}
+{# {{ dump(featuresByDisability) }}
+{{ dump(gameApi) }} #}
 
 <div class="flex flex-col md:flex-row w-full gap-[20px]">
 
     <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem]">
-        <article class="bg-red-500">
-            <header>
+        <article class="bg-neutral-200 dark:bg-neutral-800 flex flex-col sm:flex-row mb-5 rounded-xl pt-5 pb-5">
+            <header class="mx-5 mb-5 sm:mb-0 shrink-0">
                 <figure class="grid justify-center text-center">
                     <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg"
-                        alt="Cover of {{ gameApi[0]['name'] }}" class="rounded-lg">
-                    <figcaption>
-                        <h2>{{ gameApi[0]["name"] }}</h2>
-                    </figcaption>
+                        alt="Cover of {{ gameApi[0]['name'] }}" class="rounded-xl">
                 </figure>
             </header>
 
-            <article id="game__info">
-                <h3>
-                    Developer : {% for developer in gameApi[0].involved_companies %}<span>{{ developer.company.name }}
+            <div id="game__info" class="flex flex-col">
+                <h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5">
+                    {{ gameApi[0]["name"] }}
+                </h1>
+                <h2>
+                    <strong>Developer</strong> : {% for developer in gameApi[0].involved_companies %}<span>{{
+                        developer.company.name }}
                     </span>{% endfor %}
-                </h3>
-                <h3>
-                    Genres : {% for genre in gameApi[0].genres %}<span>{{ genre.name }} </span>{% endfor %}
-                </h3>
-                <h3>
-                    Platforms : {% for platform in gameApi[0].platforms %}<span>{{ platform.name }} </span>{% endfor %}
-                </h3>
-                <h3>
-                    Disabilities : {% for disability in featuresByDisability %}<img src="{{ asset(disability[0].icon) }}" alt="{{ disability[0].disabilityName }}" title="{{ disability[0].disabilityName }}" width="25" height="25"> {% endfor %}
-                </h3>
-            </article>
+                </h2>
+                <h2>
+                    <strong>Genres</strong> : {% for genre in gameApi[0].genres %}<span>{{ genre.name }} </span>{%
+                    endfor %}
+                </h2>
+                <h2>
+                    <strong>Platforms</strong> : {% for platform in gameApi[0].platforms %}<span>{{ platform.name }}
+                    </span>{% endfor %}
+                </h2>
+                <h2 class="flex gap-3">
+                    <strong>Disabilities</strong> : {% for disability in featuresByDisability %}<img
+                        src="{{ asset(disability[0].icon) }}" alt="{{ disability[0].disabilityName }}"
+                        title="{{ disability[0].disabilityName }}" width="25" height="25"> {% endfor %}
+                </h2>
+            </div>
         </article>
 
-        <div class="grid">
+        <nav class="grid" aria-label="Game Information Tabs">
             <div
                 class="tab-section bg-gray-100 rounded-lg p-5 border-2 border-indigo-200 basis-0 min-w-[70%] max-w-[50rem] backdrop-filter backdrop-blur-lg bg-opacity-40">
                 <div class="flex flex-wrap gap-1">
@@ -56,30 +61,32 @@
                         data-tab-target="#tab4">Test</button>
                 </div>
             </div>
-        </div>
+        </nav>
 
         <div id="tab1" class="w-full tab-content hidden">
-
             {# Boucle pour récupérer et trier les features par disability sans doublons #}
             {% for disability, features in featuresByDisability %}
+            <article id="disability">
+                <header class="flex gap-3 brd-purple mt-5">
+                    <img src="{{ asset(features[0].icon) }}" alt="{{ features[0].disabilityName }}"
+                        title="{{ features[0].disabilityName }}" width="25" height="25">
+                    <h2 class="text-2xl">{{ disability }}</h2>
+                </header>
 
-            <img src="{{ asset(features[0].icon) }}" alt="{{ features[0].disabilityName }}" title="{{ features[0].disabilityName }}" width="25" height="25">
-            <h2>{{ disability }}</h2>
+                <hr class="my-3 border-t-2 border-red-500 w-full" />
 
-            {% for feature in features %}
-
-            <div>
-                <h3>{{ feature.featureName }}</h3>
-            </div>
-
-            <div>
-                {{ feature.content }}
-            </div>
-
+                <ul id="feature-list">
+                    {% for feature in features %}
+                    <li id="feature" class="mb-5">
+                        <h3 class="text-xl pb-2">{{ feature.featureName }}</h3>
+                        <div id="feature-content">
+                            {{ feature.content }}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </article>
             {% endfor %}
-
-            {% endfor %}
-
         </div>
 
         <div id="tab2" class="w-full tab-content hidden">
@@ -93,15 +100,13 @@
         <div id="tab4" class="w-full tab-content hidden">
             <h2>Test 4</h2>
         </div>
-
     </section>
 
-    <section id="secondary" class="bg-blue-500 basis-0 min-w-[100%] sm:min-w-[30%] sm:basis-3/12">
+    <aside id="secondary" class="bg-blue-500 basis-0 min-w-[100%] sm:min-w-[30%] sm:basis-3/12">
         <div>
             <a href="{{ path('forum_game', {'id': game.id, 'slug':game.slug}) }}">Forum</a>
         </div>
-    </section>
-
+    </aside>
 </div>
 
 <script>
