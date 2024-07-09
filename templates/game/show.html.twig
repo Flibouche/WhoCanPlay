@@ -10,7 +10,7 @@
 <div class="flex flex-col md:flex-row w-full gap-[20px]">
 
     <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem]">
-        <article class="bg-neutral-200 dark:bg-neutral-800 flex flex-col sm:flex-row mb-5 rounded-xl pt-5 pb-5">
+        <article class="bg-neutral-200 dark:bg-neutral-800 flex flex-col sm:flex-row mb-5 rounded-xl py-5 text-black dark:text-white">
             <header class="mx-5 mb-5 sm:mb-0 shrink-0">
                 <figure class="grid justify-center text-center">
                     <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg"
@@ -18,8 +18,8 @@
                 </figure>
             </header>
 
-            <div id="game__info" class="flex flex-col">
-                <h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5">
+            <div id="game__info" class="flex flex-col pl-5 pr-5 sm:pl-0">
+                <h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5 text-indigo-800 dark:text-indigo-200">
                     {{ gameApi[0]["name"] }}
                 </h1>
                 <h2>
@@ -36,50 +36,39 @@
                     </span>{% endfor %}
                 </h2>
                 <h2 class="flex gap-3">
-                    <strong>Disabilities</strong> : {% for disability in featuresByDisability %}<img
-                        src="{{ asset(disability[0].icon) }}" alt="{{ disability[0].disabilityName }}"
-                        title="{{ disability[0].disabilityName }}" width="25" height="25"> {% endfor %}
+                    <strong>Disabilities</strong> : {% for disability in featuresByDisability %}<img src="{{ asset(disability[0].icon) }}" alt="{{ disability[0].disabilityName }}" title="{{ disability[0].disabilityName }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"> {% endfor %}
                 </h2>
             </div>
         </article>
 
         <nav class="grid" aria-label="Game Information Tabs">
-            <div
-                class="tab-section bg-gray-100 rounded-lg p-5 border-2 border-indigo-200 basis-0 min-w-[70%] max-w-[50rem] backdrop-filter backdrop-blur-lg bg-opacity-40">
+            <div class="tab-section bg-stone-100 dark:bg-zinc-700 rounded-lg p-5 border-2 border-indigo-800 dark:border-indigo-200 basis-0 min-w-[70%] max-w-[50rem] backdrop-filter backdrop-blur-lg bg-opacity-40">
                 <div class="flex flex-wrap gap-1">
-                    <button
-                        class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
-                        data-tab-target="#tab1">Accessibility Features</button>
-                    <button
-                        class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
-                        data-tab-target="#tab2">Media</button>
-                    <button
-                        class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
-                        data-tab-target="#tab3">Related Content</button>
-                    <button
-                        class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
-                        data-tab-target="#tab4">Test</button>
+                    <button class="p-4 rounded-lg dark:text-white font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab1">Accessibility Features</button>
+                    <button class="p-4 rounded-lg dark:text-white font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab2">Media</button>
+                    <button class="p-4 rounded-lg dark:text-white font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab3">Related Content</button>
+                    <button class="p-4 rounded-lg dark:text-white font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab4">Test</button>
                 </div>
             </div>
         </nav>
 
-        <div id="tab1" class="w-full tab-content hidden">
+        <div id="tab1" class="w-full tab-content hidden px-5 bg-neutral-200 dark:bg-neutral-800 mt-5 py-5 rounded-xl">
             {# Boucle pour récupérer et trier les features par disability sans doublons #}
             {% for disability, features in featuresByDisability %}
             <article id="disability">
                 <header class="flex gap-3 brd-purple mt-5">
                     <img src="{{ asset(features[0].icon) }}" alt="{{ features[0].disabilityName }}"
-                        title="{{ features[0].disabilityName }}" width="25" height="25">
-                    <h2 class="text-2xl">{{ disability }}</h2>
+                        title="{{ features[0].disabilityName }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+                    <h2 class="text-2xl dark:text-white">{{ disability }}</h2>
                 </header>
 
-                <hr class="my-3 border-t-2 border-red-500 w-full" />
+                <hr class="my-3 border-t-2 w-full border-yellow-800 dark:border-yellow-200" />
 
                 <ul id="feature-list">
                     {% for feature in features %}
                     <li id="feature" class="mb-5">
-                        <h3 class="text-xl pb-2">{{ feature.featureName }}</h3>
-                        <div id="feature-content">
+                        <h3 class="text-xl pb-2 dark:text-white">{{ feature.featureName }}</h3>
+                        <div id="feature-content" class="dark:text-white">
                             {{ feature.content }}
                         </div>
                     </li>
