@@ -9,4 +9,8 @@ enum FeatureState: string
     case PROCESSED = 'Processed';
     case DENIED = 'Denied';
 
+    public static function toString(self $value): string
+    {
+        return $value->value;
+    }
 }

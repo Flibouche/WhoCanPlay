@@ -185,6 +185,11 @@ class Feature
         return $this;
     }
 
+    public function getStateAsString(): string
+    {
+        return $this->state->value;
+    }
+
     // =================== Submission Date ===================
 
     public function getSubmissionDate(): ?\DateTimeInterface
