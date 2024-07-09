@@ -27,7 +27,7 @@ class FeatureType extends AbstractType
                 ])
             ->add('name')
             ->add('content', TextareaType::class, [
-                // 'attr' => ['class' => 'tinymce'],
+                'attr' => ['class' => 'tinymce'],
             ])
             // ->add('state')
             // ->add('Game', EntityType::class, [

@@ -34,9 +34,9 @@
             </div>
 
             {# Nav Links #}
-            <div id="navLinks" class="hidden md:flex">
+            <div id="navLinks" class="hidden md:flex gap-5">
                 <a href="{{ path('app_home') }}">Home</a>
-                <a href="{{ path('app_game') }}">My DB</a>
+                <a href="{{ path('app_game') }}">Games</a>
                 {% if app.user %}
                 <a href="{{ path('app_feature') }}">Make a submission</a>
                 {% endif %}

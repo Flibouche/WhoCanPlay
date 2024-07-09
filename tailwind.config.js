@@ -8,6 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        'atkinson': ['Atkinson Hyperlegible', 'sans-serif'],
+        'raleway': ['Raleway', 'sans-serif'],
         'luciole': ['Luciole', 'sans-serif'],
       },
     },

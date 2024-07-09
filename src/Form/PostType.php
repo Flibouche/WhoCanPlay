@@ -14,10 +14,14 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content', TextareaType::class)
+            ->add('content', TextareaType::class, [
+                'attr' => [
+                    'class' => 'tinymce',
+                ]
+            ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'bg-red-500 px-3 py-1'
+                    'class' => 'bg-red-500 px-3 py-1',
                 ]
             ])
         ;

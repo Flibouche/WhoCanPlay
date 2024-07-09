@@ -2,16 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: "Luciole";
-    src: url('/fonts/Visual_Impairment/LucioleFont/Luciole-Regular.ttf') format('truetype');
-}
+/* Atkinson Hyperlegible font */
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* Raleway font */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
 @layer base {
     * {
-        @apply font-luciole;
+        font-family: 'Atkinson Hyperlegible', sans-serif;
     }
 }
+
+/* @font-face {
+    font-family: "Luciole";
+    src: url('/fonts/Visual_Impairment/LucioleFont/Luciole-Regular.ttf') format('truetype');
+} */
 
 /* @font-face {
     font-family: "Luciole Italic";
