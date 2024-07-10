@@ -7,17 +7,19 @@
 {# <div class="w-full max-w-[1120px] flex flex-col items-center justify-around gap-[30px] px-[10px] py-[20px]"> #}
 
     <div>
-        <h1 class="text-3xl dark:text-white font-raleway font-bold pr-3 pt-5">What is Who Can Play ?</h1>
+        <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3 pt-5">What is Who Can Play ?</h1>
         <hr class="my-3 w-[100%] border-t-2 border-yellow-800 dark:border-yellow-200" />
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, minima. Culpa vel
-            officiis quasi veniam commodi nam, architecto itaque dolores saepe assumenda veritatis eveniet, placeat
-            possimus quibusdam laudantium quae cupiditate.</p>
+        <div class="rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5 mt-5 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <p class="text-black dark:text-white pb-5"><strong>Who Can Play</strong> is an initiative born of an end-of-study project aimed at democratizing access to video games for people with disabilities. The project is based on a community platform whose very essence depends on the active involvement of <span class="underline"></span>its users</span>.</p>
+            <p class="text-black dark:text-white pb-5">At present, video game distribution platforms <span class="underline">do not</span> mention accessibility features in their product descriptions. It was to fill this gap that I developed this application, enabling users to contribute directly to improving accessibility.</p>
+            <p class="text-black dark:text-white">Know of an accessibility feature in a game ? Share it on <strong>Who Can Play</strong> ! Your contribution will enrich the database and highlight these essential features. Together, <strong>we can promote greater inclusion</strong> of people with disabilities in the gaming world.</p>
+        </div>
     </div>
 
     <div>
         <div class="flex justify-between items-end">
             <h2 class="text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Latest games added</h2>
-            <a href="{{ path('app_game') }}" class="">See All</a>
+            <a href="{{ path('app_game') }}" class="text-black dark:text-white">See All</a>
         </div>
         <hr class="my-3 w-[100%] border-t-2 border-yellow-800 dark:border-yellow-200" />
         <div id="game-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-5">
