@@ -109,7 +109,7 @@ class GameController extends AbstractController
     }
 
     #[Route('/forum/{id}/{slug}', name: 'forum_game')]
-    public function showforum(?Game $game, Request $request, EntityManagerInterface $entityManager): Response
+    public function showForum(?Game $game, Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $user = $this->getUser();
