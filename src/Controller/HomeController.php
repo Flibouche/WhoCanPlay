@@ -23,7 +23,7 @@ class HomeController extends AbstractController
 
     #[Route('/home', name: 'app_home')]
     #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
-    public function index(): Response
+    public function home(): Response
     {
         $gamesApiInfo = $this->showGames(3);
 
@@ -62,4 +62,59 @@ class HomeController extends AbstractController
             ];
         }, $activeGames);
     }
+
+    #[Route('/home/accessibility-statement', name: 'app_accessibility_statement')]
+    public function accessibilityStatement(): Response
+    {
+
+        return $this->render('home/accessibilityStatement.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+    #[Route('/home/contact', name: 'app_contact')]
+    public function contact(): Response
+    {
+
+        return $this->render('home/contact.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+    #[Route('/home/help', name: 'app_help')]
+    public function help(): Response
+    {
+
+        return $this->render('home/help.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+    #[Route('/home/privacy-policy', name: 'app_privacy_policy')]
+    public function privacyPolicy(): Response
+    {
+
+        return $this->render('home/privacyPolicy.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+    #[Route('/home/contact/site-map', name: 'app_sitemap')]
+    public function siteMap(): Response
+    {
+
+        return $this->render('home/siteMap.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
+    #[Route('/home/terms-and-conditions', name: 'app_terms_and_conditions')]
+    public function termsAndConditions(): Response
+    {
+
+        return $this->render('home/termsAndConditions.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
 }
