@@ -22,21 +22,23 @@ class TopicCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             AssociationField::new('game')
-            ->setFormTypeOptions([
-                'choice_label' => function ($game) {
-                    return sprintf('#%d - %s', $game->getId(), $game->getSlug());
-                },
-            ])
-            ->setCustomOption('widget', 'native')
-            ->setCustomOption('valueToString', function ($game) {
-                return $game ? sprintf('#%d - %s', $game->getId(), $game->getSlug()) : '';
-            })
-            ->formatValue(function ($value, $entity) {
-                $game = $entity->getGame();
-                return $game ? sprintf('#%d - %s', $game->getId(), $game->getSlug()) : '';
-            }),
+                ->setFormTypeOptions([
+                    'choice_label' => function ($game) {
+                        return sprintf('#%d - %s', $game->getId(), $game->getSlug());
+                    },
+                ])
+                ->setCustomOption('widget', 'native')
+                ->setCustomOption('valueToString', function ($game) {
+                    return $game ? sprintf('#%d - %s', $game->getId(), $game->getSlug()) : '';
+                })
+                ->formatValue(function ($value, $entity) {
+                    $game = $entity->getGame();
+                    return $game ? sprintf('#%d - %s', $game->getId(), $game->getSlug()) : '';
+                }),
             AssociationField::new('user'),
             TextField::new('title'),
+            // TODO : attribuer un post au topic crée
+            // TextEditorField::new('content'),
             BooleanField::new('isLocked'),
             TextField::new('slug')->hideOnForm(),
         ];

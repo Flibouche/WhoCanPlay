@@ -23,7 +23,12 @@ class PostCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             AssociationField::new('topic'),
             AssociationField::new('user'),
-            TextEditorField::new('content'),
+            // TODO : correctement supprimer les balises HTML à la création d'un Post
+            TextEditorField::new('content')
+                ->setFormTypeOption('attr', ['class' => 'ckeditor'])
+                ->formatValue(function ($value) {
+                    return strip_tags($value);
+                }),
             DateTimeField::new('publicationDate')->hideOnForm(),
             DateTimeField::new('updatedAt')->hideOnForm(),
         ];

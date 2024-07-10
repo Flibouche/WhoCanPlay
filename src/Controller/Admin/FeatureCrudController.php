@@ -42,7 +42,12 @@ class FeatureCrudController extends AbstractCrudController
             AssociationField::new('user'),
             IntegerField::new('idGameApi'),
             TextField::new('name'),
-            TextEditorField::new('content'),
+            // TODO : correctement supprimer les balises HTML à la création d'une Feature
+            TextEditorField::new('content')
+                ->setFormTypeOption('attr', ['class' => 'ckeditor'])
+                ->formatValue(function ($value) {
+                    return strip_tags($value);
+                }),
             ChoiceField::new('state')
                 ->setChoices(FeatureState::cases())
                 ->renderAsBadges()

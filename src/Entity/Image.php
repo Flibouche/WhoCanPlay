@@ -33,7 +33,7 @@ class Image
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $submission_date = null;
+    private ?\DateTimeInterface $submissionDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
@@ -49,6 +49,18 @@ class Image
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?User $user = null;
+
+    #endregion
+
+    #region CONSTRUCT
+    // =======================================
+    // ========== Region : CONSTRUCT =========
+    // =======================================
+
+    public function __construct()
+    {
+        $this->submissionDate = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
 
     #endregion
 
@@ -125,12 +137,12 @@ class Image
 
     public function getSubmissionDate(): ?\DateTimeInterface
     {
-        return $this->submission_date;
+        return $this->submissionDate;
     }
 
-    public function setSubmissionDate(\DateTimeInterface $submission_date): static
+    public function setSubmissionDate(\DateTimeInterface $submissionDate): static
     {
-        $this->submission_date = $submission_date;
+        $this->submissionDate = $submissionDate;
 
         return $this;
     }
