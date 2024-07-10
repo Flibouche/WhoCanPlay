@@ -13,60 +13,53 @@ class HomeController extends AbstractController
 {
 
     private $igdbApiService;
+    private $gameRepository;
 
-    public function __construct(IgdbApiService $igdbApiService)
+    public function __construct(IgdbApiService $igdbApiService, GameRepository $gameRepository)
     {
         $this->igdbApiService = $igdbApiService;
+        $this->gameRepository = $gameRepository;
     }
 
     #[Route('/home', name: 'app_home')]
     #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
-    public function index(GameRepository $gameRepository): Response
+    public function index(): Response
     {
-        // Je cherche directement les jeux ayant le status 1, soit les jeux actifs, je les range par ID la plus récente et je limite à 3
-        $activeGames = $gameRepository->findBy(['status' => 1], ['id' => 'DESC'], 3);
+        $gamesApiInfo = $this->showGames(3);
 
-        // Je crée un tableau vide pour y stocker les IdGameApi
-        $gameApiIds = [];
-        foreach ($activeGames as $game) {
-            $gameApiIds[] = $game->getIdGameApi();
-        }
-
-        // Avec mon nouveau tableau, je récupère les informations via le service de l'API en y passant mon tableau en argument
-        $gamesApiData = $this->igdbApiService->getGameByIds($gameApiIds);
-
-        // Je crée un nouveau tableau pour pouvoir indexer les jeux par leur ID correspondante grâce aux ID que j'ai récupéré de mon service 
-        $gamesApiDataById = [];
-        foreach ($gamesApiData as $game) {
-            $gamesApiDataById[$game['id']] = $game;
-        }
-
-        // Je crée un tableau vide pour y stocker les informations combinées des jeux de ma BDD et des jeux de l'API
-        $gamesApiInfo = [];
-
-        // Je vérifie si la liste des jeux actifs n'est pas vide
-        if ($activeGames) {
-            foreach ($activeGames as $gameDb) {
-                // Pour chaque jeu actif, je récupère l'idGameApi
-                $idGameApi = $gameDb->getIdGameApi();
-
-                // Je récupère les informations du jeu à partir du tableau indexé que j'ai crée plus haut
-                $gameApi = $gamesApiDataById[$idGameApi] ?? null;
-
-                // J'ajoute un tableau associatif à mon tableau $gamesApiInfo qui contient maintenant les informations combinées des jeux de ma BDD et des jeux de l'API
-                $gamesApiInfo[] = [
-                    'db' => $gameDb,
-                    'api' => $gameApi,
-                ];
-            }
-        } else {
-            // Si aucun jeu actif n'est trouvé, j'ajoute un message flash "No game found !"
-            $this->addFlash('warning', "No game found !");
-        }
-
-        return $this->render('home/index.html.twig', [
-            'games' => $gamesApiInfo,
+        return $this->render('home/home.html.twig', [
             'controller_name' => 'HomeController',
+            'games' => $gamesApiInfo,
         ]);
+    }
+
+    private function showGames(int $limit): array
+    {
+        // Je cherche directement les jeux ayant le statut 1 (actifs), les range par ID décroissante, et je limite les résultats selon le paramètre $limit
+        $activeGames = $this->gameRepository->findBy(['status' => 1], ['id' => 'DESC'], $limit);
+        
+        // Si je ne trouve aucun jeu actif, j'ajoute un message flash d'avertissement "No game found!" et retourne un tableau vide
+        if (empty($activeGames)) {
+            $this->addFlash('warning', "No game found!");
+            return [];
+        }
+    
+        // Je crée un tableau des ID de l'API de jeux en utilisant la méthode array_map pour extraire les ID de chaque jeu actif
+        $gameApiIds = array_map(fn($game) => $game->getIdGameApi(), $activeGames);
+        
+        // Je récupère les données des jeux depuis l'API IGDB en utilisant les ID que j'ai obtenus
+        $gamesApiData = $this->igdbApiService->getGameByIds($gameApiIds);
+        
+        // Je crée un tableau indexé par les ID des jeux pour faciliter l'accès aux données des jeux API
+        $gamesApiDataById = array_column($gamesApiData, null, 'id');
+    
+        // Je combine les données des jeux de ma base de données avec celles de l'API.
+        // Pour chaque jeu actif, je retourne un tableau associatif contenant les données de ma base de données et de l'API
+        return array_map(function($gameDb) use ($gamesApiDataById) {
+            return [
+                'db' => $gameDb,
+                'api' => $gamesApiDataById[$gameDb->getIdGameApi()] ?? null,
+            ];
+        }, $activeGames);
     }
 }
