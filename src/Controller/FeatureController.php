@@ -67,7 +67,6 @@ class FeatureController extends AbstractController
         ]);
     }
 
-    // Ajax method
     #[Route('/search', name: 'search_api_game')]
     public function search(Request $request): JsonResponse
     {

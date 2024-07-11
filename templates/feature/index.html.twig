@@ -4,32 +4,60 @@
 
 {% block body %}
 
-<h1>Submit an accessibility feature to a game</h1>
+<nav class="w-full flex text-sm" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+        <li class="inline-flex items-center">
+            <a href="{{ path('app_home') }}" class="inline-flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
+                <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                </svg>
+                Home
+            </a>
+        </li>
+        <li aria-current="Games">
+            <div class="flex items-center">
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                </svg>
+                <span class="ms-1 md:ms-2 text-black dark:text-white underline">Make a submission</span>
+            </div>
+        </li>
+    </ol>
+</nav>
 
-<div class="search-container relative w-[300px]">
-    <input type="search" id="search" placeholder="Search for a game" />
-    <div id="result"></div>
-</div>
+<h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5 text-black dark:text-white font-raleway font-bold">Submit an accessibility feature to a game</h1>
+
+    <div class="search-container relative flex flex-col w-[300px] md:w-[600px]">
+        <h2 class="font-bold">Game</h2>
+        <label for="search" class="text-black/80">Choose game <span class="text-red-500">*</span></label>
+        <input type="search" id="search" class="w-full px-5 py-4 text-black/80 rounded-lg mt-2" placeholder="Ex : Hollow Knight" required />
+        <div id="result"></div>
+    </div>
 
 {{ form_start(formSendFeatureToGame) }}
-    <div id="form" class="hidden">
+<div id="form" class="hidden">
         {{ form_row(formSendFeatureToGame.id_game_api) }}
-
-        <div class="row">
+        
+        <div class="relative flex flex-col w-[300px] md:w-[600px]">
+            <h2 class="font-bold">Disability category</h2>
             {{ form_row(formSendFeatureToGame.disability) }}
         </div>
         
-        <div class="row">
+        <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
+            <h2 class="font-bold">Feature title</h2>
             {{ form_row(formSendFeatureToGame.name) }}
         </div>
         
-        <div class="row">
+        <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
+            <h2 class="font-bold">Feature content</h2>
             {{ form_row(formSendFeatureToGame.content) }}
         </div>
-        
-        {{ form_row(formSendFeatureToGame.submit) }}
+
+        <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
+            {{ form_row(formSendFeatureToGame.submit) }}
+        </div>
     </div>
-{{ form_end(formSendFeatureToGame) }}
+    {{ form_end(formSendFeatureToGame) }}
 
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
@@ -76,7 +104,7 @@
             $('#search').val(selectedGame);
             $('#result').empty();
             $('#form').removeClass('hidden');
-            $('#form').addClass(' flex flex-col items-center justify-center p-12');
+            $('#form').addClass(' flex flex-col items-center justify-center');
             console.log("Selected game ID:", gameId);
 
             $('input[name="feature[id_game_api]"]').val(gameId);
