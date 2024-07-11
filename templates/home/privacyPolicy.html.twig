@@ -4,4 +4,158 @@
 
 {% block body %}
 
+<nav class="w-full flex text-sm" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+        <li class="inline-flex items-center">
+            <a href="{{ path('app_home') }}"
+                class="inline-flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
+                <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                </svg>
+                Home
+            </a>
+        </li>
+        <li aria-current="Games">
+            <div class="flex items-center">
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 9 4-4-4-4" />
+                </svg>
+                <span class="ms-1 md:ms-2 text-black dark:text-white underline">Privacy Policy</span>
+            </div>
+        </li>
+    </ol>
+</nav>
+
+<div>
+    <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3 pt-5">Privacy Policy</h1>
+    <hr class="my-3 w-[100%] border-t-2 border-yellow-800 dark:border-yellow-200" />
+    <div class="rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5 mt-5 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+        <div>
+            <p class="text-black dark:text-white pb-3">At Who Clan Play, accessible from https://whocanplay.com, one of our
+                main
+                priorities is the privacy of our
+                visitors. This Privacy Policy document contains types of information that is collected and recorded by
+                Who
+                Clan Play and how we use it.</p>
+
+            <p class="text-black dark:text-white pb-3">If you have additional questions or require more information about
+                our
+                Privacy Policy, do not hesitate to
+                contact us.</p>
+        </div>
+
+        <div class="my-3">
+            <h2 class="text-2xl text-black dark:text-white font-bold">Log Files</h2>
+
+            <p class="text-black dark:text-white pb-3">Who Clan Play follows a standard procedure of using log files. These
+                files log visitors when they visit
+                websites. All hosting companies do this and a part of hosting services' analytics. The information
+                collected
+                by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP),
+                date
+                and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any
+                information that is personally identifiable. The purpose of the information is for analyzing trends,
+                administering the site, tracking users' movement on the website, and gathering demographic information.
+                Our
+                Privacy Policy was created with the help of the <a
+                    href="https://www.privacypolicyonline.com/privacy-policy-generator/">Privacy Policy Generator</a>.
+            </p>
+        </div>
+
+        <div class="my-3">
+            <h2 class="text-2xl text-black dark:text-white font-bold">Cookies and Web Beacons</h2>
+
+            <p class="text-black dark:text-white pb-3">Like any other website, Who Clan Play uses "cookies". These cookies
+                are
+                used to store information including
+                visitors' preferences, and the pages on the website that the visitor accessed or visited. The
+                information is
+                used to optimize the users' experience by customizing our web page content based on visitors' browser
+                type
+                and/or other information.</p>
+
+            <p class="text-black dark:text-white pb-3">For more general information on cookies, please read <a
+                    href="https://www.privacypolicyonline.com/what-are-cookies/">the "Cookies" article from the Privacy
+                    Policy Generator</a>.</p>
+        </div>
+
+        <div class="my-3">
+            <h2 class="text-2xl text-black dark:text-white font-bold">Privacy Policies</h2>
+
+            <p class="text-black dark:text-white pb-3">You may consult this list to find the Privacy Policy for each of the
+                advertising partners of Who Clan Play.
+            </p>
+
+            <p class="text-black dark:text-white pb-3">Third-party ad servers or ad networks uses technologies like cookies,
+                JavaScript, or Web Beacons that are
+                used in their respective advertisements and links that appear on Who Clan Play, which are sent directly
+                to
+                users' browser. They automatically receive your IP address when this occurs. These technologies are used
+                to
+                measure the effectiveness of their advertising campaigns and/or to personalize the advertising content
+                that
+                you see on websites that you visit.</p>
+
+            <p class="text-black dark:text-white pb-3">Note that Who Clan Play has no access to or control over these
+                cookies
+                that are used by third-party
+                advertisers.</p>
+        </div>
+
+        <div class="my-3">
+            <h2 class="text-2xl text-black dark:text-white font-bold">Third Party Privacy Policies</h2>
+
+            <p class="text-black dark:text-white pb-3">Who Clan Play's Privacy Policy does not apply to other advertisers or
+                websites. Thus, we are advising you to
+                consult the respective Privacy Policies of these third-party ad servers for more detailed information.
+                It
+                may include their practices and instructions about how to opt-out of certain options. </p>
+
+            <p class="text-black dark:text-white pb-3">You can choose to disable cookies through your individual browser
+                options. To know more detailed information
+                about cookie management with specific web browsers, it can be found at the browsers' respective
+                websites.
+                What Are Cookies?</p>
+        </div>
+
+        <div class="my-3">
+            <h2 class="text-2xl text-black dark:text-white font-bold">Children's Information</h2>
+
+            <p class="text-black dark:text-white pb-3">Another part of our priority is adding protection for children while
+                using the internet. We encourage parents
+                and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
+
+            <p class="text-black dark:text-white pb-3">Who Clan Play does not knowingly collect any Personal Identifiable
+                Information from children under the age of
+                13. If you think that your child provided this kind of information on our website, we strongly encourage
+                you
+                to contact us immediately and we will do our best efforts to promptly remove such information from our
+                records.</p>
+        </div>
+
+        <div class="my-3">
+            <h2 class="text-2xl text-black dark:text-white font-bold">Online Privacy Policy Only</h2>
+
+            <p class="text-black dark:text-white pb-3">This Privacy Policy applies only to our online activities and is
+                valid
+                for visitors to our website with
+                regards to the information that they shared and/or collect in Who Clan Play. This policy is not
+                applicable
+                to any information collected offline or via channels other than this website.</p>
+        </div>
+
+        <div class="my-3">
+            <h2 class="text-2xl text-black dark:text-white font-bold">Consent</h2>
+
+            <p class="text-black dark:text-white pb-3">By using our website, you hereby consent to our Privacy Policy and
+                agree
+                to its Terms and Conditions.</p>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
