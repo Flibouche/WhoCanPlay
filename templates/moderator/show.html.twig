@@ -4,53 +4,114 @@
 
 {% block body %}
 
-{{ dump(feature) }}
+<nav class="w-full flex text-sm" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+        <li class="inline-flex items-center">
+            <a href="{{ path('app_home') }}" class="inline-flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
+                <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                </svg>
+                Home
+            </a>
+        </li>
+        <li>
+            <div class="flex items-center">
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                </svg>
+                <a href="{{ path('app_moderator') }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Feature submission</a>
+            </div>
+        </li>
+        <li aria-current="{{ gameApi[0]['name'] }}">
+            <div class="flex items-center">
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                </svg>
+                <span class="ms-1 md:ms-2 text-black dark:text-white underline">{{ feature }}</span>
+            </div>
+        </li>
+    </ol>
+</nav>
 
-<a href="{{ path('edit_feature_moderator', {'id': feature.id, 'slug': feature.slug}) }}"><i class="fa-solid fa-pen"></i></a>
-
-<h1>Request n°{{ feature.id }} :</h1>
-<h2>
-    {# Game {{ game.name }} #}
-    Diability category : {{ feature.disability.name }}
-</h2>
-<h3>From : {{ feature.user }} send the : {{ feature.submissionDate | date('d.m.Y \\a\\t H:i:s') }}</h3>
-<br>
-<br>
-
-<div>
-    <h4 id="test">Game</h4>
-    {# Game {{ game.name }} #}
-    <br>
-    <br>
-
-    <h4>Disability category</h4>
-    <img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="50" height="50">
-    {{ feature.disability }}
-    <br>
-    <br>
-
-    <h4>Feature title</h4>
-    {{ feature }}
-    <br>
-    <br>
-
-    <h4>Feature content</h4>
-    {{ feature.content }}
-    <br>
-    <br>
-
-    <h4>Content image</h4>
-
-    <div>
-        <form action="{{ path('validate_feature_moderator', {'id': feature.id, 'slug': feature.slug}) }}">
-            <input type="submit" name="Validate" id="validate" class="bg-green-500 px-3 py-1" value="Validate">
-        </form>
-
-        <form action="{{ path('deny_feature_moderator', {'id': feature.id, 'slug': feature.slug}) }}">
-            <input type="submit" name="Validate" id="validate" class="bg-red-500 px-3 py-1" value="Deny">
-        </form>
-        
+<div class="w-full rounded-xl bg-white dark:bg-neutral-800">
+    <div class="overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5">
+        <h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Request n°{{ feature.id }} :
+        </h1>
+        <div>
+            <h2>Game : {{ gameApi[0].name }}</h2>
+            <div class="flex gap-3">
+                <h3>Disability category : {{ feature.disability.name }}</h3>
+                <img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}"
+                    title="{{ feature.disability.name }}" width="25" height="25">
+            </div>
+            <div class="flex flex-col sm:flex-row justify-between">
+                <div class="flex">
+                    {# TODO : mettre l'image de profil #}
+                    <p>FROM {{ feature.user }}</p>
+                </div>
+                <div class="flex">
+                    <p>{{ feature.submissionDate | date('d.m.Y \\a\\t H:i:s') }}</p>
+                </div>
+            </div>
+        </div>
     </div>
+    <hr class="w-full border-t-2 border-yellow-800 dark:border-yellow-200" />
+
+    <div class="relative overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5">
+        {# TODO : faire la page edit #}
+        <a href="{{ path('edit_feature_moderator', {'id': feature.id, 'slug': feature.slug}) }}"
+            class="absolute top-0 right-0 mt-8 mr-8 sm:mt-8 sm:mr-8"><i class="fa-solid fa-pen"></i></a>
+        <h4>Game</h4>
+        <div class="flex">
+            <img src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ gameApi[0].cover.image_id }}.jpg" alt="">
+            <p>{{ gameApi[0].name }}</p>
+        </div>
+
+        <h4>Disability category</h4>
+        <div class="flex">
+            <img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}"
+                title="{{ feature.disability.name }}" width="25" height="25">
+            <p>{{ feature.disability.name }}</p>
+        </div>
+
+        <h4>Feature title</h4>
+        <div class="flex">
+            <img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}"
+                title="{{ feature.disability.name }}" width="25" height="25">
+            <p>{{ feature }}</p>
+        </div>
+
+        <h4>Feature content</h4>
+        <p>{{ feature.content }}</p>
+
+        <h4>Content image</h4>
+        {# TODO : mettre une image avec une description #}
+
+        <div class="flex justify-center gap-[20px] mb-3">
+            <form action="{{ path('validate_feature_moderator', {'id': feature.id, 'slug': feature.slug}) }}">
+                <button type="submit" class="text-white hover:text-black bg-green-500 hover:bg-inherit border border-green-500 px-10 py-3 cursor-pointer flex items-center rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 mr-2 fill-current">
+                        <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
+                    </svg>
+                    Validate
+                </button>
+            </form>
+
+            <form action="{{ path('deny_feature_moderator', {'id': feature.id, 'slug': feature.slug}) }}">
+                <button type="submit" class="text-black hover:text-white bg-inherit hover:bg-red-500 border border-red-500 px-10 py-3 cursor-pointer flex items-center rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-4 h-4 mr-2 fill-current">
+                        <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+                    </svg>
+                    Deny
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <dialog>
+        
+    </dialog>
+
 </div>
 
 {% endblock %}

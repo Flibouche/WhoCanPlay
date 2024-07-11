@@ -81,7 +81,7 @@
                             if (data.length > 0) {
                                 var list = $('<ul class="search-results absolute w-[100%] z-50 p-0 m-0 bg-red-200"></ul>');
                                 data.forEach(function (item) {
-                                    list.append('<li class="result-item p-[10px] cursor-pointer hover:bg-red-800" data-id="' + item.id + '">' + item.name + '</li>');
+                                    list.append('<li class="result-item p-[10px] cursor-pointer hover:bg-red-800" data-id="' + item.id + '">' + item.name + '<img src=`item.cover`>' + '</li>');
                                 });
                                 resultDiv.append(list);
                             } else {

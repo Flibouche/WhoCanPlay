@@ -106,8 +106,12 @@ class ModeratorController extends AbstractController
             $entityManager->flush();
         }
 
+        $idGameApi = $feature->getIdGameApi();
+        $gameApiData = $this->igdbApiService->getGameById($idGameApi);
+
         return $this->render('moderator/show.html.twig', [
             'feature' => $feature,
+            'gameApi' => $gameApiData,
         ]);
     }
 
@@ -129,7 +133,7 @@ class ModeratorController extends AbstractController
             return $this->redirectToRoute('app_moderator');
         }
 
-        return $this->render('feature/add.html.twig', [
+        return $this->render('feature/index.html.twig', [
             'formSendFeatureToGame' => $form,
             'edit' => $feature->getId(),
         ]);

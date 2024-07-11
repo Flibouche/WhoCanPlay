@@ -79,7 +79,8 @@ class FeatureController extends AbstractController
         $formattedGames = array_map(function($game) {
             return [
                 'id' => $game['id'],
-                'name' => $game['name']
+                'name' => $game['name'],
+                'cover' => $game['cover'],
             ];
         }, $games);
 
