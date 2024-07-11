@@ -31,7 +31,7 @@ class IgdbApiService
         $this->logger->info('Access token obtained', ['access_token' => $accessToken]);
 
         // Construction de la requête pour l'API IGDB
-        $queryString = "fields id,name; where category = 0 & version_parent = null; limit 20;";
+        $queryString = "fields id,name,cover.url,cover.image_id; where category = 0 & version_parent = null; limit 5;";
         if ($name) {
             $queryString = "search \"$name\"; " . $queryString;
         }
@@ -59,7 +59,7 @@ class IgdbApiService
             // Lève une exception en cas d'échec
             throw new Exception('Failed to fetch all games');
         }
-
+        
         // Retourne les données obtenues
         return $data;
     }

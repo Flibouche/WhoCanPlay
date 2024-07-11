@@ -24,70 +24,25 @@ class FeatureController extends AbstractController
     }
 
     #[Route('/feature', name: 'app_feature')]
-    public function index(): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('feature/index.html.twig', [
-            'controller_name' => 'FeatureController',
-        ]);
-    }
 
-    // Ajax method
-    // #[Route('/search', name: 'search_api_game')]
-    // public function search(Request $request): JsonResponse
-    // {
-    //     // Récupère la clé de recherche 'game' depuis la requête
-    //     $name = $request->query->get('game');
-
-    //     // Appel du service pour récupérer les jeux basés sur le nom
-    //     $games = $this->igdbApiService->getGames($name);
-
-    //     return new JsonResponse($games);
-
-    //     // Rendu du template 'api/search.html.twig' avec les données des jeux
-    //     // return $this->render('feature/search.html.twig', [
-    //     //     'games' => $games,
-    //     // ]);
-    // }
-
-    #[Route('/search/{name}', name: 'search_api_game')]
-    public function search(Request $request, $name = null): Response
-    {
-        // Récupère la clé de recherche 'game' depuis la requête
-        $name = $request->query->get('game');
-
-        // Appel du service pour récupérer les jeux basés sur le nom
-        $games = $this->igdbApiService->getGames($name);
-
-        // Rendu du template 'api/search.html.twig' avec les données des jeux
-        return $this->render('feature/search.html.twig', [
-            'games' => $games,
-        ]);
-    }
-
-    #[Route('/feature/add', name: 'add_feature')]
-    public function sendFeatureToTreatment(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        // Récupération de l'ID du jeu depuis les paramètres de requête
-        $idGameApi = $request->query->get('game');
-        
-        // Création d'une nouvelle instance de Feature
         $feature = new Feature();
-        
+
         // Je récupère l'User qui envoie la Feature en traitement
         $user = $this->getUser();
 
         // Création du formulaire en utilisant FeatureType comme formulaire de type
-        $form = $this->createForm(FeatureType::class);
+        $form = $this->createForm(FeatureType::class, $feature);
         $form->handleRequest($request);
-
+        
         // Vérification si le formulaire a été soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $idGameApi = $form->get('id_game_api')->getData();
+
             // Recherche du jeu correspondant à l'ID du jeu API dans la base de données
             $game = $entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
-
-            // Récupération des données soumises par le formulaire
-            $feature = $form->getData();
 
             // Si le jeu existe, on ajoute l'ID du jeu à la Feature
             if ($game) {
@@ -105,11 +60,30 @@ class FeatureController extends AbstractController
             // Redirection vers la page d'accueil après l'ajout du feature
             return $this->redirectToRoute('app_home');
         }
-
-        // Si le formulaire n'a pas été soumis ou n'est pas valide, affichage du formulaire
-        return $this->render('feature/add.html.twig', [
+        
+        return $this->render('feature/index.html.twig', [
+            'controller_name' => 'FeatureController',
             'formSendFeatureToGame' => $form,
-            'edit' => $feature->getId(),
         ]);
+    }
+
+    // Ajax method
+    #[Route('/search', name: 'search_api_game')]
+    public function search(Request $request): JsonResponse
+    {
+        // Récupère la clé de recherche 'game' depuis la requête
+        $name = $request->query->get('game');
+
+        // Appel du service pour récupérer les jeux basés sur le nom
+        $games = $this->igdbApiService->getGames($name);
+
+        $formattedGames = array_map(function($game) {
+            return [
+                'id' => $game['id'],
+                'name' => $game['name']
+            ];
+        }, $games);
+
+        return new JsonResponse($formattedGames);
     }
 }

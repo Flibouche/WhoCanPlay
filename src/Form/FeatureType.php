@@ -9,6 +9,7 @@ use App\Entity\Disability;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
@@ -20,14 +21,24 @@ class FeatureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // ->add('id_game_api', TextType::class)
-            ->add('Disability', EntityType::class, [
+            ->add('id_game_api', HiddenType::class)
+            ->add('disability', EntityType::class, [
                 'class' => Disability::class,
                 'choice_label' => 'name',
+                'attr' => [
+                    'class' => 'w-full px-5 py-4 text-gray-700 bg-gray-200 rounded'
+                ]
                 ])
-            ->add('name')
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'class' => 'w-full px-5 py-4 text-gray-700 bg-gray-200 rounded',
+                ]
+            ])
             ->add('content', TextareaType::class, [
-                'attr' => ['class' => 'tinymce'],
+                'attr' => [
+                    'class' => 'w-full px-5 py-4 text-gray-700 bg-gray-200 rounded',
+                    // 'attr' => ['class' => 'tinymce'],
+                ]
             ])
             // ->add('state')
             // ->add('Game', EntityType::class, [

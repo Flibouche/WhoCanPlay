@@ -4,18 +4,91 @@
 
 {% block body %}
 
-<form action="{{ path('search_api_game') }}" method="GET" enctype="multipart/form-data" id="search-form">   
-    <label for="search" class="sr-only">Search</label>
-    <div>
-        <input type="search" name="game" id="search"  placeholder="Search by name" required />
-        <div id="result"></div>
+<h1>Submit an accessibility feature to a game</h1>
+
+<div class="search-container relative w-[300px]">
+    <input type="search" id="search" placeholder="Search for a game" />
+    <div id="result"></div>
+</div>
+
+{{ form_start(formSendFeatureToGame) }}
+    <div id="form" class="hidden">
+        {{ form_row(formSendFeatureToGame.id_game_api) }}
+
+        <div class="row">
+            {{ form_row(formSendFeatureToGame.disability) }}
+        </div>
+        
+        <div class="row">
+            {{ form_row(formSendFeatureToGame.name) }}
+        </div>
+        
+        <div class="row">
+            {{ form_row(formSendFeatureToGame.content) }}
+        </div>
+        
+        {{ form_row(formSendFeatureToGame.submit) }}
     </div>
-    <button type="submit">
-        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-        </svg>
-        <span class="sr-only">Search</span>
-    </button>
-</form>
+{{ form_end(formSendFeatureToGame) }}
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        var searchTimeout;
+
+        $('#search').on('input', function () {
+            var query = $(this).val();
+            clearTimeout(searchTimeout);
+
+            if (query.length > 2) {
+                searchTimeout = setTimeout(function () {
+                    $.ajax({
+                        url: '{{ path("search_api_game") }}',
+                        type: 'GET',
+                        data: { game: query },
+                        success: function (data) {
+                            var resultDiv = $('#result');
+                            resultDiv.empty();
+
+                            if (data.length > 0) {
+                                var list = $('<ul class="search-results absolute w-[100%] z-50 p-0 m-0 bg-red-200"></ul>');
+                                data.forEach(function (item) {
+                                    list.append('<li class="result-item p-[10px] cursor-pointer hover:bg-red-800" data-id="' + item.id + '">' + item.name + '</li>');
+                                });
+                                resultDiv.append(list);
+                            } else {
+                                resultDiv.append('<div class="no-results">No results found</div>');
+                            }
+                        },
+                        error: function () {
+                            $('#result').html('<div class="no-results">An error occurred</div>');
+                        }
+                    });
+                }, 300);  // Délai de 300ms pour éviter trop de requêtes
+            } else {
+                $('#result').empty();
+            }
+        });
+
+        $(document).on('click', '.result-item', function () {
+            var selectedGame = $(this).text();
+            var gameId = $(this).data('id');
+            $('#search').val(selectedGame);
+            $('#result').empty();
+            $('#form').removeClass('hidden');
+            $('#form').addClass(' flex flex-col items-center justify-center p-12');
+            console.log("Selected game ID:", gameId);
+
+            $('input[name="feature[id_game_api]"]').val(gameId);
+        });
+
+        // Fermer les résultats si on clique en dehors
+        $(document).on('click', function (event) {
+            if (!$(event.target).closest('.search-container').length) {
+                $('#result').empty();
+            }
+        });
+    });
+</script>
 
 {% endblock %}
