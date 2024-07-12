@@ -42,7 +42,7 @@ class GameController extends AbstractController
         }
 
         // Avec mon nouveau tableau, je récupère les informations via le service de l'API en y passant mon tableau en argument
-        $gamesApiData = $this->igdbApiService->getGameByIds($gameApiIds);
+        $gamesApiData = $this->igdbApiService->getGameAndDetailsByIds($gameApiIds);
 
         // Je crée un nouveau tableau pour pouvoir indexer les jeux par leur ID correspondante grâce aux ID que j'ai récupéré de mon service 
         $gamesApiDataById = [];
