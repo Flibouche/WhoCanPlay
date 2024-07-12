@@ -4,6 +4,8 @@
 
 {% block body %}
 
+{{ dump(games) }}
+
 <nav class="w-full flex text-sm" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
         <li class="inline-flex items-center">
@@ -53,7 +55,13 @@
                     <td class="px-6 py-4">TDDeveloper</td>
                     <td class="px-6 py-4">TDGenres</td>
                     <td class="px-6 py-4">TDPlatforms</td>
-                    <td class="px-6 py-4">TDDisability</td>
+                    <td class="px-6 py-4">
+                        <div class="flex gap-1">
+                            {% for disability in game.uniqueDisabilities %}
+                                <img src="{{ disability.icon }}" alt="{{ disability }}'s icon" title="{{ disability }}" width="25" height="25">
+                            {% endfor %}
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

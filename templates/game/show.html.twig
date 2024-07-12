@@ -95,7 +95,7 @@
                     <li id="feature" class="mb-5">
                         <h3 class="text-xl pb-2 dark:text-white">{{ feature.featureName }}</h3>
                         <div id="feature-content" class="dark:text-white">
-                            {{ feature.content }}
+                            {{ feature.content|raw }}
                         </div>
                     </li>
                     {% endfor %}

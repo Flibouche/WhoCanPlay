@@ -62,10 +62,20 @@ class GameController extends AbstractController
                 // Je récupère les informations du jeu à partir du tableau indexé que j'ai crée plus haut
                 $gameApi = $gamesApiDataById[$idGameApi] ?? null;
 
+                // J'ajoute le traitement qui vas éviter d'afficher les Disabilities en double
+                $uniqueDisabilities = [];
+                foreach ($gameDb->getFeatures() as $feature) {
+                    $disability = $feature->getDisability();
+                    if (!isset($uniqueDisabilities[$disability->getId()])) {
+                        $uniqueDisabilities[$disability->getId()] = $disability;
+                    }
+                }
+
                 // J'ajoute un tableau associatif à mon tableau $gamesApiInfo qui contient maintenant les informations combinées des jeux de ma BDD et des jeux de l'API
                 $gamesApiInfo[] = [
                     'db' => $gameDb,
                     'api' => $gameApi,
+                    'uniqueDisabilities' => array_values($uniqueDisabilities),
                 ];
             }
         } else {
