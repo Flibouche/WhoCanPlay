@@ -27,7 +27,10 @@
 
 <section id="game" class="w-full">
 
-    <h1>Welcome to the accessibility gamelist</h1>
+    <div>
+        <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3">Welcome to the accessibility gamelist</h1>
+        <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+    </div>
 
     {% for flash_message in app.flashes('warning') %}
     <div class="alert alert-warning bg-red-500 text-center text-black rounded-lg px-8">
