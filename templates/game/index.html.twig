@@ -47,15 +47,55 @@
         {% endfor %}
     {% endfor %}
 
-    <div id="genres" class="mb-4">
+    <div id="genres" class="flex flex-row mb-1 items-center">
         {% for genreName in uniqueGenres %}
             <label for="{{ genreName }}">{{ genreName }}</label>
             <input id="{{ genreName }}" type="checkbox" name="genre" value="{{ genreName }}">
         {% endfor %}
     </div>
+    
+    <br>
+    <br>
+    <br>
+
+    {% set uniquePlatforms = [] %}
+    {% for game in games %}
+        {% for platform in game.api.platforms %}
+            {% if platform.name not in uniquePlatforms %}
+                {% set uniquePlatforms = uniquePlatforms|merge([platform.name]) %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <div id="platforms" class="flex flex-row mb-1 items-center">
+        {% for platformName in uniquePlatforms %}
+            <label for="{{ platformName }}">{{ platformName }}</label>
+            <input id="{{ platformName }}" type="checkbox" name="platform" value="{{ platformName }}">
+        {% endfor %}
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+    {% set uniqueDisabilities = [] %}
+    {% for game in games %}
+        {% for disability in game.uniqueDisabilities %}
+            {% if disability.name not in uniqueDisabilities %}
+                {% set uniqueDisabilities = uniqueDisabilities|merge([disability.name]) %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <div id="disabilities" class="flex flex-row mb-1 items-center">
+        {% for disabilityName in uniqueDisabilities %}
+            <label for="{{ disabilityName }}">{{ disabilityName }}</label>
+            <input id="{{ disabilityName }}" type="checkbox" name="disability" value="{{ disabilityName }}">
+        {% endfor %}
+    </div>
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table id="dataTable1" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table id="dataTable1" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" width="100%">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3 w-[35%]">Game</th>
@@ -68,11 +108,15 @@
             <tbody>
                 {% for game in games %}
                 <tr>
-                    <th scope="row" class="px-6 py4">
-                        <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}" class="flex flex-row items-center gap-5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <img src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.api.cover.image_id }}.jpg" alt="">
-                            <span>{{ game.api.name }}</span>
-                        </a>
+                    <th scope="row" class="px-6 py-4">
+                        <div class="flex flex-row items-center gap-5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <div class="flex-shrink-0">
+                                <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}"><img src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.api.cover.image_id }}.jpg" alt="" class="w-20 h-10 object-cover"></a>
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}"><p class="truncate">{{ game.api.name }}</p></a>
+                            </div>
+                        </div>
                     </th>
                     <td class="px-6 py-4">{% for developer in game.api.developers %} {{ developer }} {% endfor %}</td>
                     <td class="px-6 py-4">{% for genre in game.api.genres %} {{ genre.name }} {% endfor %}</td>
@@ -80,7 +124,7 @@
                     <td class="px-6 py-4">
                         <div class="flex gap-1">
                             {% for disability in game.uniqueDisabilities %}
-                                <img src="{{ disability.icon }}" alt="{{ disability }}'s icon" value="{{ disability }}" title="{{ disability }}" width="25" height="25">
+                                <img src="{{ disability.icon }}" alt="{{ disability }}'s icon" value="{{ disability }}" title="{{ disability }}" width="25" height="25" data-disability="{{ disability }}">
                             {% endfor %}
                         </div>
                     </td>
@@ -92,35 +136,73 @@
 
 </section>
 
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script>
 
 <script>
-    $(document).ready( function () {
+    // Je commence par vérifier si un genre est sélectionné
+    $(document).ready(function () {
         $.fn.dataTable.ext.search.push(
-            function( settings, searchData, index, rowData, counter ) {
-                var genres = $('input:checkbox[name="genre"]:checked').map(function() {
+            function (settings, searchData, index, rowData, counter) {
+                var selectedGenres = $('input:checkbox[name="genre"]:checked').map(function () {
                     return this.value;
                 }).get();
 
-                if (genres.length === 0) {
-                    return true;
-                }
-                
-                if (genres.indexOf(searchData[2]) !== -1) {
+                // Si aucun genre n'est sélectionné, je retourne true pour afficher toutes les lignes
+                if (selectedGenres.length === 0) {
                     return true;
                 }
 
-                return false;
+                // Ici, searchData[2] devrait contenir la liste des genres du jeu, séparés par une virgule, un espace, ou tout autre séparateur non ambigu
+                var gameGenres = searchData[2]; // Ajustez l'index selon votre structure de données
+
+                // Je vérifie si au moins un des genres sélectionnés est présent dans les genres du jeu
+                return selectedGenres.every(selectedGenre => gameGenres.includes(selectedGenre));
             }
         );
 
+        $.fn.dataTable.ext.search.push(
+            function (settings, searchData, index, rowData, counter) {
+                var selectedPlatforms = $('input:checkbox[name="platform"]:checked').map(function () {
+                    return this.value;
+                }).get();
+
+                if (selectedPlatforms.length === 0) {
+                    return true;
+                }
+
+                var gamePlatforms = searchData[3];
+
+                return selectedPlatforms.every(selectedPlatform => gamePlatforms.includes(selectedPlatform));
+            }
+        );
+
+        $.fn.dataTable.ext.search.push(
+            function (settings, searchData, index, rowData, counter) {
+                var selectedDisabilities = $('input:checkbox[name="disability"]:checked').map(function () {
+                    return this.value;
+                }).get();
+
+                if (selectedDisabilities.length === 0) {
+                    return true;
+                }
+
+                var $cell = $(table.cell(index, 4).node());
+                var gameDisabilities = $cell.find('img').map(function () {
+                    return $(this).data('disability');
+                }).get();
+
+                return selectedDisabilities.every(selectedDisability => gameDisabilities.includes(selectedDisability));
+            }
+        );
+
+        // J'initialise la table DataTable avec les options de responsive
         var table = $('#dataTable1').DataTable({
             responsive: true
         });
-        
+
+        // J'ajoute un écouteur d'événement sur les cases à cocher pour mettre à jour la table lorsqu'un genre est sélectionné ou désélectionné
         $('input:checkbox').on('change', function () {
             table.draw();
         });
