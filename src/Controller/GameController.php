@@ -220,7 +220,6 @@ class GameController extends AbstractController
     public function editPost(?Post $post, int $id, Request $request, PostRepository $postRepository, EntityManagerInterface $entityManager)
     {
         $requestData = json_decode($request->getContent(), true);
-        // dd($requestData);
         $post = $postRepository->findOneById($requestData['id']);
 
         $post->setContent($requestData['content']);
@@ -232,4 +231,5 @@ class GameController extends AbstractController
         return $this->json(['success' => true, 'message'=> "Post edité"], 200);
 
     }
+
 }

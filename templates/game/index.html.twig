@@ -38,8 +38,24 @@
     </div>
     {% endfor %}
 
+    {% set uniqueGenres = [] %}
+    {% for game in games %}
+        {% for genre in game.api.genres %}
+            {% if genre.name not in uniqueGenres %}
+                {% set uniqueGenres = uniqueGenres|merge([genre.name]) %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <div id="genres" class="mb-4">
+        {% for genreName in uniqueGenres %}
+            <label for="{{ genreName }}">{{ genreName }}</label>
+            <input id="{{ genreName }}" type="checkbox" name="genre" value="{{ genreName }}">
+        {% endfor %}
+    </div>
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table id="dataTable1" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3 w-[35%]">Game</th>
@@ -52,14 +68,19 @@
             <tbody>
                 {% for game in games %}
                 <tr>
-                    <th scope="row" class="flex items-center gap-5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}"><img src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.api.cover.image_id }}.jpg" alt="">{{ game.api.name }}</a></th>
+                    <th scope="row" class="px-6 py4">
+                        <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}" class="flex flex-row items-center gap-5 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <img src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.api.cover.image_id }}.jpg" alt="">
+                            <span>{{ game.api.name }}</span>
+                        </a>
+                    </th>
                     <td class="px-6 py-4">{% for developer in game.api.developers %} {{ developer }} {% endfor %}</td>
                     <td class="px-6 py-4">{% for genre in game.api.genres %} {{ genre.name }} {% endfor %}</td>
                     <td class="px-6 py-4">{% for platform in game.api.platforms %} {{ platform.name }} {% endfor %}</td>
                     <td class="px-6 py-4">
                         <div class="flex gap-1">
                             {% for disability in game.uniqueDisabilities %}
-                                <img src="{{ disability.icon }}" alt="{{ disability }}'s icon" title="{{ disability }}" width="25" height="25">
+                                <img src="{{ disability.icon }}" alt="{{ disability }}'s icon" value="{{ disability }}" title="{{ disability }}" width="25" height="25">
                             {% endfor %}
                         </div>
                     </td>
@@ -70,5 +91,40 @@
     </div>
 
 </section>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script>
+
+<script>
+    $(document).ready( function () {
+        $.fn.dataTable.ext.search.push(
+            function( settings, searchData, index, rowData, counter ) {
+                var genres = $('input:checkbox[name="genre"]:checked').map(function() {
+                    return this.value;
+                }).get();
+
+                if (genres.length === 0) {
+                    return true;
+                }
+                
+                if (genres.indexOf(searchData[2]) !== -1) {
+                    return true;
+                }
+
+                return false;
+            }
+        );
+
+        var table = $('#dataTable1').DataTable({
+            responsive: true
+        });
+        
+        $('input:checkbox').on('change', function () {
+            table.draw();
+        });
+    });
+</script>
 
 {% endblock %}

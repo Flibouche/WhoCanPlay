@@ -104,7 +104,7 @@ class IgdbApiService
     }
 
     // Méthode pour obtenir les détails d'un jeu par ID ou par nom
-    public function getGameDetails(string $gameId = null, string $gameName = null)
+    public function getGameDetails(string $gameId = null, string $gameName = null): array
     {
         // Vérification si l'un des paramètres est présent
         if ($gameId === null && $gameName === null) {
