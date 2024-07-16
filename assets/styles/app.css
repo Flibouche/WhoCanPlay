@@ -16,27 +16,19 @@
 
 @layer components {
     #dataTable1_wrapper {
-        @apply py-3 bg-white dark:bg-neutral-800;
+        @apply py-3 bg-white dark:bg-neutral-800 text-black dark:text-white;
     }
 
     #dt-length-0 {
         @apply ml-4 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1;
     }
 
-    label[for="dt-length-0"] {
-        @apply text-black dark:text-white;
-    }
-
-    label[for="dt-search-0"] {
-        @apply text-black dark:text-white;
-    }
-
     #dt-search-0 {
-        @apply mr-4 text-black dark:text-white;
+        @apply mr-4 text-black dark:text-white bg-white dark:bg-neutral-800;
     }
 
     #dataTable1_info {
-        @apply ml-4 text-black dark:text-white;
+        @apply ml-4;
     }
 }
 
