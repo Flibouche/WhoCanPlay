@@ -3,14 +3,40 @@
 @tailwind utilities;
 
 /* Atkinson Hyperlegible font */
-@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 /* Raleway font */
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 
 @layer base {
     * {
-        font-family: 'Atkinson Hyperlegible', sans-serif;
+        font-family: "Atkinson Hyperlegible", sans-serif;
+    }
+}
+
+@layer components {
+    #dataTable1_wrapper {
+        @apply py-3 bg-white dark:bg-neutral-800;
+    }
+
+    #dt-length-0 {
+        @apply ml-4 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1;
+    }
+
+    label[for="dt-length-0"] {
+        @apply text-black dark:text-white;
+    }
+
+    label[for="dt-search-0"] {
+        @apply text-black dark:text-white;
+    }
+
+    #dt-search-0 {
+        @apply mr-4 text-black dark:text-white;
+    }
+
+    #dataTable1_info {
+        @apply ml-4 text-black dark:text-white;
     }
 }
 
