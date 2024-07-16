@@ -26,17 +26,12 @@
 </nav>
 
 <div class="grid">
-    <div
-        class="tab-section bg-gray-100 rounded-lg p-5 border-2 border-indigo-200 w-[1120px] backdrop-filter backdrop-blur-lg bg-opacity-40">
+    <div class="tab-section bg-gray-100 rounded-lg p-5 border-2 border-indigo-200 w-[1120px] backdrop-filter backdrop-blur-lg bg-opacity-40">
         <div class="flex flex-wrap gap-1">
-            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
-                data-tab-target="#tab1">Not Opened</button>
-            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
-                data-tab-target="#tab2">Pending</button>
-            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
-                data-tab-target="#tab3">Processed</button>
-            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40"
-                data-tab-target="#tab4">Denied</button>
+            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab1">Not Opened</button>
+            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab2">Pending</button>
+            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab3">Processed</button>
+            <button class="p-4 rounded-lg text-gray-700 font-bold flex-grow w-50 hover:bg-gray-300 hover:opacity-40" data-tab-target="#tab4">Denied</button>
         </div>
     </div>
 </div>
@@ -254,7 +249,6 @@
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const targetContent = document.querySelector(tab.dataset.tabTarget);
-            // console.log(targetContent)
 
             // J'ajoute la class "hidden" à la div "tab-content"
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
