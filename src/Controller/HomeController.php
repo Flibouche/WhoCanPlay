@@ -72,7 +72,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/home/contact', name: 'app_contact')]
+    #[Route('/contact', name: 'app_contact')]
     public function contact(): Response
     {
 
@@ -81,7 +81,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/home/help', name: 'app_help')]
+    #[Route('/help', name: 'app_help')]
     public function help(): Response
     {
 
@@ -90,7 +90,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/home/privacy-policy', name: 'app_privacy_policy')]
+    #[Route('/privacy-policy', name: 'app_privacy_policy')]
     public function privacyPolicy(): Response
     {
 
@@ -99,7 +99,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/home/contact/site-map', name: 'app_sitemap')]
+    #[Route('/site-map', name: 'app_sitemap')]
     public function siteMap(): Response
     {
 
@@ -108,7 +108,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/home/terms-and-conditions', name: 'app_terms_and_conditions')]
+    #[Route('/terms-and-conditions', name: 'app_terms_and_conditions')]
     public function termsAndConditions(): Response
     {
 

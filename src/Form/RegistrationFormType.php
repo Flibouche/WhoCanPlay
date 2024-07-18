@@ -23,9 +23,6 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'required' => true,
-                'label_attr' => [
-                    'class' => 'block',
-                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Email must not be empty.'
@@ -39,14 +36,11 @@ class RegistrationFormType extends AbstractType
                         'max' => 255,
                         'minMessage' => 'Email must contain at least one character.',
                         'maxMessage' => 'Email cannot be longer that {{ limit }}.'
-                    ])
+                    ]),
                 ]
             ])
             ->add('pseudo', TextType::class, [
                 'required' => true,
-                'label_attr' => [
-                    'class' => 'block',
-                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Username must not be empty.'
@@ -67,7 +61,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field'],'label_attr' => ['class' => 'block'],],
+                'options' => ['attr' => ['class' => 'password-field'], 'label_attr' => ['class' => 'block'],],
                 'required' => true,
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
@@ -94,6 +88,14 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
+            ])
+
+
+            ->add('email_confirm', TextType::class, [
+                'mapped' => false,
+                'required' => false,
+                'attr' => ['style' => 'display:none !important', 'tabindex' => '-1', 'autocomplete' => 'off'],
+                'label' => false,
             ]);
     }
 
