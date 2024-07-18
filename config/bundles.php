@@ -15,5 +15,4 @@ return [
     Symfonycasts\TailwindBundle\SymfonycastsTailwindBundle::class => ['all' => true],
     SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
-    Symfony\UX\TogglePassword\TogglePasswordBundle::class => ['all' => true],
 ];
