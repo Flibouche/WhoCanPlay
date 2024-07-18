@@ -30,6 +30,11 @@ services:
             $clientSecret: '%env(TWITCH_CLIENT_SECRET)%'
             $logger: '@logger'
 
+    App\Security\Redirect404:
+        arguments: ['@router']
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
+
     # Example of a service definition:
     # App\Service\ExampleService:
     #     arguments:
