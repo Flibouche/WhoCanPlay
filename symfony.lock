@@ -266,6 +266,9 @@
             "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
         }
     },
+    "symfony/ux-toggle-password": {
+        "version": "v2.18.0"
+    },
     "symfony/validator": {
         "version": "7.1",
         "recipe": {

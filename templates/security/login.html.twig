@@ -14,7 +14,7 @@
             </div>
         {% endif %}
 
-        <div class="w-full rounded-lg md:mt-0 sm:max-w-md xl:p-0 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+        <div class="w-full sm:max-w-md rounded-lg bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
 
             <div class="p-6">
         
@@ -40,6 +40,8 @@
                 <button class="w-full my-2 text-white dark:text-black bg-indigo-800 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-800 dark:bg-indigo-200 dark:hover:bg-indigo-400 dark:focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
                     Sign in
                 </button>
+
+                <p class="text-sm font-light text-gray-500 dark:text-gray-400">Don't have an account ? <a href="{{ path('app_register') }}" class="font-medium text-indigo-800 hover:underline dark:text-indigo-200">Sign up</a></p>
 
             </div>
 
