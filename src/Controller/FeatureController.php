@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\Image;
 use App\Entity\Feature;
 use App\Form\FeatureType;
+use App\Service\ImageService;
 use App\Service\IgdbApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +26,7 @@ class FeatureController extends AbstractController
     }
 
     #[Route('/feature', name: 'app_feature')]
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, ImageService $imageService): Response
     {
 
         $feature = new Feature();
@@ -38,6 +40,23 @@ class FeatureController extends AbstractController
         
         // Vérification si le formulaire a été soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
+            // On récupère les images
+            $images = $form->get('images')->getData();
+
+            // On boucle sur les images
+            foreach($images as $image) {
+                // On définit le dossier de destination
+                $folder = 'features';
+
+                // On appelle le service d'ajout d'image
+                $file = $imageService->add($image, $folder, 300, 300);
+
+                $img = new Image();
+                $img->setUrl($file);
+                $img->setTitle('Test');
+                $img->setAltText('Test');
+                $feature->addImage($img);
+            }
 
             $idGameApi = $form->get('id_game_api')->getData();
 

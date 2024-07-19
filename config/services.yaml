@@ -4,6 +4,7 @@ parameters:
     # Exemple : 'locale': 'en'
     env(TWITCH_CLIENT_ID): '%env(string:TWITCH_CLIENT_ID)%'
     env(TWITCH_CLIENT_SECRET): '%env(string:TWITCH_CLIENT_SECRET)%'
+    images_directory: '%kernel.project_dir%/public/assets/uploads/'
 
 services:
     # Default configuration for services in *this* file

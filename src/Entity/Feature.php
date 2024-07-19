@@ -56,7 +56,7 @@ class Feature
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'feature')]
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'feature', cascade: ['persist'])]
     private Collection $images;
 
     #endregion
