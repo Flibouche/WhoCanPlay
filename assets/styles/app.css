@@ -15,19 +15,23 @@
 }
 
 @layer components {
-    #dataTable1_wrapper {
+    /* Appliquer à tous les wrappers de table */
+    [id^="dataTable"][id$="_wrapper"] {
         @apply py-3 bg-white dark:bg-neutral-800 text-black dark:text-white;
     }
 
-    #dt-length-0 {
+    /* Appliquer à tous les sélecteurs de longueur */
+    [id^="dt-length-"] {
         @apply ml-4 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1;
     }
 
-    #dt-search-0 {
+    /* Appliquer à tous les champs de recherche */
+    [id^="dt-search-"] {
         @apply mr-4 text-black dark:text-white bg-white dark:bg-neutral-800;
     }
 
-    #dataTable1_info {
+    /* Appliquer à toutes les infos de table */
+    [id^="dataTable"][id$="_info"] {
         @apply ml-4;
     }
 }
