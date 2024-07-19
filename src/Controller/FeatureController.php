@@ -26,10 +26,20 @@ class FeatureController extends AbstractController
     }
 
     #[Route('/feature', name: 'app_feature')]
-    public function index(Request $request, EntityManagerInterface $entityManager, ImageService $imageService): Response
+    #[Route('/feature/{id}/{slug}/edit', name: 'edit_feature')]
+    public function index(?Feature $feature, Request $request, EntityManagerInterface $entityManager, ImageService $imageService): Response
     {
 
-        $feature = new Feature();
+        $gameName = null;
+
+        if(!$feature) {
+            $feature = new Feature();
+        }
+
+        if ($feature && $feature->getIdGameApi()) {
+            $idGameApi = $feature->getIdGameApi();
+            $gameName = $this->igdbApiService->getGameById($idGameApi);
+        }
 
         // Je récupère l'User qui envoie la Feature en traitement
         $user = $this->getUser();
@@ -83,6 +93,8 @@ class FeatureController extends AbstractController
         return $this->render('feature/index.html.twig', [
             'controller_name' => 'FeatureController',
             'formSendFeatureToGame' => $form,
+            'edit' => $feature->getId(),
+            'game' => $gameName,
         ]);
     }
 
