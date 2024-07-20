@@ -55,6 +55,14 @@
         {{ form_row(formSendFeatureToGame.content) }}
     </div>
 
+    {# J'affiche les images si je suis en édition #}
+    {% for image in edit.images %}
+    <div class="flex">
+        <img src="{{ asset('assets/uploads/features/' ~ image.url ) }}" alt="">
+        <a href="{{ path('delete_image_feature', {'id': image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">Delete</a>
+    </div>
+    {% endfor %}
+
     <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
         {{ form_row(formSendFeatureToGame.images) }}
     </div>
@@ -178,6 +186,42 @@
                 $('#result').empty();
             }
         });
+    });
+</script>
+
+<script>
+    // J'attends que le DOM soit chargé
+    document.addEventListener('DOMContentLoaded', function () {
+        // Je récupère tous les liens qui ont un attribut data-delete
+        let links = document.querySelectorAll('[data-delete]');
+        // On boucle sur les liens
+        for (let link of links) {
+            // On met un écouteur d'événement
+            link.addEventListener('click', function (e) {
+                // On empêche la navigation
+                e.preventDefault();
+
+                // On demande confirmation
+                if (confirm('Are you sure you want to delete this image ?')) {
+                    // On envoie la requête Ajax
+                    fetch(this.getAttribute('href'), {
+                        method: 'DELETE',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ '_token': this.dataset.token })
+                    }).then(response => response.json())
+                    .then(data => {
+                        if(data.success) {
+                            this.parentElement.remove();
+                        } else {
+                            alert(data.error);
+                        }
+                    })
+                }
+            });
+        }
     });
 </script>
 

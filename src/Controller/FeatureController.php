@@ -93,9 +93,34 @@ class FeatureController extends AbstractController
         return $this->render('feature/index.html.twig', [
             'controller_name' => 'FeatureController',
             'formSendFeatureToGame' => $form,
-            'edit' => $feature->getId(),
+            'edit' => $feature,
             'game' => $gameName,
         ]);
+    }
+
+    #[Route('/delete/image/{id}', name: 'delete_image_feature', methods: ['DELETE'])]
+    public function deleteImage(Image $image, Request $request, EntityManagerInterface $entityManager, ImageService $imageService): JsonResponse
+    {
+        // Je récupère le contenu de la requête
+        $data = json_decode($request->getContent(), true);
+
+        if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])) {
+            // Le token csrf est valide
+            // Je récupère l'URL de l'image
+            $url = $image->getUrl();
+
+            if($imageService->delete($url, 'features', 300, 300)) {
+                // Je supprime l'image de la base de données
+                $entityManager->remove($image);
+                $entityManager->flush();
+
+                return new JsonResponse(['success' => true], 200);
+            }
+            // La suppression a échoué
+            return new JsonResponse(['error' => 'Delete failed'], 400);
+        }
+
+        return new JsonResponse(['error' => 'Invalid token'], 400);
     }
 
     #[Route('/search', name: 'search_api_game')]
