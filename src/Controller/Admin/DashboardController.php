@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Game;
 use App\Entity\Post;
+use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Topic;
 use App\Entity\Feature;
@@ -88,6 +89,12 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Actions', 'fas fa-bars')->setSubItems([
             MenuItem::linkToCrud('Create topic', 'fas fa-plus', Topic::class)->setAction(Crud::PAGE_NEW),
             MenuItem::linkToCrud('Show topic', 'fas fa-eye', Topic::class),
+        ]);
+
+        yield MenuItem::section('users');
+        yield MenuItem::subMenu('Actions', 'fas fa-bars')->setSubItems([
+            MenuItem::linkToCrud('Create topic', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('Show topic', 'fas fa-eye', User::class),
         ]);
     }
 }

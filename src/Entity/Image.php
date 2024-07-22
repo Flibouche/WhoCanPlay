@@ -235,4 +235,16 @@ class Image
     }
 
     #endregion
+
+    #region MAGIC(S) METHOD(S)
+    // =======================================
+    // ===== Region : MAGIC(S) METHOD(S) =====
+    // =======================================
+
+    public function __toString(): String
+    {
+        return $this->url;
+    }
+
+    #endregion
 }

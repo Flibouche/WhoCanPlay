@@ -25,7 +25,9 @@
     </ol>
 </nav>
 
-{% if edit %}
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+{% if currentRoute == 'edit_feature' %}
 
 <h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5 text-black dark:text-white font-raleway font-bold">Edit this feature : </h1>
 
