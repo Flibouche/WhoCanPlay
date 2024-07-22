@@ -9,7 +9,7 @@
         <li class="inline-flex items-center">
             <a href="{{ path('app_home') }}" class="inline-flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
                 <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                 </svg>
                 Home
             </a>
@@ -17,7 +17,7 @@
         <li>
             <div class="flex items-center">
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
                 <a href="{{ path('app_game') }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Games</a>
             </div>
@@ -25,7 +25,7 @@
         <li>
             <div class="flex items-center">
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
                 <a href="{{ path('show_game', {'id': game.id, 'slug':game.slug}) }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">{{ game.slug|replace({'-': ' '})|title }}</a>
             </div>
@@ -33,7 +33,7 @@
         <li aria-current="Forum of {{ game.slug|replace({'-': ' '})|title }}">
             <div class="flex items-center">
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
                 <span class="ms-1 md:ms-2 text-black dark:text-white underline">Forum of {{ game.slug|replace({'-': ' '})|title }}</span>
             </div>
@@ -41,65 +41,111 @@
     </ol>
 </nav>
 
-<section id="tab1" class="w-full">
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table id="dataTable1" class="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="width:100%">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3 w-[20%]">Subject</th>
-                    <th scope="col" class="px-6 py-3 w-[20%]">By</th>
-                    <th scope="col" class="px-6 py-3 w-[20%]">NB</th>
-                    <th scope="col" class="px-6 py-3 w-[20%]">Last MSG</th>
-                    <th scope="col" class="px-6 py-3 w-[20%]" style="text-align:left">Disability</th>
-                </tr>
-            </thead>
-            <tbody>
-                {# {% if %} #}
-                {% for topic in game.topics %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('topic_game', {'id': topic.id, 'slug':topic.slug}) }}">{{ topic }}</a></th>
-                    <td class="px-6 py-4"></td>
-                    <td class="px-6 py-4"></td>
-                    <td class="px-6 py-4"></td>
-                    <td class="px-6 py-4"></td>
-                </tr>
-                {% endfor %}
-                {# {% else %} #}
-                {# <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row"
-                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No topics
-                        found.</th>
-                    <td class="px-6 py-4"></td>
-                    <td class="px-6 py-4"></td>
-                    <td class="px-6 py-4"></td>
-                    <td class="px-6 py-4"></td>
-                </tr> #}
-                {# {% endif %} #}
-            </tbody>
-        </table>
-    </div>
-</section>
+<div class="w-full">
+    <h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Forum of {{ game.slug|replace({'-': ' '})|title }}</h1>
+    <hr class="mt-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+</div>
 
-<section>
-    {# ! Corriger le problème des deux boutons submit #}
-{{ form_start(formAddTopic) }}
+<div class="flex flex-col md:flex-row w-full gap-[20px]">
 
-{{ form_row(formAddTopic.title) }}
+    <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem]">
+        <div class="relative overflow-x-auto sm:rounded-lg shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <table id="dataTable1" class="w-full text-sm text-left rtl:text-right text-black dark:text-white stripe hover row-border order-column" style="width:100%">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 w-[40%]">Subject</th>
+                        <th scope="col" class="px-6 py-3 w-[25%]">Author</th>
+                        <th scope="col" class="px-6 py-3 w-[15%]">NB</th>
+                        <th scope="col" class="px-6 py-3 w-[25%]">Last MSG</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if game.topics|length > 0 %}
+                    {% for topic in game.topics %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <div class="flex items-center gap-5">
+                                <a href="{{ path('topic_game', {'id': topic.id, 'slug':topic.slug}) }}" class="flex items-center gap-5">
+                                    {% if topic.posts|length >= 20 %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" class="fill-red-500">
+                                        <path d="M0 96C0 60.7 28.7 32 64 32l132.1 0c19.1 0 37.4 7.6 50.9 21.1L289.9 96 448 96c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM64 80c-8.8 0-16 7.2-16 16l0 320c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-256c0-8.8-7.2-16-16-16l-161.4 0c-10.6 0-20.8-4.2-28.3-11.7L213.1 87c-4.5-4.5-10.6-7-17-7L64 80z" />
+                                    </svg>
+                                    {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" class="fill-amber-800">
+                                        <path d="M0 96C0 60.7 28.7 32 64 32l132.1 0c19.1 0 37.4 7.6 50.9 21.1L289.9 96 448 96c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM64 80c-8.8 0-16 7.2-16 16l0 320c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-256c0-8.8-7.2-16-16-16l-161.4 0c-10.6 0-20.8-4.2-28.3-11.7L213.1 87c-4.5-4.5-10.6-7-17-7L64 80z" />
+                                    </svg>
+                                    {% endif %}
+                                    <span>{{ topic }}</span>
+                                </a>
+                            </div>
+                        </th>
+                        <td class="px-6 py-4">{{ topic.user }}</td>
+                        <td class="px-6 py-4">
+                            <p>{{ topic.posts|length }}</p>
+                        </td>
+                        <td class="px-6 py-4">{% set lastPost = topic.posts|last %}<p>{{ lastPost.publicationDate|date('d/m/y H:i:s') }}</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No topics found.</th>
+                        <td class="px-6 py-4"></td>
+                        <td class="px-6 py-4"></td>
+                        <td class="px-6 py-4"></td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
 
-{{ form_row(formAddTopic.post) }}
+        <div class="mt-5 bg-white dark:bg-neutral-800 flex flex-col mb-5 rounded-xl py-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
 
-{{ form_end(formAddTopic) }}
-</section>
+            {{ form_start(formAddTopic) }}
+
+            <div class="mb-2 mx-5">
+                <h2 class="font-bold text-black dark:text-white">Title <span class="text-red-500">*</span></h2>
+                {{ form_widget(formAddTopic.title, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter a title'}}) }}
+                <div class="text-red-500">
+                    {{ form_errors(formAddTopic.title) }}
+                </div>
+            </div>
+
+            <div class="mb-2 mx-5">
+                <h2 class="font-bold text-black dark:text-white">Message content <span class="text-red-500">*</span></h2>
+                {{ form_widget(formAddTopic.post, {'attr': {'class': 'w-full text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter a message'}}) }}
+                <div class="text-red-500">
+                    {{ form_errors(formAddTopic.post) }}
+                </div>
+            </div>
+
+            <div>
+                {{ form_end(formAddTopic) }}
+            </div>
+
+        </div>
+
+    </section>
+
+    <aside id="secondary" class="basis-0 min-w-[100%] sm:min-w-[30%] sm:basis-3/12 pr-5">
+        <div id="forum">
+            <a href="{{ path('forum_game', {'id': game.id, 'slug':game.slug}) }}">
+                <h2 class="text-left md:text-right text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Forum</h2>
+            </a>
+            <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+        </div>
+    </aside>
+
+</div>
 
 
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script>
 <script>
-    $('#dataTable1').DataTable();
-    $('#dataTable2').DataTable();
-    $('#dataTable3').DataTable();
-    $('#dataTable4').DataTable();
+    $('#dataTable1').DataTable({
+        responsive: true
+    });
 </script>
 
 {% endblock %}

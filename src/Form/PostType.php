@@ -17,7 +17,8 @@ class PostType extends AbstractType
             ->add('content', TextareaType::class, [
                 'attr' => [
                     'class' => 'tinymce',
-                ]
+                ],
+                'label' => false,
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [

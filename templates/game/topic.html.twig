@@ -9,7 +9,7 @@
         <li class="inline-flex items-center">
             <a href="{{ path('app_home') }}" class="inline-flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
                 <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                 </svg>
                 Home
             </a>
@@ -17,7 +17,7 @@
         <li>
             <div class="flex items-center">
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
                 <a href="{{ path('app_game') }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Games</a>
             </div>
@@ -25,7 +25,7 @@
         <li>
             <div class="flex items-center">
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
                 <a href="{{ path('show_game', {'id': topic.game.id, 'slug':topic.game.slug}) }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">{{ topic.game.slug|replace({'-': ' '})|title }}</a>
             </div>
@@ -33,7 +33,7 @@
         <li>
             <div class="flex items-center">
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
                 <a href="{{ path('forum_game', {'id': topic.game.id, 'slug':topic.game.slug}) }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Forum of {{ topic.game.slug|replace({'-': ' '})|title }}</a>
             </div>
@@ -41,7 +41,7 @@
         <li aria-current="{{ topic }}">
             <div class="flex items-center">
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
                 <span class="ms-1 md:ms-2 text-black dark:text-white underline">{{ topic }}</span>
             </div>
@@ -49,52 +49,67 @@
     </ol>
 </nav>
 
-<article id="topic">
-    <header>
-        <h1>{{ topic.title }}</h1>
-    </header>
+<div class="flex flex-col md:flex-row w-full gap-[20px]">
 
-    <section id="posts">
-        {% for post in posts %}
-        <article id="post">
+    <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem]">
+        <article id="topic">
             <header>
-                <p id="username">{{ post.user.pseudo }}</p>
-                <time datetime="{{ post.publicationDate|date('c') }}">
-                    {{ post.publicationDate|date('d/m/y H:i:s') }}
-                </time>
+                <h1>{{ topic.title }}</h1>
             </header>
-            <div id="post-content">
-                {# Utilisation de |raw pour afficher le contenu traité par un éditeur WYSIWYG #}
-                {# ! Attention à bien sécuriser le contenu pour éviter les failles XSS #}
-                {# chaque form sera recup avec postToEdit puis le form voulu sera selectionné avac la class qui utilise l'id #}
-                <form id="{{ post.id }}" class="postToEdit">
-                    <input class="post-content" value="{{ post.content|raw }}" type="text" disabled>
-                    <button class="edit-post" type="button" class="edit-post"><i class="fa-regular fa-pen-to-square"></i></button>
-                    <button type="submit"><i class="fa-solid fa-check"></i></button>
-                </form>
-                {% if post.updatedAt %}
-                    <p>Modifié le : {{ post.updatedAt|date('d/m/y H:i:s') }}</p>
-                {% endif %}
-            </div>
+
+            <section id="posts">
+                {% for post in posts %}
+                <article id="post">
+                    <header>
+                        <p id="username">{{ post.user.pseudo }}</p>
+                        <time datetime="{{ post.publicationDate|date('c') }}">
+                            {{ post.publicationDate|date('d/m/y H:i:s') }}
+                        </time>
+                    </header>
+                    <div id="post-content">
+                        {# Utilisation de |raw pour afficher le contenu traité par un éditeur WYSIWYG #}
+                        {# ! Attention à bien sécuriser le contenu pour éviter les failles XSS #}
+                        {# chaque form sera recup avec postToEdit puis le form voulu sera selectionné avac la class qui utilise l'id #}
+                        <form id="{{ post.id }}" class="postToEdit">
+                            <input class="post-content" value="{{ post.content|raw }}" type="text" disabled>
+                            <button class="edit-post" type="button" class="edit-post"><i class="fa-regular fa-pen-to-square"></i></button>
+                            <button type="submit"><i class="fa-solid fa-check"></i></button>
+                        </form>
+                        {% if post.updatedAt %}
+                        <p>Modifié le : {{ post.updatedAt|date('d/m/y H:i:s') }}</p>
+                        {% endif %}
+                    </div>
+                </article>
+
+                <br>
+                <br>
+                <br>
+
+                {% endfor %}
+            </section>
+
+            <section id="reply-form">
+                {{ form_start(formAddPost) }}
+
+                {{ form_row(formAddPost.content) }}
+
+                {{ form_row(formAddPost.submit) }}
+
+                {{ form_end(formAddPost) }}
+            </section>
         </article>
-
-        <br>
-        <br>
-        <br>
-
-        {% endfor %}
     </section>
 
-    <section id="reply-form">
-        {{ form_start(formAddPost) }}
+    <aside id="secondary" class="basis-0 min-w-[100%] sm:min-w-[30%] sm:basis-3/12 pr-5">
+        <div id="forum">
+            <a href="">
+                <h2 class="text-left md:text-right text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Forum</h2>
+            </a>
+            <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+        </div>
+    </aside>
 
-        {{ form_row(formAddPost.content) }}
-
-        {{ form_row(formAddPost.submit) }}
-
-        {{ form_end(formAddPost) }}
-    </section>
-</article>
+</div>
 
 {# J'appelle mon script ajax pour éditer un post #}
 <script src="{{ asset('js/ajax.js') }}"></script>

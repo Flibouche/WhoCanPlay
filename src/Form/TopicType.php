@@ -19,6 +19,7 @@ class TopicType extends AbstractType
             ->add('title', TextType::class)
             ->add('post', PostType::class, [
                 'mapped' => false,
+                'label' => false,
             ])
         ;
     }
