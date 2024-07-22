@@ -6,6 +6,7 @@ use App\Entity\Game;
 use App\Entity\Post;
 use App\Entity\Topic;
 use App\Form\PostType;
+use App\Entity\Feature;
 use App\Form\TopicType;
 use App\Service\IgdbApiService;
 use App\Repository\GameRepository;
@@ -14,8 +15,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class GameController extends AbstractController
 {
@@ -29,6 +30,7 @@ class GameController extends AbstractController
         $this->htmlSanitizer = $htmlSanitizer;
     }
 
+    // Méthode pour afficher la liste des jeux
     #[Route('/game', name: 'app_game')]
     public function index(GameRepository $gameRepository): Response
     {
@@ -89,26 +91,20 @@ class GameController extends AbstractController
         ]);
     }
 
+    // Méthode pour afficher les détails d'un jeu
     #[Route('/game/{id}/{slug}', name: 'show_game')]
     public function showGame(?Game $game, GameRepository $gameRepository): Response
     {
+        if (!$game) {
+            throw $this->createNotFoundException('The game does not exist');
+        }
 
         $gameId = $game->getId();
         $processedFeatures = $gameRepository->findProcessedFeaturesByGame($gameId);
 
-        $featuresByDisability = [];
-
-        foreach ($processedFeatures as $feature) {
-            $disability = $feature['disabilityName'];
-
-            if (!isset($featuresByDisability[$disability])) {
-                $featuresByDisability[$disability] = [];
-            }
-            $featuresByDisability[$disability][] = $feature;
-        }
+        $featuresByDisability = $this->organizeFeaturesByDisability($processedFeatures);
 
         $idGameApi = $game->getIdGameApi();
-
         $gameApi = $this->igdbApiService->getGameDetails($idGameApi);
 
         return $this->render('game/show.html.twig', [
@@ -118,6 +114,61 @@ class GameController extends AbstractController
         ]);
     }
 
+    // Méthode pour organiser les fonctionnalités par handicap et éviter les doublons
+    private function organizeFeaturesByDisability(array $processedFeatures): array
+    {
+        // Je crée un tableau vide pour stocker les fonctionnalités organisées par handicap
+        $features = [];
+
+        // Je parcours les fonctionnalités traitées
+        foreach ($processedFeatures as $result) {
+            $featureName = $result['featureName'];
+            $disabilityName = $result['disabilityName'];
+
+            // Si la fonctionnalité n'existe pas encore dans le tableau, je l'ajoute avec ses informations
+            if (!isset($features[$featureName])) {
+                $features[$featureName] = [
+                    'name' => $featureName,
+                    'state' => $result['state'],
+                    'content' => $result['content'],
+                    'disabilityName' => $disabilityName,
+                    'icon' => $result['icon'],
+                    'images' => []
+                ];
+            }
+
+            // Si l'URL de l'image n'est pas vide, je l'ajoute au tableau d'images de la fonctionnalité
+            if (!empty($result['url'])) {
+                $features[$featureName]['images'][] = [
+                    'url' => $result['url'],
+                    'altText' => $result['altText'],
+                    'title' => $result['title'],
+                    'description' => $result['description'],
+                    'submissionDate' => $result['submissionDate']
+                ];
+            }
+        }
+
+        // Je crée un tableau vide pour stocker les fonctionnalités organisées par handicap
+        $featuresByDisability = [];
+
+        // Je parcours les fonctionnalités
+        foreach ($features as $feature) {
+            $disability = $feature['disabilityName'];
+
+            // Si le handicap n'existe pas encore dans le tableau, je l'ajoute avec un tableau vide
+            if (!isset($featuresByDisability[$disability])) {
+                $featuresByDisability[$disability] = [];
+            }
+            // J'ajoute la fonctionnalité au tableau correspondant au handicap
+            $featuresByDisability[$disability][] = $feature;
+        }
+
+        // Je retourne le tableau des fonctionnalités organisées par handicap
+        return $featuresByDisability;
+    }
+
+    // Méthode pour afficher le forum d'un jeu
     #[Route('/forum/{id}/{slug}', name: 'forum_game')]
     public function showForum(?Game $game, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -169,6 +220,7 @@ class GameController extends AbstractController
         ]);
     }
 
+    // Méthode pour afficher un topic
     #[Route('/topic/{id}/{slug}', name: 'topic_game')]
     public function showTopic(?Topic $topic, PostRepository $postRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -216,6 +268,7 @@ class GameController extends AbstractController
         ]);
     }
 
+    // Méthode pour éditer un post
     #[Route('/api/topic/{id}/edit', name: 'edit_post_game', methods: ["POST"])]
     public function editPost(?Post $post, int $id, Request $request, PostRepository $postRepository, EntityManagerInterface $entityManager)
     {
@@ -228,8 +281,6 @@ class GameController extends AbstractController
         $entityManager->persist($post);
         $entityManager->flush();
 
-        return $this->json(['success' => true, 'message'=> "Post edité"], 200);
-
+        return $this->json(['success' => true, 'message' => "Post edité"], 200);
     }
-
 }
