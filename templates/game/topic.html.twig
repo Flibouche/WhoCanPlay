@@ -49,55 +49,90 @@
     </ol>
 </nav>
 
+<div class="w-full">
+    <h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Subject : {{ topic.title }}</h1>
+    <hr class="mt-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+</div>
+
 <div class="flex flex-col md:flex-row w-full gap-[20px]">
 
     <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem]">
-        <article id="topic">
-            <header>
-                <h1>{{ topic.title }}</h1>
-            </header>
 
-            <section id="posts">
-                {% for post in posts %}
-                <article id="post">
-                    <header>
-                        <p id="username">{{ post.user.pseudo }}</p>
-                        <time datetime="{{ post.publicationDate|date('c') }}">
-                            {{ post.publicationDate|date('d/m/y H:i:s') }}
-                        </time>
-                    </header>
-                    <div id="post-content">
-                        {# Utilisation de |raw pour afficher le contenu traité par un éditeur WYSIWYG #}
-                        {# ! Attention à bien sécuriser le contenu pour éviter les failles XSS #}
-                        {# chaque form sera recup avec postToEdit puis le form voulu sera selectionné avac la class qui utilise l'id #}
-                        <form id="{{ post.id }}" class="postToEdit">
-                            <input class="post-content" value="{{ post.content|raw }}" type="text" disabled>
-                            <button class="edit-post" type="button" class="edit-post"><i class="fa-regular fa-pen-to-square"></i></button>
-                            <button type="submit"><i class="fa-solid fa-check"></i></button>
-                        </form>
-                        {% if post.updatedAt %}
-                        <p>Modifié le : {{ post.updatedAt|date('d/m/y H:i:s') }}</p>
-                        {% endif %}
-                    </div>
-                </article>
+        {# bg-white dark:bg-neutral-800 #}
+        {% for post in posts %}
+        {% set color = (loop.index) % 2 == 0 ? 'white' : 'white/20' %}
+        {% set darkColor = (loop.index) % 2 == 0 ? 'neutral-800' : 'neutral-600' %}
+        {# En-tête post #}
+        <div class="relative overflow-hidden bg-{{ color }} dark:bg-{{ darkColor }} mb-5 w-full rounded-xl shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <div class=" flex items-center gap-2 px-8 py-8 sm:px-5 sm:py-5">
+                <div>
+                    <img src="https://avatar.iran.liara.run/public" alt="{{ post.user }}'s avatar" class="w-[50px] h-[50px]">
+                </div>
+                <div class="flex flex-col text-black dark:text-white">
+                    <p id="username">{{ post.user.pseudo }}</p>
+                    <time datetime="{{ post.publicationDate|date('c') }}">
+                        {{ post.publicationDate|date('d/m/y H:i:s') }}
+                    </time>
+                </div>
+                <div class="absolute top-0 right-0 px-5 py-5">
+                    <button class="edit-post" type="button" class="edit-post">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-4 h-4 fill-current dark:invert dark:brightness-0 dark:filter">
+                            <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/>
+                        </svg>
+                    </button>
+                    <button type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 fill-current dark:invert dark:brightness-0 dark:filter">
+                            <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
 
-                <br>
-                <br>
-                <br>
+            <hr class="w-full border-t-2 border-amber-800 dark:border-yellow-200" />
 
-                {% endfor %}
-            </section>
+            {# Contenu post #}
+            <div id="post-content" class="relative text-black dark:text-white px-5 py-5">
+                {# Utilisation de |raw pour afficher le contenu traité par un éditeur WYSIWYG #}
+                {# ! Attention à bien sécuriser le contenu pour éviter les failles XSS #}
+                {# chaque form sera recup avec postToEdit puis le form voulu sera selectionné avac la class qui utilise l'id #}
+                <form id="{{ post.id }}" class="postToEdit">
+                    {# <input class="post-content" value="{{ post.content|raw }}" type="text" disabled> #}
+                    <p>{{ post.content|raw}}</p>
+                </form>
+                {% if post.updatedAt %}
+                <p class="absolute bottom-0 right-0 px-5 py-5 text-xs">Edited : {{ post.updatedAt|date('d/m/y H:i:s') }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
 
-            <section id="reply-form">
+        <details class="mt-5">
+            <summary class="bg-white dark:bg-neutral-800 p-4 rounded-lg cursor-pointer shadow-md mb-4">
+                <span class="font-semibold text-black dark:text-white">Add message</span>
+            </summary>
+            <div class="mt-5 bg-white dark:bg-neutral-800 flex flex-col mb-5 rounded-xl py-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+
                 {{ form_start(formAddPost) }}
 
-                {{ form_row(formAddPost.content) }}
+                <div class="mb-2 mx-5">
+                    <h2 class="font-bold text-black dark:text-white">Message content <span class="text-red-500">*</span></h2>
+                    {{ form_widget(formAddPost.content, {'attr': {'class': 'w-full text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter a message'}}) }}
+                    <div class="text-red-500">
+                        {{ form_errors(formAddPost.content) }}
+                    </div>
+                </div>
 
-                {{ form_row(formAddPost.submit) }}
+                <div>
+                    {{ form_row(formAddPost.submit) }}
+                </div>
 
-                {{ form_end(formAddPost) }}
-            </section>
-        </article>
+                <div>
+                    {{ form_end(formAddPost) }}
+                </div>
+
+            </div>
+        </details>
+
     </section>
 
     <aside id="secondary" class="basis-0 min-w-[100%] sm:min-w-[30%] sm:basis-3/12 pr-5">

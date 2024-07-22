@@ -230,6 +230,7 @@ class GameController extends AbstractController
         $posts = $postRepository->findBy(['topic' => $topic], ["publicationDate" => "ASC"]);
 
         $post = new Post();
+
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
