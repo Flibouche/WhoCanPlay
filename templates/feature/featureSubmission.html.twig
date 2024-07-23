@@ -4,6 +4,7 @@
 
 {% block body %}
 
+{# Breadcrumb #}
 <nav class="w-full flex text-sm" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
         <li class="inline-flex items-center">
@@ -25,8 +26,8 @@
     </ol>
 </nav>
 
+{# Si je suis en édition #}
 {% set currentRoute = app.request.attributes.get('_route') %}
-
 {% if currentRoute == 'edit_feature' %}
 
 <h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5 text-black dark:text-white font-raleway font-bold">Edit this feature : </h1>
@@ -38,6 +39,7 @@
     <div id="result"></div>
 </div>
 
+{# Formulaire d'édition #}
 {{ form_start(formSendFeatureToGame) }}
 <div id="form">
     {{ form_row(formSendFeatureToGame.id_game_api) }}
@@ -80,8 +82,8 @@
 </div>
 {{ form_end(formSendFeatureToGame) }}
 
+{# Si je suis en création #}
 {% else %}
-
 <h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5 text-black dark:text-white font-raleway font-bold">Submit an accessibility feature to a game</h1>
 
 <div class="search-container relative flex flex-col w-[300px] md:w-[600px]">
@@ -91,6 +93,7 @@
     <div id="result"></div>
 </div>
 
+{# Formulaire de création #}
 {{ form_start(formSendFeatureToGame) }}
 <div id="form" class="hidden">
     {{ form_row(formSendFeatureToGame.id_game_api) }}
@@ -125,8 +128,6 @@
 {{ form_end(formSendFeatureToGame) }}
 
 {% endif %}
-
-
 
 {# <div class="w-full">
     <h2 class="text-3xl font-semibold text-center mb-6 dark:text-white">File Upload</h2>
