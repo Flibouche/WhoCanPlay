@@ -47,7 +47,7 @@ class FeatureType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'attr' => [
-                    'class' => 'w-full px-5 py-4 text-gray-700 bg-gray-200 rounded-lg mt-2', // Add 'tinymce' to class
+                    'class' => 'w-full px-5 py-4 text-gray-700 bg-gray-200 rounded-lg mt-2',
                 ],
                 'label' => 'Enter content for the feature <span class="text-red-500">*</span>',
                 'label_html' => true,

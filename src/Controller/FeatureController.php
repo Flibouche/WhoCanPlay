@@ -9,6 +9,7 @@ use App\Form\FeatureType;
 use App\Service\ImageService;
 use App\Service\IgdbApiService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,77 +26,63 @@ class FeatureController extends AbstractController
         $this->igdbApiService = $igdbApiService;
     }
 
+    // Méthode pour envoyer une Feature à un jeu pour traitement
     #[Route('/feature', name: 'app_feature')]
     #[Route('/feature/{id}/{slug}/edit', name: 'edit_feature')]
     public function index(?Feature $feature, Request $request, EntityManagerInterface $entityManager, ImageService $imageService): Response
     {
-
-        $gameName = null;
-
-        if(!$feature) {
+        if (!$feature) {
             $feature = new Feature();
         }
-
+    
+        $gameName = null;
         if ($feature && $feature->getIdGameApi()) {
             $idGameApi = $feature->getIdGameApi();
             $gameName = $this->igdbApiService->getGameById($idGameApi);
         }
-
-        // Je récupère l'User qui envoie la Feature en traitement
-        $user = $this->getUser();
-
-        // Création du formulaire en utilisant FeatureType comme formulaire de type
+    
         $form = $this->createForm(FeatureType::class, $feature);
         $form->handleRequest($request);
-        
-        // Vérification si le formulaire a été soumis et est valide
+    
         if ($form->isSubmitted() && $form->isValid()) {
-            // On récupère les images
-            $images = $form->get('images')->getData();
-
-            // On boucle sur les images
-            foreach($images as $image) {
-                // On définit le dossier de destination
-                $folder = 'features';
-
-                // On appelle le service d'ajout d'image
-                $file = $imageService->add($image, $folder, 300, 300);
-
-                $img = new Image();
-                $img->setUrl($file);
-                $img->setTitle('Test');
-                $img->setAltText('Test');
-                $feature->addImage($img);
-            }
-
-            $idGameApi = $form->get('id_game_api')->getData();
-
-            // Recherche du jeu correspondant à l'ID du jeu API dans la base de données
-            $game = $entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
-
-            // Si le jeu existe, on ajoute l'ID du jeu à la Feature
-            if ($game) {
-                $feature->setGame($game);
-            }
-
-            // J'ajoute le bon utilisateur à l'objet Feature que je vais créer
-            $feature->setUser($user);
-
-            // Attribution de l'ID du jeu API au feature avant de le persister
-            $feature->setIdGameApi($idGameApi);
-            $entityManager->persist($feature);
-            $entityManager->flush();
-
-            // Redirection vers la page d'accueil après l'ajout du feature
+            $this->processFeatureForm($feature, $form, $entityManager, $imageService);
             return $this->redirectToRoute('app_home');
         }
-        
+    
         return $this->render('feature/index.html.twig', [
             'controller_name' => 'FeatureController',
             'formSendFeatureToGame' => $form,
             'edit' => $feature,
             'game' => $gameName,
         ]);
+    }
+    
+    private function processFeatureForm(Feature $feature, FormInterface $form, EntityManagerInterface $entityManager, ImageService $imageService): void
+    {
+        $user = $this->getUser();
+        $images = $form->get('images')->getData();
+        $idGameApi = $form->get('id_game_api')->getData();
+    
+        foreach ($images as $image) {
+            $folder = 'features';
+            $file = $imageService->add($image, $folder, 300, 300);
+            $img = new Image();
+            $img->setUrl($file);
+            $img->setTitle('Test');
+            $img->setAltText('Test');
+            $feature->addImage($img);
+        }
+    
+        $game = $entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
+        if ($game) {
+            $feature->setGame($game);
+        }
+    
+        $feature->setUser($user);
+        $feature->setIdGameApi($idGameApi);
+        
+        $entityManager->persist($feature);
+        $entityManager->flush();
     }
 
     #[Route('/delete/image/{id}', name: 'delete_image_feature', methods: ['DELETE'])]
@@ -142,4 +129,6 @@ class FeatureController extends AbstractController
 
         return new JsonResponse($formattedGames);
     }
+
+    
 }

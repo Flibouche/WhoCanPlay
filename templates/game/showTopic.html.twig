@@ -95,10 +95,10 @@
                 {# Utilisation de |raw pour afficher le contenu traité par un éditeur WYSIWYG #}
                 {# ! Attention à bien sécuriser le contenu pour éviter les failles XSS #}
                 {# chaque form sera recup avec postToEdit puis le form voulu sera selectionné avac la class qui utilise l'id #}
-                <form id="{{ post.id }}" class="postToEdit">
+                {# <form id="{{ post.id }}" class="postToEdit"> #}
                     {# <input class="post-content" value="{{ post.content|raw }}" type="text" disabled> #}
                     <p class="post-content" value="{{ post.content|raw }}">{{ post.content|raw}}</p>
-                </form>
+                {# </form> #}
                 {% if post.updatedAt %}
                 <p class="absolute bottom-0 right-0 px-5 py-5 text-xs">Edited : {{ post.updatedAt|date('d/m/y H:i:s') }}</p>
                 {% endif %}
@@ -147,6 +147,6 @@
 </div>
 
 {# J'appelle mon script ajax pour éditer un post #}
-<script src="{{ asset('js/ajax.js') }}"></script>
+{# <script src="{{ asset('js/ajax.js') }}"></script> #}
 
 {% endblock %}

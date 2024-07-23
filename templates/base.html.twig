@@ -217,13 +217,6 @@
     {% block javascripts %}
     {# Jquery #}
     {# <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script> #}
-    {# TinyMCE #}
-    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
-    <script defer>
-        tinymce.init({
-            selector: "textarea",
-        });
-    </script>
     {# AJAX #}
     {# DATATABLES #}
 
@@ -231,8 +224,7 @@
     {{ importmap('app') }}
     {% endblock %}
 
-    {#
-    <script src="{{ asset('js/ajax.js') }}"></script> #}
+    {# <script src="{{ asset('js/ajax.js') }}"></script> #}
     <script src="{{ asset('js/script.js') }}"></script>
 
     {% endblock %}
