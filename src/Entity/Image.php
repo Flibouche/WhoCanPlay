@@ -243,7 +243,7 @@ class Image
 
     public function __toString(): String
     {
-        return $this->url;
+        return $this->url ?? '';
     }
 
     #endregion

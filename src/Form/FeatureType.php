@@ -61,12 +61,10 @@ class FeatureType extends AbstractType
                 'mapped' => false,
                 'required' => false,
             ])
-            // ->add('images', CollectionType::class, [
-            //     'entry_type' => ImageType::class,
-            //     'entry_options' => ['label' => false],
-            //     'allow_add' => true,
-            //     'by_reference' => false,
-            // ])
+            ->add('description', TextareaType::class, [
+                'mapped' => false,
+                'label' => false,
+            ])
             // ->add('state')
             // ->add('Game', EntityType::class, [
             //     'class' => Game::class,
