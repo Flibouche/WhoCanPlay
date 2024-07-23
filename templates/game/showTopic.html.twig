@@ -97,7 +97,7 @@
                 {# chaque form sera recup avec postToEdit puis le form voulu sera selectionné avac la class qui utilise l'id #}
                 <form id="{{ post.id }}" class="postToEdit">
                     {# <input class="post-content" value="{{ post.content|raw }}" type="text" disabled> #}
-                    <p>{{ post.content|raw}}</p>
+                    <p class="post-content" value="{{ post.content|raw }}">{{ post.content|raw}}</p>
                 </form>
                 {% if post.updatedAt %}
                 <p class="absolute bottom-0 right-0 px-5 py-5 text-xs">Edited : {{ post.updatedAt|date('d/m/y H:i:s') }}</p>

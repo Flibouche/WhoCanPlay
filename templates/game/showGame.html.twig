@@ -57,7 +57,9 @@
                     <strong>Platforms</strong> : {% for platform in gameApi[0].platforms %}<span>{{ platform.name }} </span>{% endfor %}
                 </h2>
                 <h2 class="absolute flex gap-3 bottom-0 right-0 pr-5">
-                    {% for disability in featuresByDisability %}<img src="{{ asset(disability[0].icon) }}" alt="{{ disability[0].disabilityName }}" title="{{ disability[0].disabilityName }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"> {% endfor %}
+                    {% for disability in featuresByDisability %}
+                        <img src="{{ asset(disability[0].icon) }}" alt="{{ disability[0].disabilityName }}" title="{{ disability[0].disabilityName }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+                    {% endfor %}
                 </h2>
             </div>
         </article>

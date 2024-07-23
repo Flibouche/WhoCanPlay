@@ -224,7 +224,7 @@ class IgdbApiService
         return array_values($filteredData);
     }
 
-    public function getGameAndDetailsByIds(array $ids = []): array
+    public function getGamesAndDetailsByIds(array $ids = []): array
     {
         // Obtention du token d'accès via le service d'authentification
         $accessToken = $this->authService->getAccessToken();

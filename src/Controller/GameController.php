@@ -23,91 +23,115 @@ class GameController extends AbstractController
 
     private $igdbApiService;
     private $htmlSanitizer;
+    private $entityManager;
 
-    public function __construct(IgdbApiService $igdbApiService, HtmlSanitizerInterface $htmlSanitizer)
+    public function __construct(IgdbApiService $igdbApiService, HtmlSanitizerInterface $htmlSanitizer, EntityManagerInterface $entityManager)
     {
         $this->igdbApiService = $igdbApiService;
         $this->htmlSanitizer = $htmlSanitizer;
+        $this->entityManager = $entityManager;
     }
 
+    #region Gamelist
     // Méthode pour afficher la liste des jeux
-    #[Route('/game', name: 'app_game')]
-    public function index(GameRepository $gameRepository): Response
+    #[Route('/games', name: 'app_game')]
+    public function gameList(GameRepository $gameRepository): Response
     {
-        // Je cherche directement les jeux ayant le status 1, soit les jeux actifs
+        // Je récupère les jeux actifs
         $activeGames = $gameRepository->findBy(['status' => 1]);
 
-        // Je crée un tableau vide pour y stocker les IdGameApi
-        $gameApiIds = [];
-        foreach ($activeGames as $game) {
-            $gameApiIds[] = $game->getIdGameApi();
-        }
-
-        // Avec mon nouveau tableau, je récupère les informations via le service de l'API en y passant mon tableau en argument
-        $gamesApiData = $this->igdbApiService->getGameAndDetailsByIds($gameApiIds);
-
-        // Je crée un nouveau tableau pour pouvoir indexer les jeux par leur ID correspondante grâce aux ID que j'ai récupéré de mon service 
-        $gamesApiDataById = [];
-        foreach ($gamesApiData as $game) {
-            $gamesApiDataById[$game['id']] = $game;
-        }
-
-        // Je crée un tableau vide pour y stocker les informations combinées des jeux de ma BDD et des jeux de l'API
-        $gamesApiInfo = [];
-
-        // Je vérifie si la liste des jeux actifs n'est pas vide
-        if ($activeGames) {
-            foreach ($activeGames as $gameDb) {
-                // Pour chaque jeu actif, je récupère l'idGameApi
-                $idGameApi = $gameDb->getIdGameApi();
-
-                // Je récupère les informations du jeu à partir du tableau indexé que j'ai crée plus haut
-                $gameApi = $gamesApiDataById[$idGameApi] ?? null;
-
-                // J'ajoute le traitement qui vas éviter d'afficher les Disabilities en double
-                $uniqueDisabilities = [];
-                foreach ($gameDb->getFeatures() as $feature) {
-                    $disability = $feature->getDisability();
-                    if (!isset($uniqueDisabilities[$disability->getId()])) {
-                        $uniqueDisabilities[$disability->getId()] = $disability;
-                    }
-                }
-
-                // J'ajoute un tableau associatif à mon tableau $gamesApiInfo qui contient maintenant les informations combinées des jeux de ma BDD et des jeux de l'API
-                $gamesApiInfo[] = [
-                    'db' => $gameDb,
-                    'api' => $gameApi,
-                    'uniqueDisabilities' => array_values($uniqueDisabilities),
-                ];
-            }
-        } else {
-            // Si aucun jeu actif n'est trouvé, j'ajoute un message flash "No game found !"
+        // Si aucun jeu n'est trouvé, j'ajoute un message flash et je retourne un tableau vide
+        if (empty($activeGames)) {
             $this->addFlash('warning', "No game found !");
+            $gamesApiInfo = [];
+            // Sinon, je traite les données des jeux
+        } else {
+            $gamesApiInfo = $this->processGamesData($activeGames); // J'appelle la méthode privée pour traiter les données des jeux
         }
 
-        // Je retourne à la vue twig en y passant mon tableau $gamesApiInfo
-        return $this->render('game/index.html.twig', [
+        // Je retourne à la vue twig en y passant les jeux
+        return $this->render('game/gamesList.html.twig', [
             'games' => $gamesApiInfo,
         ]);
     }
 
+    // Méthode privée pour traiter les données des jeux
+    private function processGamesData(array $activeGames): array
+    {
+        // Récupération des IDs des jeux actifs ($gameApiIds) en utilisant array_map pour plus de lisibilité
+        // array_map applique une fonction anonyme (fn($game)) à chaque élément du tableau $activeGames
+        // La fonction anonyme prend chaque élément du tableau $activeGames (chaque jeu) et retourne l'ID du jeu API
+        $gameApiIds = array_map(fn ($game) => $game->getIdGameApi(), $activeGames); // Exemple : [0 => 26226, 1 => 2132, 2 => 299]
+
+        // Je récupère les données des jeux actifs en utilisant les IDs des jeux API
+        $gamesApiData = $this->igdbApiService->getGamesAndDetailsByIds($gameApiIds);
+
+        // J'utilise array_column pour créer un tableau associatif avec les données des jeux API en utilisant l'ID du jeu comme clé
+        // array_column prend en paramètres le tableau $gamesApiData, la valeur à extraire (null pour tout l'élément) et la clé à utiliser comme index
+        // Le fait d'utiliser 'null' me permet de conserver les données complètes et d'accéder à tous les détails d'un jeu en utilisant son ID
+        $gamesApiDataById = array_column($gamesApiData, null, 'id'); // Exemple : [26226 => ['id' => 26266, 'name' => 'Celeste'...]]
+
+        // Je crée un tableau vide pour stocker les informations des jeux
+        $gamesApiInfo = [];
+
+        // Je parcours les jeux actifs
+        foreach ($activeGames as $gameDb) {
+            // Je récupère l'ID du jeu API
+            $idGameApi = $gameDb->getIdGameApi();
+            // Je récupère les données du jeu API en utilisant l'ID du jeu, ou null si le jeu n'existe pas
+            $gameApi = $gamesApiDataById[$idGameApi] ?? null;
+            // Je crée un tableau vide pour stocker les handicaps uniques afin d'éviter d'afficher plusieurs fois le même handicap
+            $uniqueDisabilities = [];
+
+            // Je parcours les fonctionnalités du jeu
+            foreach ($gameDb->getFeatures() as $feature) {
+                // Je récupère le handicap de la fonctionnalité
+                $disability = $feature->getDisability();
+                // Si le handicap n'existe pas encore dans le tableau, je l'ajoute
+                if (!isset($uniqueDisabilities[$disability->getId()])) {
+                    // J'ajoute le handicap au tableau des handicaps uniques
+                    $uniqueDisabilities[$disability->getId()] = $disability;
+                }
+            }
+
+            // J'ajoute les informations du jeu, les données du jeu API et les handicaps uniques au tableau $gamesApiInfo
+            $gamesApiInfo[] = [
+                'db' => $gameDb,
+                'api' => $gameApi,
+                'uniqueDisabilities' => array_values($uniqueDisabilities),
+            ];
+        }
+
+        // Je retourne le tableau des informations des jeux
+        return $gamesApiInfo;
+    }
+    #endregion
+
+    #region Game 
     // Méthode pour afficher les détails d'un jeu
     #[Route('/game/{id}/{slug}', name: 'show_game')]
     public function showGame(?Game $game, GameRepository $gameRepository): Response
     {
+        // Je vérifie si le jeu existe
         if (!$game) {
             throw $this->createNotFoundException('The game does not exist');
         }
 
+        // Je récupère l'ID du jeu
         $gameId = $game->getId();
+        // Je récupère les détails des fonctionnalités traitées du jeu en faisant appel à la méthode du repository
         $processedFeatures = $gameRepository->findProcessedFeaturesByGame($gameId);
 
+        // J'appelle la méthode privée pour organiser les fonctionnalités par handicap
         $featuresByDisability = $this->organizeFeaturesByDisability($processedFeatures);
 
+        // Je récupère les données du jeu API
         $idGameApi = $game->getIdGameApi();
+        // J'appelle le service pour récupérer les détails du jeu API
         $gameApi = $this->igdbApiService->getGameDetails($idGameApi);
 
-        return $this->render('game/show.html.twig', [
+        // Je retourne à la vue twig en y passant le jeu, les données du jeu API et les fonctionnalités organisées par handicap
+        return $this->render('game/showGame.html.twig', [
             'game' => $game,
             'gameApi' => $gameApi,
             'featuresByDisability' => $featuresByDisability,
@@ -117,156 +141,224 @@ class GameController extends AbstractController
     // Méthode pour organiser les fonctionnalités par handicap et éviter les doublons
     private function organizeFeaturesByDisability(array $processedFeatures): array
     {
-        // Je crée un tableau vide pour stocker les fonctionnalités organisées par handicap
+        // Je crée un tableau vide pour stocker les fonctionnalités
         $features = [];
 
         // Je parcours les fonctionnalités traitées
-        foreach ($processedFeatures as $result) {
-            $featureName = $result['featureName'];
-            $disabilityName = $result['disabilityName'];
+        foreach ($processedFeatures as $feature) {
+            $featureName = $feature['featureName'];
+            $disabilityName = $feature['disabilityName'];
 
             // Si la fonctionnalité n'existe pas encore dans le tableau, je l'ajoute avec ses informations
             if (!isset($features[$featureName])) {
                 $features[$featureName] = [
                     'name' => $featureName,
-                    'state' => $result['state'],
-                    'content' => $result['content'],
+                    'state' => $feature['state'],
+                    'content' => $feature['content'],
                     'disabilityName' => $disabilityName,
-                    'icon' => $result['icon'],
+                    'icon' => $feature['icon'],
                     'images' => []
                 ];
             }
 
             // Si l'URL de l'image n'est pas vide, je l'ajoute au tableau d'images de la fonctionnalité
-            if (!empty($result['url'])) {
+            if (!empty($feature['url'])) {
                 $features[$featureName]['images'][] = [
-                    'url' => $result['url'],
-                    'altText' => $result['altText'],
-                    'title' => $result['title'],
-                    'description' => $result['description'],
-                    'submissionDate' => $result['submissionDate']
+                    'url' => $feature['url'],
+                    'altText' => $feature['altText'],
+                    'title' => $feature['title'],
+                    'description' => $feature['description'],
+                    'submissionDate' => $feature['submissionDate']
                 ];
             }
         }
 
-        // Je crée un tableau vide pour stocker les fonctionnalités organisées par handicap
-        $featuresByDisability = [];
+        // Je crée un tableau pour organiser les fonctionnalités par handicap afin d'éviter les doublons
+        $organizedByDisability = [];
 
-        // Je parcours les fonctionnalités
+        // Je parcours les fonctionnalités pour les organiser par handicap
         foreach ($features as $feature) {
             $disability = $feature['disabilityName'];
 
             // Si le handicap n'existe pas encore dans le tableau, je l'ajoute avec un tableau vide
-            if (!isset($featuresByDisability[$disability])) {
-                $featuresByDisability[$disability] = [];
+            if (!isset($organizedByDisability[$disability])) {
+                $organizedByDisability[$disability] = [];
             }
+
             // J'ajoute la fonctionnalité au tableau correspondant au handicap
-            $featuresByDisability[$disability][] = $feature;
+            $organizedByDisability[$disability][] = $feature;
         }
 
         // Je retourne le tableau des fonctionnalités organisées par handicap
-        return $featuresByDisability;
+        return $organizedByDisability;
     }
+    #endregion
 
+    #region Forum
     // Méthode pour afficher le forum d'un jeu
     #[Route('/forum/{id}/{slug}', name: 'forum_game')]
-    public function showForum(?Game $game, Request $request, EntityManagerInterface $entityManager): Response
+    public function showForum(?Game $game, Request $request): Response
     {
+        // Je vérifie si le jeu existe
+        if (!$game) {
+            throw $this->createNotFoundException('The game does not exist');
+        }
 
-        $user = $this->getUser();
-
+        // Je crée un nouveau topic
         $topic = new Topic();
+        // Je crée un formulaire pour ajouter un topic
         $form = $this->createForm(TopicType::class, $topic);
+        // Je traite la requête
         $form->handleRequest($request);
 
+        // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $entityManager->beginTransaction();
+            $response = $this->addTopic($form, $game);
 
-                $topic = $form->getData();
-                $topic->setGame($game);
-                $topic->setUser($user);
-
-                $postData = $form->get('post')->getData();
-                $post = new Post();
-                // Créer un service dédié pour le sanitizedContent ?
-                $sanitizedContent = $this->htmlSanitizer->sanitize($postData->getContent());
-                $post->setContent($sanitizedContent);
-                $post->setUser($user);
-                $post->setTopic($topic);
-
-                $entityManager->persist($topic);
-                $entityManager->persist($post);
-                $entityManager->flush();
-
-                $entityManager->commit();
-
-                $this->addFlash('success', 'Topic successfully created !');
-                return $this->redirectToRoute('topic_game', [
-                    'id' => $topic->getId(),
-                    'slug' => $topic->getSlug()
-                ]);
-            } catch (\Exception $e) {
-                $entityManager->rollback();
-                $this->addFlash('error', 'An error occurred !');
-                throw $e;
+            // Si la méthode addTopic retourne une réponse, je la retourne
+            if ($response instanceof Response) {
+                return $response;
             }
         }
 
-        return $this->render('game/forum.html.twig', [
+        // Je retourne à la vue twig en y passant le jeu et le formulaire
+        return $this->render('game/showForum.html.twig', [
             'game' => $game,
             'formAddTopic' => $form,
             'controller_name' => 'HomeController',
         ]);
     }
 
-    // Méthode pour afficher un topic
-    #[Route('/topic/{id}/{slug}', name: 'topic_game')]
-    public function showTopic(?Topic $topic, PostRepository $postRepository, Request $request, EntityManagerInterface $entityManager): Response
+    // Méthode privée pour ajouter un topic
+    private function addTopic($form, $game): ?Response
     {
-
+        // Je récupère l'entity manager et l'utilisateur connecté
+        $em = $this->entityManager;
         $user = $this->getUser();
 
+        // Je commence la transaction
+        $em->beginTransaction();
+        try {
+            // Je récupère les données du formulaire
+            $topic = $form->getData();
+            // J'ajoute le jeu et l'utilisateur au topic
+            $topic->setGame($game);
+            $topic->setUser($user);
+
+            // Je persiste le topic
+            $postData = $form->get('post')->getData();
+            // Je crée un nouveau post
+            $post = new Post();
+            // Je nettoie le contenu du post
+            $sanitizedContent = $this->htmlSanitizer->sanitize($postData->getContent());
+            // J'ajoute le contenu nettoyé au post et j'ajoute le user et le topic
+            $post->setContent($sanitizedContent);
+            $post->setUser($user);
+            $post->setTopic($topic);
+
+            // Je persiste le topic et le post et je flush
+            $em->persist($topic);
+            $em->persist($post);
+            $em->flush();
+
+            // Je commit la transaction
+            $em->commit();
+
+            // J'ajoute un message flash de succès
+            $this->addFlash('success', 'Topic successfully created !');
+            // Je redirige vers le topic
+            return $this->redirectToRoute('topic_game', [
+                'id' => $topic->getId(),
+                'slug' => $topic->getSlug()
+            ]);
+            // Si une exception est levée
+        } catch (\Exception $e) {
+            // Je rollback la transaction
+            $em->rollback();
+            $this->addFlash('error', 'An error occurred !');
+            throw $e;
+        }
+    }
+    #endregion
+
+    #region Topic
+    // Méthode pour afficher un topic
+    #[Route('/topic/{id}/{slug}', name: 'topic_game')]
+    public function showTopic(?Topic $topic, PostRepository $postRepository, Request $request): Response
+    {
+        // Je vérifie si le topic existe
+        if (!$topic) {
+            throw $this->createNotFoundException('The topic does not exist');
+        }
+
+        // Je récupère les posts du topic triés par date de publication
         $posts = $postRepository->findBy(['topic' => $topic], ["publicationDate" => "ASC"]);
 
+        // Je crée un nouveau post
         $post = new Post();
-
+        // Je crée un formulaire pour ajouter un post
         $form = $this->createForm(PostType::class, $post);
+        // Je traite la requête
         $form->handleRequest($request);
 
+        // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $entityManager->beginTransaction();
-                $post = $form->getData();
+            $response = $this->addPost($form, $topic);
 
-                $sanitizedContent = $this->htmlSanitizer->sanitize($post->getContent());
-                $post->setContent($sanitizedContent);
-
-                $post->setUser($user);
-                $post->setTopic($topic);
-
-                $entityManager->persist($post);
-                $entityManager->flush();
-
-                $entityManager->commit();
-
-                $this->addFlash('success', 'Topic successfully created !');
-                return $this->redirectToRoute('topic_game', [
-                    'id' => $topic->getId(),
-                    'slug' => $topic->getSlug()
-                ]);
-            } catch (\Exception $e) {
-                $entityManager->rollback();
-                $this->addFlash('error', 'An error occurred !');
-                throw $e;
+            // Si la méthode addPost retourne une réponse, je la retourne
+            if ($response instanceof Response) {
+                return $response;
             }
         }
 
-        return $this->render('game/topic.html.twig', [
+        // Je retourne à la vue twig en y passant le topic, les posts et le formulaire
+        return $this->render('game/showTopic.html.twig', [
             'topic' => $topic,
             'posts' => $posts,
             'formAddPost' => $form,
         ]);
+    }
+
+    // Méthode privée pour ajouter un post
+    private function addPost($form, $topic): ?Response
+    {
+        // Je récupère l'entity manager et l'utilisateur connecté
+        $em = $this->entityManager;
+        $user = $this->getUser();
+        
+        // Je commence la transaction
+        $em->beginTransaction();
+        try {
+            // Je récupère les données du formulaire
+            $post = $form->getData();
+            // Je nettoie le contenu du post
+            $sanitizedContent = $this->htmlSanitizer->sanitize($post->getContent());
+            // J'ajoute le contenu nettoyé au post et j'ajoute le user et le topic
+            $post->setContent($sanitizedContent);
+            $post->setUser($user);
+            $post->setTopic($topic);
+
+            // Je persiste le post et je flush
+            $em->persist($post);
+            $em->flush();
+
+            // Je commit la transaction
+            $em->commit();
+
+            // J'ajoute un message flash de succès
+            $this->addFlash('success', 'Topic successfully created !');
+            // Je redirige vers le topic
+            return $this->redirectToRoute('topic_game', [
+                'id' => $topic->getId(),
+                'slug' => $topic->getSlug()
+            ]);
+            // Si une exception est levée
+        } catch (\Exception $e) {
+            // Je rollback la transaction
+            $em->rollback();
+            $this->addFlash('error', 'An error occurred !');
+            throw $e;
+        }
     }
 
     // Méthode pour éditer un post
@@ -284,4 +376,5 @@ class GameController extends AbstractController
 
         return $this->json(['success' => true, 'message' => "Post edité"], 200);
     }
+    #endregion
 }
