@@ -1,49 +1,81 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Who Can Play ?{% endblock %}
 
 {% block body %}
 
-    <div class="w-full">
-        <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3 pt-5">What is Who Can Play ?</h1>
-        <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
-        <div class="rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5 mt-5 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
-            <p class="text-black dark:text-white pb-5"><strong>Who Can Play</strong> is an initiative born of an end-of-study project aimed at democratizing access to video games for people with disabilities. The project is based on a community platform whose very essence depends on the active involvement of <span class="underline"></span>its users</span>.</p>
-            <p class="text-black dark:text-white pb-5">At present, video game distribution platforms <span class="underline">do not</span> mention accessibility features in their product descriptions. It was to fill this gap that I developed this application, enabling users to contribute directly to improving accessibility.</p>
-            <p class="text-black dark:text-white">Know of an accessibility feature in a game ? Share it on <strong>Who Can Play</strong> ! Your contribution will enrich the database and highlight these essential features. Together, <strong>we can promote greater inclusion</strong> of people with disabilities in the gaming world.</p>
-        </div>
+{# En-tête #}
+<div class="w-full">
+    <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3 pt-5">What is Who Can Play ?</h1>
+    <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+    <div class="rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5 mt-5 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+        <p class="text-black dark:text-white pb-5"><strong>Who Can Play</strong> is an initiative born of an end-of-study project aimed at democratizing access to video games for people with disabilities. The project is based on a community platform whose very essence depends on the active involvement of <span class="underline"></span>its users</span>.</p>
+        <p class="text-black dark:text-white pb-5">At present, video game distribution platforms <span class="underline">do not</span> mention accessibility features in their product descriptions. It was to fill this gap that I developed this application, enabling users to contribute directly to improving accessibility.</p>
+        <p class="text-black dark:text-white">Know of an accessibility feature in a game ? Share it on <strong>Who Can Play</strong> ! Your contribution will enrich the database and highlight these essential features. Together, <strong>we can promote greater inclusion</strong> of people with disabilities in the gaming world.</p>
     </div>
+</div>
 
-    <div>
-        <div class="flex justify-between items-end">
-            <h2 class="text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Latest games added</h2>
-            <a href="{{ path('app_game') }}" class="text-black dark:text-white">See All</a>
-        </div>
-        <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
-        <div id="game-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-5">
-            {% for game in games %}
-            <div id="game-card" class="rounded-xl overflow-hidden flex flex-col bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
-                <div class="relative">
-                    <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}">
-                        <img src="https://images.igdb.com/igdb/image/upload/t_screenshot_med/{{ game.api.cover.image_id }}.jpg" alt="{{ game.api.name }}">
-                        <div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
-                    </a>
-                </div>
-                <div class="px-6 py-4 mb-auto">
-                    <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}" class="text-black dark:text-white font-bold">{{ game.api.name }}</a>
-                    <p class="text-gray-500 dark:text-white text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                </div>
+{# Derniers jeux ajoutés #}
+<div>
+    <div class="flex justify-between items-end">
+        <h2 class="text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Latest games added</h2>
+        <a href="{{ path('app_game') }}" class="text-black dark:text-white">See All</a>
+    </div>
+    <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+    <div id="game-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-5">
+        {% for game in games %}
+        <div id="game-card" class="rounded-xl overflow-hidden flex flex-col bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <div class="relative">
+                <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}">
+                    <img src="https://images.igdb.com/igdb/image/upload/t_screenshot_med/{{ game.api.cover.image_id }}.jpg" alt="{{ game.api.name }}">
+                    <div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
+                </a>
             </div>
-            {% endfor %}
+            <div class="px-6 py-4 mb-auto">
+                <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}" class="text-black dark:text-white font-bold">{{ game.api.name }}</a>
+                <p class="text-gray-500 dark:text-white text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
         </div>
+        {% endfor %}
     </div>
+</div>
 
-    {# <button id="open-button">Open</button>
+{# Dernières fonctionnalités ajoutées #}
+<div>
+    <div class="flex justify-between items-end">
+        <h2 class="text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Latest features added</h2>
+    </div>
+    <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+    <div id="game-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-5">
+        {% for feature in features %}
+        <div id="game-card" class="rounded-xl overflow-hidden flex flex-col bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <div class="relative">
+                <a href="{{ path('show_game', {'id': feature.game.id, 'slug':feature.game.slug}) }}">
+                    {% set firstImage = false %}
+                    {% for image in feature.images %}
+                    {% if not firstImage %}
+                    <img src="{{ asset('assets/uploads/features/' ~ image.url) }}" alt="{{ image.title }}" class="w-full h-[250px] object-cover">
+                    <div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
+                    {% set firstImage = true %}
+                    {% endif %}
+                    {% endfor %}
+                </a>
+            </div>
+            <div class="px-6 py-4 mb-auto">
+                <a href="{{ path('show_game', {'id': feature.game.id, 'slug':feature.game.slug}) }}" class="text-black dark:text-white font-bold">{{ feature }}</a>
+                <p class="text-gray-500 dark:text-white text-sm">{{ feature.content }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
-    <dialog id="modal">
-        <h2>Ceci est un test</h2>
-        <p>Test</p>
-        <button id="close-button">Close</button>
-    </dialog> #}
+{# <button id="open-button">Open</button>
+
+<dialog id="modal">
+    <h2>Ceci est un test</h2>
+    <p>Test</p>
+    <button id="close-button">Close</button>
+</dialog> #}
 
 {% endblock %}
