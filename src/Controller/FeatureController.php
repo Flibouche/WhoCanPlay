@@ -62,10 +62,6 @@ class FeatureController extends AbstractController
             // J'appelle la méthode privée pour envoyer la feature au jeu
             $this->sendFeatureToGame($feature, $form, $em, $is);
             return $this->redirectToRoute('app_home');
-        } else {
-            // Si le formulaire n'est pas valide, j'affiche un message d'erreur
-            $this->addFlash('error', 'The form is not valid');
-            return $this->redirectToRoute('app_home');
         }
     
         // J'affiche la vue avec le formulaire et les données

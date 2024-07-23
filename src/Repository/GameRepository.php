@@ -19,7 +19,7 @@ class GameRepository extends ServiceEntityRepository
     public function findProcessedFeaturesByGame($gameId)
     {
         $qb = $this->createQueryBuilder('g')
-            ->select('f.state', 'f.name AS featureName', 'f.content', 'd.name AS disabilityName', 'd.icon', 'i.url', 'i.altText', 'i.title', 'i.description', 'i.submissionDate')
+            ->select('f.id', 'f.state', 'f.name AS featureName', 'f.content', 'd.name AS disabilityName', 'd.icon', 'i.url', 'i.altText', 'i.title', 'i.description', 'i.submissionDate')
             ->leftJoin('g.features', 'f')
             ->leftJoin('f.disability', 'd')
             ->leftJoin('f.images', 'i')

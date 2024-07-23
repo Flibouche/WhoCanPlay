@@ -147,12 +147,14 @@ class GameController extends AbstractController
 
         // Je parcours les fonctionnalités traitées
         foreach ($processedFeatures as $feature) {
+            $featureId = $feature['id'];
             $featureName = $feature['featureName'];
             $disabilityName = $feature['disabilityName'];
 
             // Si la fonctionnalité n'existe pas encore dans le tableau, je l'ajoute avec ses informations
             if (!isset($features[$featureName])) {
                 $features[$featureName] = [
+                    'id' => $featureId,
                     'name' => $featureName,
                     'state' => $feature['state'],
                     'content' => $feature['content'],
