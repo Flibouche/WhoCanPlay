@@ -39,40 +39,95 @@
             doloribus ullam laudantium nisi libero consectetur, fuga laborum rem sed at molestias illo minima
             dignissimos, atque quidem. Quos dolorum debitis dicta!</p>
 
-        <details class="mt-5">
+        <details class="mt-5 border rounded-xl border-black">
             <summary class="bg-white/20 dark:bg-neutral-800 p-4 rounded-lg cursor-pointer shadow-md mb-4">
                 <span class="font-semibold text-black dark:text-white">HTML Version</span>
             </summary>
-            <div class="border px-5">
-                <div id="home-html" class="pb-5">
-                    <ul class="list-disc list-inside font-semibold"><a href="{{ path('app_home') }}">Home</a>
-                        <li>Site Map</li>
-                        <li>Help</li>
-                        <li>Contact</li>
-                        <li>Accessibility Statement</li>
-                        <li>Terms & Conditions</li>
-                        <li>Privacy Policy</li>
-                    </ul>
-                </div>
-
-                <div id="games-html" class="pb-5">
-                    <ul class="list-disc list-inside font-semibold">Games
-                        <li>Game informations
-                            <ul class="pl-5 list-disc list-inside font-semibold">
-                                <li>Forum of the game
-                                    <ul class="pl-5 list-disc list-inside font-semibold">
-                                        <li>Topics of the forum</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <div id="submission-html">
-                        <ul class="list-disc list-inside font-semibold">Make a submission
+            <div class="px-5 py-5 dark:bg-neutral-800">
+                <ul class="text-slate-700 text-sm leading-6">
+                    {# Home #}
+                    <li>
+                        <a href="{{ path('app_home') }}" class="block py-1 font-bold text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Home</a>
+                        <ul>
+                            <li class="ml-4">
+                                <a href="{{ path('app_sitemap') }}" class="group flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Site Map
+                                </a>
+                            </li>
+                            <li class="ml-4">
+                                <a href="{{ path('app_help') }}" class="group flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Help
+                                </a>
+                            </li>
+                            <li class="ml-4">
+                                <a href="{{ path('app_contact') }}" class="group flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Contact
+                                </a>
+                            </li>
+                            <li class="ml-4">
+                                <a href="{{ path('app_accessibility_statement') }}" class="group flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Accessibility Statement
+                                </a>
+                            </li>
+                            <li class="ml-4">
+                                <a href="{{ path('app_terms_and_conditions') }}" class="group flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Terms & Conditions
+                                </a>
+                            </li>
+                            <li class="ml-4">
+                                <a href="{{ path('app_privacy_policy') }}" class="group flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Privacy Policy
+                                </a>
+                            </li>
                         </ul>
-                    </div>
-                </div>
+                    </li>
+                    
+                    {# Games #}
+                    <li>
+                        <a href="{{ path('app_games') }}" class="block py-1 font-bold text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Games</a>
+                        <ul>
+                            <li class="ml-4">
+                                <p class="group select-none flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Game informations
+                                </p>
+                            </li>
+                            <li class="ml-8">
+                                <p class="group select-none flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Forum of the game
+                                </p>
+                            </li>
+                            <li class="ml-12">
+                                <p class="group select-none flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Topics of the forum
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {# Make a submission #}
+                    <li>
+                        <a href="{{ path('app_feature') }}" class="block py-1 font-bold text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Make a submission</a>
+                    </li>
+                    
+                </ul>
             </div>
         </details>
 
@@ -80,28 +135,34 @@
             <summary class="bg-white/20 dark:bg-neutral-800 p-4 rounded-lg cursor-pointer shadow-md mb-4">
                 <span class="font-semibold text-black dark:text-white">Flat Version</span>
             </summary>
-            <div>
-                <div id="home-flat">
-                        <pre>
-                            <code>
-                                Who Can Play ?
-                                ├─ Home
-                                │ ├─ Site Map
-                                │ ├─ Help
-                                │ ├─ Contact
-                                │ ├─ Accessibility Statement
-                                │ ├─ Terms & Conditions
-                                │ └─ Privacy Policy
-                                ├─ Games
-                                │ └─ Games informations
-                                │ │ └─ Forum of the game
-                                │ │ │ └─ Topics of the forum
-                                ├─ Make a submission
-                            </code>
-                        </pre>
-                </div>
+            <div id="flat">
+                <pre>
+                    <code>
+                        Who Can Play ?
+                        ├─ Home
+                        │ ├─ Site Map
+                        │ ├─ Help
+                        │ ├─ Contact
+                        │ ├─ Accessibility Statement
+                        │ ├─ Terms & Conditions
+                        │ └─ Privacy Policy
+                        ├─ Games
+                        │ └─ Game informations
+                        │ │ └─ Forum of the game
+                        │ │ │ └─ Topics of the forum
+                        ├─ Make a submission
+                    </code>
+                </pre>
             </div>
+        </details>
 
+        <details class="mt-5">
+            <summary class="bg-white/20 dark:bg-neutral-800 p-4 rounded-lg cursor-pointer shadow-md mb-4">
+                <span class="font-semibold text-black dark:text-white">Visual Version</span>
+            </summary>
+            <div></div>
+        </details>
+        
     </div>
 </div>
 

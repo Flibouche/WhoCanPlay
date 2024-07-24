@@ -35,7 +35,7 @@ class GameController extends AbstractController
 
     #region Gamelist
     // Méthode pour afficher la liste des jeux
-    #[Route('/games', name: 'app_game')]
+    #[Route('/games', name: 'app_games')]
     public function gameList(GameRepository $gameRepository): Response
     {
         // Je récupère les jeux actifs
