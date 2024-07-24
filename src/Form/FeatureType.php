@@ -86,6 +86,7 @@ class FeatureType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Feature::class,
+            'sanitize_html' => true,
         ]);
     }
 }

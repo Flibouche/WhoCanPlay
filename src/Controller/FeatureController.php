@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 
 class FeatureController extends AbstractController
 {
@@ -22,12 +23,14 @@ class FeatureController extends AbstractController
     private $igdbApiService;
     private $entityManager;
     private $imageService;
+    private $htmlSanitizer;
 
-    public function __construct(IgdbApiService $igdbApiService, EntityManagerInterface $entityManager, ImageService $imageService)
+    public function __construct(IgdbApiService $igdbApiService, EntityManagerInterface $entityManager, ImageService $imageService, HtmlSanitizerInterface $htmlSanitizer)
     {
         $this->igdbApiService = $igdbApiService;
         $this->entityManager = $entityManager;
         $this->imageService = $imageService;
+        $this->htmlSanitizer = $htmlSanitizer;
     }
 
     // Méthode pour envoyer une Feature à un jeu pour traitement
@@ -85,7 +88,17 @@ class FeatureController extends AbstractController
         $images = $form->get('images')->getData();
         $idGameApi = $form->get('id_game_api')->getData();
         $featureName = $form->get('name')->getData();
+        $featureContent = $form->get('content')->getData();
         $imagesDescription = $form->get('description')->getData();
+
+        // Je nettoie le nom de la feature, l'alt que ça attribu à l'image et la description de l'image pour éviter les failles XSS
+        $sanitizedName = $this->htmlSanitizer->sanitize($featureName);
+        $sanitizedContent = $this->htmlSanitizer->sanitize($featureContent);
+        $sanitizedDescription = $this->htmlSanitizer->sanitize($imagesDescription);
+
+        // J'ajoute le nom et le contenu sanitizé à la feature
+        $feature->setName($sanitizedName);
+        $feature->setContent($sanitizedContent);
     
         // Pour chaque image, je la traite et l'ajoute à la feature
         foreach ($images as $image) {
@@ -93,9 +106,11 @@ class FeatureController extends AbstractController
             $file = $is->add($image, $folder, 300, 300);
             $img = new Image();
             $img->setUrl($file);
-            $img->setTitle($featureName);
-            $img->setAltText($featureName);
-            $img->setDescription($imagesDescription);
+
+            $img->setTitle($sanitizedName);
+            $img->setAltText($sanitizedName);
+            $img->setDescription($sanitizedDescription);
+
             $feature->addImage($img);
         }
     

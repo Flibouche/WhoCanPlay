@@ -137,11 +137,10 @@ class ModeratorController extends AbstractController
             throw $this->createNotFoundException('Feature not found');
         }
 
-        
+        // Je commence une transaction pour garantir l'atomicité des opérations pour l'ajout en BDD
+        // Atomicité : ensemble d'opérations d'un programme qui s'exécutent entièrement sans pouvoir être interrompues avant la fin de leur déroulement
+        $em->beginTransaction();
         try {
-            // Je commence une transaction pour garantir l'atomicité des opérations pour l'ajout en BDD
-            // Atomicité : ensemble d'opérations d'un programme qui s'exécutent entièrement sans pouvoir être interrompues avant la fin de leur déroulement
-            $em->beginTransaction();
             
             // Je change le State de mon objet Feature à ACCEPTED
             $feature->setState(FeatureState::PROCESSED);

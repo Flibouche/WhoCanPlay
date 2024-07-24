@@ -8,6 +8,7 @@ use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -23,7 +24,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, HtmlSanitizerInterface $htmlSanitizer): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -34,6 +35,12 @@ class RegistrationController extends AbstractController
             if (!empty($form['email_confirm']->getData())) {
                 throw new \Exception('Bot detected !');
             }
+
+            $sanitizedEmail = $htmlSanitizer->sanitize($user->getEmail());
+            $sanitizedPseudo = $htmlSanitizer->sanitize($user->getPseudo());
+
+            $user->setEmail($sanitizedEmail);
+            $user->setPseudo($sanitizedPseudo);
 
             // encode the plain password
             $user->setPassword(

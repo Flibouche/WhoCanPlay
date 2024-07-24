@@ -248,13 +248,17 @@ class GameController extends AbstractController
             $topic->setGame($game);
             $topic->setUser($user);
 
-            // Je persiste le topic
-            $postData = $form->get('post')->getData();
-            // Je crée un nouveau post
+            // Je récupère le titre du topic et le contenu du post
+            $topicTitle = $form->get('title')->getData();
+            $postContent = $form->get('post')->getData();
+            
+            // Je nettoie le contenu du titre et du post
+            $sanitizedTitle = $this->htmlSanitizer->sanitize($topicTitle);
+            $sanitizedContent = $this->htmlSanitizer->sanitize($postContent->getContent());
+
+            // J'ajoute le contenu nettoyé au titre du topic et au post et j'ajoute le user et le topic correspondant
+            $topic->setTitle($sanitizedTitle);
             $post = new Post();
-            // Je nettoie le contenu du post
-            $sanitizedContent = $this->htmlSanitizer->sanitize($postData->getContent());
-            // J'ajoute le contenu nettoyé au post et j'ajoute le user et le topic
             $post->setContent($sanitizedContent);
             $post->setUser($user);
             $post->setTopic($topic);
@@ -269,6 +273,7 @@ class GameController extends AbstractController
 
             // J'ajoute un message flash de succès
             $this->addFlash('success', 'Topic successfully created !');
+            
             // Je redirige vers le topic
             return $this->redirectToRoute('topic_game', [
                 'id' => $topic->getId(),

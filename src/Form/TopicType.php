@@ -28,6 +28,7 @@ class TopicType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Topic::class,
+            'sanitize_html' => true,
         ]);
     }
 }

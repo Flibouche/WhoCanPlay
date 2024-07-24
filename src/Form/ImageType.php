@@ -54,6 +54,7 @@ class ImageType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Image::class,
+            'sanitize_html' => true,
         ]);
     }
 }
