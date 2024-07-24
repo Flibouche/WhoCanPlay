@@ -137,19 +137,20 @@ class ModeratorController extends AbstractController
             throw $this->createNotFoundException('Feature not found');
         }
 
+        
         try {
             // Je commence une transaction pour garantir l'atomicité des opérations pour l'ajout en BDD
             // Atomicité : ensemble d'opérations d'un programme qui s'exécutent entièrement sans pouvoir être interrompues avant la fin de leur déroulement
             $em->beginTransaction();
-
+            
             // Je change le State de mon objet Feature à ACCEPTED
             $feature->setState(FeatureState::PROCESSED);
-
+            
             // Je vérifie si le State de mon objet Feature a bien été changé en ACCEPTED
             if ($feature->getState() == FeatureState::PROCESSED) {
                 // Je récupère ou je crée le jeu associé à l'IDGameApi de mon objet Feature
-                $game = $this->getOrCreateGame($em, $feature->getIdGameApi());
-
+                $game = $this->getOrCreateGame($feature->getIdGameApi());
+                
                 // Je vérifie si le Statut de mon objet Game est false et je le change en true 
                 if (!$game->isStatus()) {
                     $game->setStatus(true);
