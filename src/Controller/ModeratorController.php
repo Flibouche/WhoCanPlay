@@ -5,18 +5,14 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Entity\Feature;
 use App\Enum\FeatureState;
-use App\Form\ApplicationType;
 use App\Service\IgdbApiService;
 use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 
 class ModeratorController extends AbstractController
 {
@@ -37,14 +33,14 @@ class ModeratorController extends AbstractController
     {
         // Je définis les états que je veux récupérer
         $states = [FeatureState::NOT_OPENED, FeatureState::PENDING, FeatureState::PROCESSED, FeatureState::DENIED];
-        
+
         // J'utilise la méthode findFeaturesByStates pour récupérer les Features par State
         $features = $featureRepository->findFeaturesByStates($states);
-        
+
         // J'extrait les ID des jeux associés aux Features et j'enlève les doublons avec array_unique
         // Je crée donc un tableau d'ID unique à partir des Features
-        $gameApiIds = array_unique(array_map(fn($feature) => $feature->getIdGameApi(), $features));
-        
+        $gameApiIds = array_unique(array_map(fn ($feature) => $feature->getIdGameApi(), $features));
+
         // J'utilise le service pour obtenir les informations des jeux en utilisant les ID que j'ai récupéré plus haut
         $gamesApiData = $this->igdbApiService->getGameByIds($gameApiIds);
 
@@ -76,12 +72,12 @@ class ModeratorController extends AbstractController
                 FeatureState::DENIED => 'denied',
                 default => null,
             };
-            
+
             // Vérification si $stateKey est différent de null
             if ($stateKey !== null) {
                 // Je récupère les informations du jeu à partir du tableau indexé que j'ai crée plus haut
                 $gameApi = $gamesApiDataById[$idGameApi] ?? null;
-                
+
                 // J'ajoute le Feature et les informations du jeu associé dans le tableau
                 $featuresGames[$stateKey][] = [
                     'feature' => $feature,
@@ -142,15 +138,15 @@ class ModeratorController extends AbstractController
         // Atomicité : ensemble d'opérations d'un programme qui s'exécutent entièrement sans pouvoir être interrompues avant la fin de leur déroulement
         $em->beginTransaction();
         try {
-            
+
             // Je change le State de mon objet Feature à ACCEPTED
             $feature->setState(FeatureState::PROCESSED);
-            
+
             // Je vérifie si le State de mon objet Feature a bien été changé en ACCEPTED
             if ($feature->getState() == FeatureState::PROCESSED) {
                 // Je récupère ou je crée le jeu associé à l'IDGameApi de mon objet Feature
                 $game = $this->getOrCreateGame($feature->getIdGameApi());
-                
+
                 // Je vérifie si le Statut de mon objet Game est false et je le change en true 
                 if (!$game->isStatus()) {
                     $game->setStatus(true);
@@ -251,27 +247,5 @@ class ModeratorController extends AbstractController
         $em->persist($game);
         $em->flush();
     }
-
-    #[Route('/application', name: 'app_application')]
-    public function application(Request $request, MailerInterface $mailer): Response
-    {
-        $form = $this->createForm(ApplicationType::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $application = $form->getData();
-
-            $email = (new Email())
-            ->from($application['email'])
-            ->to('admin@whocanplay.com')
-            ->subject('Application to become a moderator')
-            ->html($application['content']);
-
-        $mailer->send($email);
-        }
-        
-        return $this->render('moderator/application.html.twig', [
-            'controller_name' => 'ModeratorController',
-            'formApplication' => $form,
-        ]);
-    }
+    #endregion
 }
