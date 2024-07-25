@@ -46,15 +46,15 @@
         <h2 class="text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Latest features added</h2>
     </div>
     <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
-    <div id="game-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-5">
+    <div id="feature-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-5">
         {% for feature in features %}
-        <div id="game-card" class="rounded-xl overflow-hidden flex flex-col bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+        <div id="feature-card" class="rounded-xl overflow-hidden flex flex-col bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
             <div class="relative">
                 <a href="{{ path('show_game', {'id': feature.game.id, 'slug':feature.game.slug}) }}">
                     {% set firstImage = false %}
                     {% for image in feature.images %}
                     {% if not firstImage %}
-                    <img src="{{ asset('assets/uploads/features/' ~ image.url) }}" alt="{{ image.title }}" class="w-full h-[250px] object-cover">
+                    <img src="{{ asset('assets/uploads/features/' ~ image.url) }}" alt="{{ image.title }}" class="object-fill">
                     <div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
                     {% set firstImage = true %}
                     {% endif %}

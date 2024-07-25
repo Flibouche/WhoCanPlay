@@ -9,6 +9,7 @@ use App\Repository\FeatureRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FeatureRepository::class)]
 class Feature
@@ -24,6 +25,7 @@ class Feature
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'features')]
+    #[Assert\NotNull(message: 'The disability of the feature cannot be empty.')]
     private ?Disability $disability = null;
 
     #[ORM\ManyToOne(inversedBy: 'features')]
@@ -36,18 +38,40 @@ class Feature
     private ?int $id_game_api = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message :'The name of the feature cannot be empty.')]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'The name of the feature must be at least {{ limit }} characters long.',
+        maxMessage: 'The name of the feature cannot be longer than {{ limit }} characters.'
+        )]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message :'The content of the feature cannot be empty.')]
+    #[Assert\Length(
+        min: 10,
+        minMessage: 'The content of the feature must be at least {{ limit }} characters long.'
+        )]
     private ?string $content = null;
 
     #[ORM\Column(type: 'string', enumType: FeatureState::class)]
+    #[Assert\Choice(
+        choices: [FeatureState::NOT_OPENED, FeatureState::PENDING, FeatureState::PROCESSED, FeatureState::DENIED],
+        message: 'The value {{ value }} is not a valid choice. The available choices are {{ choices }}.'
+    )]
     private FeatureState $state = FeatureState::NOT_OPENED;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotNull(message: 'The submission date of the feature cannot be empty.')]
+    #[Assert\Type(
+        type: '\DateTimeInterface',
+        message: 'The value {{ value }} is not a valid {{ type }}.'
+    )]
     private ?\DateTimeInterface $submissionDate = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
