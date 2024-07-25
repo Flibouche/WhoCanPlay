@@ -27,7 +27,7 @@ class Game
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private ?bool $status = false;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     #[Assert\Length(max: 255)]
     private ?string $slug = null;
 

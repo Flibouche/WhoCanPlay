@@ -70,7 +70,7 @@ class Feature
     )]
     private ?\DateTimeInterface $submissionDate = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     #[Assert\Length(max: 255)]
     private ?string $slug = null;
 
