@@ -96,6 +96,11 @@ class FeatureController extends AbstractController
         $sanitizedContent = $this->htmlSanitizer->sanitize($featureContent);
         $sanitizedDescription = $this->htmlSanitizer->sanitize($imagesDescription);
 
+        // Je vérifie que le nom et le contenu ne sont pas vides pour éviter l'ajout de données vides en base de données
+        if (empty($sanitizedName) || empty($sanitizedContent) || empty($sanitizedDescription)) {
+            return;
+        }
+
         // J'ajoute le nom et le contenu sanitizé à la feature
         $feature->setName($sanitizedName);
         $feature->setContent($sanitizedContent);

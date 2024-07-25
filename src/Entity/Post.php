@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\PostRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
@@ -21,15 +20,20 @@ class Post
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank]
+    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'The content of the post cannot be empty.')]
     #[Assert\Regex(
         pattern: '/^[\s\S]*(<(p|br|strong|em|u|h[1-6]|ul|ol|li)[^>]*>[\s\S]*<\/\2>|<(br)[^>]*\/?>)*[\s\S]*$/',
         message: 'The content contains unauthorized HTML tags.'
     )]
-    #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: 'The publication date of the post cannot be empty.')]
+    #[Assert\Type(
+        type: '\DateTimeInterface',
+        message: 'The value {{ value }} is not a valid {{ type }}.'
+    )]
     private ?\DateTimeInterface $publicationDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
