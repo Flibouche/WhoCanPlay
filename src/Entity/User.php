@@ -35,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     #[Assert\NotBlank(message: 'Email must not be empty.')]
-    #[Assert\Email(message: 'Email is not valid.')]
+    #[Assert\Email(message: 'The email "{{ value }}" is not a valid email.')]
     #[Assert\Length(
         min: 3,
         max: 180,
@@ -54,12 +54,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'Password must not be empty.')]
-    #[Assert\Length(
-        min: 12,
-        max: 4096,
-        minMessage: 'Your password should be at least {{ limit }} characters.',
-    )]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]

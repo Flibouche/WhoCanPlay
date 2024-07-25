@@ -18,11 +18,6 @@ class PostType extends AbstractType
             ->add('content', TextareaType::class, [
                 'required' => true,
                 'label' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'The content of the post cannot be empty.'
-                    ])
-                ]
             ])
 
             ->add('submit', SubmitType::class, [

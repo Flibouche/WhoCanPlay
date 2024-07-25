@@ -15,6 +15,43 @@
     </div>
 </div>
 
+<style>
+    .flash-notice {
+        background-color: #e7f3fe;
+        color: #31708f;
+        padding: 10px;
+        border: 1px solid #bce8f1;
+        border-radius: 5px;
+        margin: 10px 0;
+    }
+    
+    .flash-error {
+        background-color: #f2dede;
+        color: #a94442;
+        padding: 10px;
+        border: 1px solid #ebccd1;
+        border-radius: 5px;
+        margin: 10px 0;
+    }
+    
+    .flash-success {
+        background-color: #dff0d8;
+        color: #3c763d;
+        padding: 10px;
+        border: 1px solid #d6e9c6;
+        border-radius: 5px;
+        margin: 10px 0;
+    }
+</style>
+
+{% for label, messages in app.flashes %}
+<div class="flash-{{ label }}">
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endfor %}
+
 {# Derniers jeux ajoutés #}
 <div>
     <div class="flex justify-between items-end">

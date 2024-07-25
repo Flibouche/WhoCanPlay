@@ -15,74 +15,41 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\UX\TogglePassword\Form\TogglePasswordTypeExtension;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Email must not be empty.'
-                    ]),
-                    new Regex([
-                        'pattern' => '^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$^',
-                        'message' => 'Email incorrect.'
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'max' => 180,
-                        'minMessage' => 'Email must contain at least three characters.',
-                        'maxMessage' => 'Email cannot be longer that {{ limit }}.'
-                    ]),
-                ]
-            ])
-            ->add('pseudo', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Username must not be empty.'
-                    ]),
-                    new Length([
-                        'min' => 3,
-                        'max' => 50,
-                        'minMessage' => 'Your username should be at least {{ limit }} characters.',
-                        'maxMessage' => 'Your username cannot be longer than {{ limit }} characters.'
-                    ]),
-                    new Regex([
-                        'pattern' => '/^[a-zA-Z0-9_]+$/',
-                        'message' => 'Your username can only contain letters, numbers and underscores.'
-                    ])
-                ]
-            ])
+            ->add('email', EmailType::class)
+            ->add('pseudo', TextType::class)
             ->add('plainPassword', RepeatedType::class, [
-                'mapped' => false,
                 'type' => PasswordType::class,
+                'mapped' => false,
                 'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field'], 'label_attr' => ['class' => 'block'],],
+                'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Password must not be empty.',
-                    ]),
-                    new Length([
-                        'min' => 12,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        'max' => 4096, // max length allowed by Symfony for security reasons
-                    ]),
-                    new Regex([
-                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
-                        'message' => 'Your password must contain at least one lowercase letter, one uppercase letter, one number and one special character.'
-                    ]),
+                'first_options'  => [
+                    'label' => 'Password',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Password must not be empty.',
+                        ]),
+                        new Length([
+                            'min' => 12,
+                            'minMessage' => 'Your password should be at least {{ limit }} characters.',
+                            'max' => 4096,
+                            'maxMessage' => 'Your password cannot be longer than {{ limit }} characters.',
+                        ]),
+                        new Regex([
+                            'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
+                            'message' => 'Your password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.',
+                        ]),
+                    ],
                 ],
+                'second_options' => ['label' => 'Repeat Password'],
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'required' => true,
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -90,8 +57,6 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-
-
             ->add('email_confirm', TextType::class, [
                 'mapped' => false,
                 'required' => false,

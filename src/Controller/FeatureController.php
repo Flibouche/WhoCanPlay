@@ -64,6 +64,7 @@ class FeatureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // J'appelle la méthode privée pour envoyer la feature au jeu
             $this->sendFeatureToGame($feature, $form, $em, $is);
+            $this->addFlash('success', 'Your feature has been sent to the moderators for processing.');
             return $this->redirectToRoute('app_home');
         }
     

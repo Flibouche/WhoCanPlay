@@ -23,7 +23,7 @@ class Post
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: 'The content of the post cannot be empty.')]
     #[Assert\Regex(
-        pattern: '/^[\p{L}\p{N}\s.,!?\'"-:()@\[\]{}<>\u{1F600}-\u{1F64F}]+$/u',
+        pattern: '/^[\p{L}\p{N}\s.,!?\'"()-:]+$/u',
         message: 'The content can only contain letters, numbers, spaces, and certain punctuation.'
     )]
     private ?string $content = null;
