@@ -105,6 +105,16 @@ class HomeController extends AbstractController
         ]);
     }
 
+    // Méthode pour afficher la page de FAQ
+    #[Route('/faq', name: 'app_faq')]
+    public function faq(): Response
+    {
+
+        return $this->render('home/faq.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
+
     // Méthode pour afficher la page d'aide
     #[Route('/help', name: 'app_help')]
     public function help(): Response
