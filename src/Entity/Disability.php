@@ -30,6 +30,10 @@ class Disability
         minMessage: 'The name of the disability must be at least {{ limit }} characters long.',
         maxMessage: 'The name of the disability cannot be longer than {{ limit }} characters.'
     )]
+    #[Assert\Regex(
+        pattern: '/^[\p{L}\p{N}\s.,!?\'"()-:]+$/u',
+        message: 'The name can only contain letters, numbers, spaces, and certain punctuation.'
+    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]

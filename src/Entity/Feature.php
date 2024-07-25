@@ -45,6 +45,10 @@ class Feature
         minMessage: 'The name of the feature must be at least {{ limit }} characters long.',
         maxMessage: 'The name of the feature cannot be longer than {{ limit }} characters.'
         )]
+    #[Assert\Regex(
+        pattern: '/^[\p{L}\p{N}\s.,!?\'"()-:]+$/u',
+        message: 'The name can only contain letters, numbers, spaces, and certain punctuation.'
+    )]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -53,6 +57,10 @@ class Feature
         min: 10,
         minMessage: 'The content of the feature must be at least {{ limit }} characters long.'
         )]
+    #[Assert\Regex(
+        pattern: '/^[\p{L}\p{N}\s.,!?\'"()-:]+$/u',
+        message: 'The name can only contain letters, numbers, spaces, and certain punctuation.'
+    )]
     private ?string $content = null;
 
     #[ORM\Column(type: 'string', enumType: FeatureState::class)]

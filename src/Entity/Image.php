@@ -34,6 +34,10 @@ class Image
         minMessage: 'The title of the image must be at least {{ limit }} characters long.',
         maxMessage: 'The title of the image cannot be longer than {{ limit }} characters.'
     )]
+    #[Assert\Regex(
+        pattern: '/^[\p{L}\p{N}\s.,!?\'"()-:]+$/u',
+        message: 'The title can only contain letters, numbers, spaces, and certain punctuation.'
+    )]
     private ?string $title = null;
 
     #[ORM\Column(length: 50)]
@@ -44,9 +48,17 @@ class Image
         minMessage: 'The alt text of the image must be at least {{ limit }} characters long.',
         maxMessage: 'The alt text of the image cannot be longer than {{ limit }} characters.'
     )]
+    #[Assert\Regex(
+        pattern: '/^[\p{L}\p{N}\s.,!?\'"()-:]+$/u',
+        message: 'The title can only contain letters, numbers, spaces, and certain punctuation.'
+    )]
     private ?string $altText = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Regex(
+        pattern: '/^[\p{L}\p{N}\s.,!?\'"()-:]+$/u',
+        message: 'The title can only contain letters, numbers, spaces, and certain punctuation.'
+    )]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

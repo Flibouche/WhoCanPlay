@@ -23,8 +23,8 @@ class Post
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: 'The content of the post cannot be empty.')]
     #[Assert\Regex(
-        pattern: '/^[\s\S]*(<(p|br|strong|em|u|h[1-6]|ul|ol|li)[^>]*>[\s\S]*<\/\2>|<(br)[^>]*\/?>)*[\s\S]*$/',
-        message: 'The content contains unauthorized HTML tags.'
+        pattern: '/^[\p{L}\p{N}\s.,!?\'"-:()@\[\]{}<>\u{1F600}-\u{1F64F}]+$/u',
+        message: 'The content can only contain letters, numbers, spaces, and certain punctuation.'
     )]
     private ?string $content = null;
 

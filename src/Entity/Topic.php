@@ -31,6 +31,10 @@ class Topic
         minMessage: 'The title of the topic must be at least {{ limit }} characters long.',
         maxMessage: 'The title of the topic cannot be longer than {{ limit }} characters.'
     )]
+    #[Assert\Regex(
+        pattern: '/^[\p{L}\p{N}\s.,!?\'"()-:]+$/u',
+        message: 'The title can only contain letters, numbers, spaces, and certain punctuation.'
+    )]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -41,7 +45,7 @@ class Topic
     )]
     private ?\DateTimeInterface $creationDate = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private ?bool $isLocked = false;
 
     #[ORM\ManyToOne(inversedBy: 'topics')]
