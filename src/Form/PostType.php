@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Post;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -15,11 +16,15 @@ class PostType extends AbstractType
     {
         $builder
             ->add('content', TextareaType::class, [
-                'attr' => [
-                    'class' => 'tinymce',
-                ],
+                'required' => true,
                 'label' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'The content of the post cannot be empty.'
+                    ])
+                ]
             ])
+
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'bg-red-500 px-3 py-1',
