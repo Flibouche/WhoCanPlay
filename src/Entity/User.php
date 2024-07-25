@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -33,6 +34,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(message: 'Email must not be empty.')]
+    #[Assert\Email(message: 'Email is not valid.')]
+    #[Assert\Length(
+        min: 3,
+        max: 180,
+        minMessage: 'Email must contain at least three characters.',
+        maxMessage: 'Email cannot be longer than {{ limit }}.'
+    )]
     private ?string $email = null;
 
     /**
@@ -45,15 +54,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Password must not be empty.')]
+    #[Assert\Length(
+        min: 12,
+        max: 4096,
+        minMessage: 'Your password should be at least {{ limit }} characters.',
+    )]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'Username must not be empty.')]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Your username should be at least {{ limit }} characters.',
+        maxMessage: 'Your username cannot be longer than {{ limit }} characters.'
+    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9_]+$/',
+        message: 'Your username can only contain letters, numbers and underscores.'
+    )]
     private ?string $pseudo = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private ?bool $isBanned = false;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private ?bool $isVerified = false;
 
     /**

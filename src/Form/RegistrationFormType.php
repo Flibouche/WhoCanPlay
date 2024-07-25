@@ -33,9 +33,9 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Email incorrect.'
                     ]),
                     new Length([
-                        'min' => 1,
-                        'max' => 255,
-                        'minMessage' => 'Email must contain at least one character.',
+                        'min' => 3,
+                        'max' => 180,
+                        'minMessage' => 'Email must contain at least three characters.',
                         'maxMessage' => 'Email cannot be longer that {{ limit }}.'
                     ]),
                 ]
