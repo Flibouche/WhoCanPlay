@@ -36,10 +36,14 @@ class RegistrationController extends AbstractController
                 throw new \Exception('Bot detected !');
             }
 
-            $sanitizedEmail = $htmlSanitizer->sanitize($user->getEmail());
+            $email = $user->getEmail();
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $this->addFlash('error', 'Adresse email invalide.');
+                return $this->redirectToRoute('app_profil');
+            }
+            
             $sanitizedPseudo = $htmlSanitizer->sanitize($user->getPseudo());
 
-            $user->setEmail($sanitizedEmail);
             $user->setPseudo($sanitizedPseudo);
 
             // encode the plain password
