@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Enum\FeatureState;
 use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
 class Game
@@ -24,6 +24,13 @@ class Game
     #[ORM\Column(unique: true)]
     private ?int $id_game_api = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private ?bool $status = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $slug = null;
+
     /**
      * @var Collection<int, Feature>
      */
@@ -35,12 +42,6 @@ class Game
      */
     #[ORM\OneToMany(targetEntity: Topic::class, mappedBy: 'game', orphanRemoval: true)]
     private Collection $topics;
-
-    #[ORM\Column]
-    private ?bool $status = false;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $slug = null;
 
     #endregion
 
