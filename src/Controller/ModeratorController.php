@@ -4,18 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Entity\Feature;
-use App\Form\FeatureType;
 use App\Enum\FeatureState;
+use App\Form\ApplicationType;
 use App\Service\IgdbApiService;
 use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class ModeratorController extends AbstractController
 {
@@ -249,5 +250,28 @@ class ModeratorController extends AbstractController
         // Je persist et je flush les informations
         $em->persist($game);
         $em->flush();
+    }
+
+    #[Route('/application', name: 'app_application')]
+    public function application(Request $request, MailerInterface $mailer): Response
+    {
+        $form = $this->createForm(ApplicationType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $application = $form->getData();
+
+            $email = (new Email())
+            ->from($application['email'])
+            ->to('admin@whocanplay.com')
+            ->subject('Application to become a moderator')
+            ->html($application['content']);
+
+        $mailer->send($email);
+        }
+        
+        return $this->render('moderator/application.html.twig', [
+            'controller_name' => 'ModeratorController',
+            'formApplication' => $form,
+        ]);
     }
 }

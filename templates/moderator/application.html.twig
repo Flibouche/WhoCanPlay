@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApiController!{% endblock %}
+
+{% block body %}
+
+<div>
+    {{ form_start(formApplication) }}
+    {{ form_row(formApplication.email) }}
+    {{ form_row(formApplication.content) }}
+    {{ form_end(formApplication) }}
+</div>
+
+{% endblock %}
