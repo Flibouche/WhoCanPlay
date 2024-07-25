@@ -7,6 +7,7 @@ use App\Repository\DisabilityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DisabilityRepository::class)]
 class Disability
@@ -22,12 +23,22 @@ class Disability
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'The name of the disability cannot be empty.')]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'The name of the disability must be at least {{ limit }} characters long.',
+        maxMessage: 'The name of the disability cannot be longer than {{ limit }} characters.'
+    )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'The icon of the disability cannot be empty.')]
+    #[Assert\Length(max: 255)]
     private ?string $icon = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $slug = null;
 
     /**
