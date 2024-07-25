@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TopicRepository::class)]
 class Topic
@@ -23,9 +24,21 @@ class Topic
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'The title of the topic cannot be empty.')]
+    #[Assert\Length(
+        min: 3,
+        max: 255,
+        minMessage: 'The title of the topic must be at least {{ limit }} characters long.',
+        maxMessage: 'The title of the topic cannot be longer than {{ limit }} characters.'
+    )]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: 'The creation date of the topic cannot be empty.')]
+    #[Assert\Type(
+        type: '\DateTimeInterface',
+        message: 'The value {{ value }} is not a valid {{ type }}.'
+    )]
     private ?\DateTimeInterface $creationDate = null;
 
     #[ORM\Column]
@@ -39,7 +52,8 @@ class Topic
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 255)]
     private ?string $slug = null;
 
     /**
