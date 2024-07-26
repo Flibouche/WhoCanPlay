@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +21,18 @@ class ImageAdminController extends AbstractController
     }
 
     #[Route('/', name: 'show')]
-    public function showImages(string $secret): Response
+    public function showImages(string $secret, ImageRepository $imageRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
+        $images = $imageRepository->findBy([], ['id' => 'DESC']);
+
         return $this->render('admin/images/show.html.twig', [
             'controller_name' => 'FeatureAdminController',
+            'images' => $images,
         ]);
     }
 }

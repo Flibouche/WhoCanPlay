@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +21,18 @@ class ContactAdminController extends AbstractController
     }
 
     #[Route('/', name: 'show')]
-    public function showContacts(string $secret): Response
+    public function showContacts(string $secret, ContactRepository $contactRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
+        $contacts = $contactRepository->findBy([], ['id' => 'DESC']);
+
         return $this->render('admin/contacts/show.html.twig', [
             'controller_name' => 'FeatureAdminController',
+            'contacts' => $contacts,
         ]);
     }
 }

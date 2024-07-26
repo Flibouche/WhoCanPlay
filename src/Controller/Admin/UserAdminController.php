@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +21,18 @@ class UserAdminController extends AbstractController
     }
 
     #[Route('/', name: 'show')]
-    public function showUsers(string $secret): Response
+    public function showUsers(string $secret, UserRepository $userRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
+        $users = $userRepository->findBy([], ['id' => 'DESC']);
+
         return $this->render('admin/users/show.html.twig', [
             'controller_name' => 'FeatureAdminController',
+            'users' => $users,
         ]);
     }
 }

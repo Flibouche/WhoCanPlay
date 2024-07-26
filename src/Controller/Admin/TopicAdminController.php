@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\TopicRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +21,18 @@ class TopicAdminController extends AbstractController
     }
 
     #[Route('/', name: 'show')]
-    public function showTopics(string $secret): Response
+    public function showTopics(string $secret, TopicRepository $topicRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
+        $topics = $topicRepository->findBy([], ['id' => 'DESC']);
+
         return $this->render('admin/topics/show.html.twig', [
             'controller_name' => 'FeatureAdminController',
+            'topics' => $topics,
         ]);
     }
 }

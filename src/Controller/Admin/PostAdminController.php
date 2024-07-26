@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +21,18 @@ class PostAdminController extends AbstractController
     }
 
     #[Route('/', name: 'show')]
-    public function showPosts(string $secret): Response
+    public function showPosts(string $secret, PostRepository $postRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
+        $posts = $postRepository->findBy([], ['id' => 'DESC']);
+
         return $this->render('admin/posts/show.html.twig', [
             'controller_name' => 'FeatureAdminController',
+            'posts' => $posts,
         ]);
     }
 }

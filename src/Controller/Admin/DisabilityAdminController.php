@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\DisabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +21,18 @@ class DisabilityAdminController extends AbstractController
     }
 
     #[Route('/', name: 'show')]
-    public function showDisabilities(string $secret): Response
+    public function showDisabilities(string $secret, DisabilityRepository $disabilityRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
+        $disabilities = $disabilityRepository->findBy([], ['id' => 'DESC']);
+
         return $this->render('admin/disabilities/show.html.twig', [
             'controller_name' => 'FeatureAdminController',
+            'disabilities' => $disabilities,
         ]);
     }
 }

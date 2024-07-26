@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +21,18 @@ class GameAdminController extends AbstractController
     }
 
     #[Route('/', name: 'show')]
-    public function showGames(string $secret): Response
+    public function showGames(string $secret, GameRepository $gameRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
+        $games = $gameRepository->findBy([], ['id' => 'DESC']);
+
         return $this->render('admin/games/show.html.twig', [
             'controller_name' => 'FeatureAdminController',
+            'games' => $games,
         ]);
     }
 }
