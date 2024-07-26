@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Feature;
 use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,12 +59,24 @@ class FeatureAdminController extends AbstractController
         return $this->redirectToRoute('app_admin_feature_show', ['secret' => $secret]);
     }
 
-    public function deleteFeature(string $secret): Response
+    // Méthode pour supprimer une fonctionnalité
+    #[Route('/delete/{id}', name: 'delete')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteFeature(string $secret, Feature $feature): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
+
+        $em = $this->entityManager;
+
+        if (!$feature) {
+            throw $this->createNotFoundException('Feature not found');
+        }
+
+        $em->remove($feature);
+        $em->flush();
 
         return $this->redirectToRoute('app_admin_feature_show', ['secret' => $secret]);
     }
