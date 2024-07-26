@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Repository\FeatureRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -12,6 +13,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[IsGranted('ROLE_ADMIN')]
 class FeatureAdminController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     #[Route('/', name: 'show')]
     public function showFeatures(string $secret, FeatureRepository $featureRepository): Response
     {
