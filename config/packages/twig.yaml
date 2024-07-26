@@ -1,5 +1,7 @@
 twig:
     file_name_pattern: '*.twig'
+    globals:
+        admin_secret: '%env(ADMIN_SECRET)%'
 
 when@test:
     twig:

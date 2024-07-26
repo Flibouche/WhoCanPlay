@@ -5,6 +5,7 @@ parameters:
     env(TWITCH_CLIENT_ID): '%env(string:TWITCH_CLIENT_ID)%'
     env(TWITCH_CLIENT_SECRET): '%env(string:TWITCH_CLIENT_SECRET)%'
     images_directory: '%kernel.project_dir%/public/assets/uploads/'
+    admin_secret: '%env(ADMIN_SECRET)%'
 
 services:
     # Default configuration for services in *this* file
