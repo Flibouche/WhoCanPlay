@@ -3,8 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Feature;
+use App\Form\FeatureType;
 use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -21,7 +23,9 @@ class FeatureAdminController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    // Méthode pour afficher toutes les fonctionnalités
     #[Route('/', name: 'show')]
+    #[IsGranted('ROLE_ADMIN')]
     public function showFeatures(string $secret, FeatureRepository $featureRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
@@ -37,26 +41,53 @@ class FeatureAdminController extends AbstractController
         ]);
     }
 
-    public function createFeature(string $secret): Response
+    // Méthode pour afficher les détails d'une fonctionnalité
+    #[Route('/details/{id}', name: 'details')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function detailsFeature(string $secret, Feature $feature): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
+        }
+
+        return $this->render('admin/features/details.html.twig', [
+            'controller_name' => 'FeatureAdminController',
+            'feature' => $feature,
+        ]);
+    }
+
+    // Méthode pour créer ou modifier une fonctionnalité
+    #[Route('/create', name: 'create')]
+    #[Route('/edit/{id}', name: 'edit')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function createOrEditFeature(string $secret, ?Feature $feature, Request $request): Response
+    {
+        $expectedSecret = $this->getParameter('admin_secret');
+        if ($secret !== $expectedSecret) {
+            throw $this->createAccessDeniedException('Page not found');
+        }
+
+        if (!$feature) {
+            $feature = new Feature();
+        }
+
+        $form = $this->createForm(FeatureType::class, $feature);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($feature);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_admin_feature_show', ['secret' => $secret]);
         }
 
         return $this->render('admin/features/create.html.twig', [
             'controller_name' => 'FeatureAdminController',
+            'formAddFeature' => $feature,
+            'feature' => $feature,
+            'edit' => $feature->getId(),
         ]);
-    }
-
-    public function updateFeature(string $secret): Response
-    {
-        $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
-            throw $this->createAccessDeniedException('Page not found');
-        }
-
-        return $this->redirectToRoute('app_admin_feature_show', ['secret' => $secret]);
     }
 
     // Méthode pour supprimer une fonctionnalité
@@ -69,14 +100,12 @@ class FeatureAdminController extends AbstractController
             throw $this->createAccessDeniedException('Page not found');
         }
 
-        $em = $this->entityManager;
-
         if (!$feature) {
             throw $this->createNotFoundException('Feature not found');
         }
 
-        $em->remove($feature);
-        $em->flush();
+        $this->entityManager->remove($feature);
+        $this->entityManager->flush();
 
         return $this->redirectToRoute('app_admin_feature_show', ['secret' => $secret]);
     }

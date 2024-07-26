@@ -1,0 +1,17 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}{% if edit %}Edit User N°{{ user.id }} {% else %}Create User{% endif %}{% endblock %}
+
+{% block bodyAdmin %}
+{% if edit %}
+<h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Edit user N°{{ User.id }}</h1>
+{% else %}
+<h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Create User</h1>
+{% endif %}
+<hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+<div class="rounded-lg bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+    <div class="p-6">
+
+    </div>
+</div>
+{% endblock %}

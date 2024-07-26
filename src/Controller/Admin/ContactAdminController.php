@@ -23,6 +23,7 @@ class ContactAdminController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    // Méthode pour afficher la liste des contacts
     #[Route('/', name: 'show')]
     #[IsGranted('ROLE_ADMIN')]
     public function showContacts(string $secret, ContactRepository $contactRepository): Response
@@ -40,6 +41,7 @@ class ContactAdminController extends AbstractController
         ]);
     }
 
+    // Méthode pour afficher les détails d'un contact
     #[Route('/details/{id}', name: 'details')]
     #[IsGranted('ROLE_ADMIN')]
     public function detailsContact(string $secret, Contact $contact): Response
@@ -55,6 +57,7 @@ class ContactAdminController extends AbstractController
         ]);
     }
 
+    // Méthode pour créer ou modifier un contact
     #[Route('/create', name: 'create')]
     #[Route('/edit/{id}', name: 'edit')]
     #[IsGranted('ROLE_ADMIN')]
@@ -96,6 +99,7 @@ class ContactAdminController extends AbstractController
         ]);
     }
 
+    // Méthode pour supprimer un contact
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]
     public function deleteContact(string $secret, Contact $contact): Response
@@ -105,14 +109,12 @@ class ContactAdminController extends AbstractController
             throw $this->createAccessDeniedException('Page not found');
         }
 
-        $em = $this->entityManager;
-
         if (!$contact) {
             throw $this->createNotFoundException('Contact not found');
         }
 
-        $em->remove($contact);
-        $em->flush();
+        $this->entityManager->remove($contact);
+        $this->entityManager->flush();
 
         return $this->redirectToRoute('app_admin_contact_show', ['secret' => $secret]);
     }
