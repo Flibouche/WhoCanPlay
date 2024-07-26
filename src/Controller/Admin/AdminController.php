@@ -18,6 +18,7 @@ class AdminController extends AbstractController
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
+        
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'AdminController',
         ]);
