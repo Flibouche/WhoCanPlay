@@ -86,7 +86,7 @@
                 {% for featureData in features.notOpened %}
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
@@ -96,7 +96,7 @@
                 </tr>
                 {% endfor %}
                 {% else %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
@@ -129,7 +129,7 @@
                 {% for featureData in features.pending %}
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
@@ -139,7 +139,7 @@
                 </tr>
                 {% endfor %}
                 {% else %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
@@ -172,7 +172,7 @@
                 {% for featureData in features.processed %}
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr>
                     {% if game is not null %}
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
                     {% endif %}
@@ -184,7 +184,7 @@
                 </tr>
                 {% endfor %}
                 {% else %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
@@ -217,7 +217,7 @@
                 {% for featureData in features.denied %}
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
@@ -227,7 +227,7 @@
                 </tr>
                 {% endfor %}
                 {% else %}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
