@@ -30,7 +30,7 @@
             <tbody>
                 {% for feature in features %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ feature.id }}</th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ feature.id }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400 truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[50px]">{{ feature.disability }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ feature.game.id|default('N/A') }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ feature.user }}</td>

@@ -70,7 +70,7 @@
                     {% if game.topics|length > 0 %}
                     {% for topic in game.topics %}
                     <tr>
-                        <th scope="row" class="px-6 py-4">
+                        <td scope="row" class="px-6 py-4">
                             <div class="flex items-center gap-5">
                                 <a href="{{ path('topic_game', {'id': topic.id, 'slug':topic.slug}) }}" class="flex items-center gap-5">
                                     {% if topic.posts|length >= 20 %}
@@ -85,7 +85,7 @@
                                     <span>{{ topic }}</span>
                                 </a>
                             </div>
-                        </th>
+                        </td>
                         <td class="px-6 py-4">{{ topic.user }}</td>
                         <td class="px-6 py-4">
                             <p>{{ topic.posts|length }}</p>

@@ -25,12 +25,12 @@
             <tbody>
                 {% for post in posts %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.id }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.topic }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.user }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.content }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.publicationDate|date('d.m.Y') }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.updatedAt|date('d.m.Y') }}</th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.id }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.topic }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.user }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.content }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.publicationDate|date('d.m.Y') }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.updatedAt|date('d.m.Y') }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
                         <div class="flex items-center">
                             <form>

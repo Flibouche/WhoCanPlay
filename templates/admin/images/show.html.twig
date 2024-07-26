@@ -30,17 +30,17 @@
             <tbody>
                 {% for image in images %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.id }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.disability }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.feature }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.user }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.url }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.title }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.altText }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.description }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.submissionDate|date('d.m.Y') }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.updatedAt|date('d.m.Y') }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.slug }}</th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.id }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.disability }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.feature }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.user }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.url }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.title }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.altText }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.description }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.submissionDate|date('d.m.Y') }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.updatedAt|date('d.m.Y') }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.slug }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
                         <div class="flex items-center">
                             <form>

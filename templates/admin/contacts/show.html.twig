@@ -24,11 +24,11 @@
             <tbody>
                 {% for contact in contacts %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.id }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.email }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.subject }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.message }}</th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.createdAt|date('d.m.Y') }}</th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.id }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.email }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.subject }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.message }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ contact.createdAt|date('d.m.Y') }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
                         <div class="flex items-center">
                             <form>

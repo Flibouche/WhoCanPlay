@@ -38,7 +38,7 @@
             {# Not opened #}
             <button class="px-4 py-2 font-medium flex items-center hover:text-indigo-800 dark:hover:text-indigo-200" data-tab-target="#tab1">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-4 h-4 mr-2 fill-current dark:invert dark:brightness-0 dark:filter">
-                    <path d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z"/>
+                    <path d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z" />
                 </svg>
                 Not opened
             </button>
@@ -87,7 +87,7 @@
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -97,7 +97,7 @@
                 {% endfor %}
                 {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
@@ -130,7 +130,7 @@
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -140,8 +140,7 @@
                 {% endfor %}
                 {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
-                        feature found.</th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
@@ -175,7 +174,7 @@
                 {% set game = featureData.gameApi %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     {% if game is not null %}
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
                     {% endif %}
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
@@ -186,8 +185,7 @@
                 {% endfor %}
                 {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
-                        feature found.</th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
@@ -220,7 +218,7 @@
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -230,8 +228,7 @@
                 {% endfor %}
                 {% else %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No
-                        feature found.</th>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
                     <td class="px-6 py-4"></td>
