@@ -35,4 +35,14 @@ class UserAdminController extends AbstractController
             'users' => $users,
         ]);
     }
+
+    public function deleteUser(string $secret): Response
+    {
+        $expectedSecret = $this->getParameter('admin_secret');
+        if ($secret !== $expectedSecret) {
+            throw $this->createAccessDeniedException('Page not found');
+        }
+
+        return $this->redirectToRoute('app_admin_user_show', ['secret' => $secret]);
+    }
 }

@@ -35,4 +35,14 @@ class DisabilityAdminController extends AbstractController
             'disabilities' => $disabilities,
         ]);
     }
+
+    public function deleteDisability(string $secret): Response
+    {
+        $expectedSecret = $this->getParameter('admin_secret');
+        if ($secret !== $expectedSecret) {
+            throw $this->createAccessDeniedException('Page not found');
+        }
+
+        return $this->redirectToRoute('app_admin_disability_show', ['secret' => $secret]);
+    }
 }

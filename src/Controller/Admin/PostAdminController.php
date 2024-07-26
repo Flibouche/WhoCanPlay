@@ -35,4 +35,14 @@ class PostAdminController extends AbstractController
             'posts' => $posts,
         ]);
     }
+
+    public function deletePost(string $secret): Response
+    {
+        $expectedSecret = $this->getParameter('admin_secret');
+        if ($secret !== $expectedSecret) {
+            throw $this->createAccessDeniedException('Page not found');
+        }
+
+        return $this->redirectToRoute('app_admin_post_show', ['secret' => $secret]);
+    }
 }

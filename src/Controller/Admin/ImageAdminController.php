@@ -35,4 +35,14 @@ class ImageAdminController extends AbstractController
             'images' => $images,
         ]);
     }
+
+    public function deleteImage(string $secret): Response
+    {
+        $expectedSecret = $this->getParameter('admin_secret');
+        if ($secret !== $expectedSecret) {
+            throw $this->createAccessDeniedException('Page not found');
+        }
+
+        return $this->redirectToRoute('app_admin_image_show', ['secret' => $secret]);
+    }
 }

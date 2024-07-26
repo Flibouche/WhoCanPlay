@@ -35,4 +35,14 @@ class TopicAdminController extends AbstractController
             'topics' => $topics,
         ]);
     }
+
+    public function deleteTopic(string $secret): Response
+    {
+        $expectedSecret = $this->getParameter('admin_secret');
+        if ($secret !== $expectedSecret) {
+            throw $this->createAccessDeniedException('Page not found');
+        }
+
+        return $this->redirectToRoute('app_admin_topic_show', ['secret' => $secret]);
+    }
 }

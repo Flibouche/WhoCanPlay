@@ -35,4 +35,14 @@ class GameAdminController extends AbstractController
             'games' => $games,
         ]);
     }
+
+    public function deleteGame(string $secret): Response
+    {
+        $expectedSecret = $this->getParameter('admin_secret');
+        if ($secret !== $expectedSecret) {
+            throw $this->createAccessDeniedException('Page not found');
+        }
+
+        return $this->redirectToRoute('app_admin_game_show', ['secret' => $secret]);
+    }
 }
