@@ -11,7 +11,27 @@
 <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
 <div class="rounded-lg bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
     <div class="p-6">
+        {{ form_start(formAddDisability) }}
 
+        <div class="mb-4">
+            {{ form_label(formAddDisability.name, 'Name <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'font-bold text-black dark:text-white'}}) }}
+            {{ form_widget(formAddDisability.name, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter name'}}) }}
+            <div class="text-red-500">
+                {{ form_errors(formAddDisability.name) }}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(formAddDisability.icon, 'Icon <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'font-bold text-black dark:text-white'}}) }}
+            {{ form_widget(formAddDisability.icon, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter url'}}) }}
+            <div class="text-red-500">
+                {{ form_errors(formAddDisability.icon) }}
+            </div>
+        </div>
+
+        {{ form_widget(formAddDisability.submit, {'attr': {'class': 'w-full text-white dark:text-black bg-indigo-800 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-800 dark:bg-indigo-200 dark:hover:bg-indigo-400 dark:focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center'}}) }}
+
+        {{ form_end(formAddDisability) }}
     </div>
 </div>
 {% endblock %}
