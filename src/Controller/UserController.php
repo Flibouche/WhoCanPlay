@@ -2,17 +2,81 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\EditPasswordFormType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 class UserController extends AbstractController
 {
-    #[Route('/user', name: 'app_user')]
-    public function index(): Response
+    // Méthode pour accéder au profil privé de l'utilisateur
+    #[Route('/profile', name: 'app_user')]
+    #[IsGranted('ROLE_USER')]
+    public function profile(Security $security, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('user/index.html.twig', [
+        // Je récupère l'utilisateur connecté
+        $user = $security->getUser();
+
+        // Si l'utilisateur n'est pas connecté, alors je lève une exception
+        if (!$user instanceof PasswordAuthenticatedUserInterface) {
+            throw new AccessDeniedException('Access denied');
+        }
+
+        $form = $this->createForm(EditPasswordFormType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $response = $this->updatePassword($security, $form, $passwordHasher, $entityManager);
+        }
+
+        return $this->render('user/profile.html.twig', [
             'controller_name' => 'UserController',
+            'formEditPassword' => $form,
         ]);
+    }
+
+    // Méthode pour modifier le mot de passe de l'utilisateur
+    private function updatePassword(Security $security, $form, $passwordHasher, $entityManager): Response
+    {
+        // Je récupère l'utilisateur connecté
+        $user = $security->getUser();
+
+        // Si l'utilisateur n'est pas connecté, alors je lève une exception
+        if (!$user instanceof PasswordAuthenticatedUserInterface) {
+            throw new AccessDeniedException('Access denied');
+        }
+
+        // Je récupère l'ancien mot de passe
+        $oldPassword = $form->get('oldPassword')->getData();
+
+        // Si le mot de passe actuel n'est pas valide, alors j'envoi un message d'erreur
+        if(!$passwordHasher->isPasswordValid($user, $oldPassword)) {
+            $this->addFlash('error', 'Invalid current password');
+        } else {
+            // Je récupère le nouveau mot de passe
+            $newPassword = $form->get('plainPassword')->getData();
+            // J'encode le nouveau mot de passe
+            $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+            /**
+             * @var User|null $user
+             */
+            // J'assigne le nouveau mot de passe à l'utilisateur
+            $user->setPassword($hashedPassword);
+
+            // Je persiste et je flush les données
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Password updated successfully');
+        }
+        
+        return $this->redirectToRoute('app_user');
     }
 }

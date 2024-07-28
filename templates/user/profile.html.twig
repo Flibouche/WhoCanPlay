@@ -8,4 +8,10 @@
 <h1>Welcome to your profile {{ app.user.pseudo }} </h1>
 <p>{{ app.user.roles | join(', ') }}</p>
 
+{{ form_start(formEditPassword) }}
+{{ form_row(formEditPassword.oldPassword) }}
+{{ form_row(formEditPassword.plainPassword) }}
+<button type="submit">Edit password</button>
+{{ form_end(formEditPassword) }}
+
 {% endblock %}
