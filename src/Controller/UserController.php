@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\EditPasswordFormType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,17 +12,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 class UserController extends AbstractController
 {
     // Méthode pour accéder au profil privé de l'utilisateur
-    #[Route('/profile', name: 'app_user')]
+    #[Route('/settings', name: 'app_user')]
     #[IsGranted('ROLE_USER')]
-    public function profile(Security $security, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    public function settings(Security $security, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         // Je récupère l'utilisateur connecté
         $user = $security->getUser();
@@ -36,9 +37,26 @@ class UserController extends AbstractController
             $response = $this->updatePassword($security, $form, $passwordHasher, $entityManager);
         }
 
-        return $this->render('user/profile.html.twig', [
+        return $this->render('user/settings.html.twig', [
             'controller_name' => 'UserController',
             'formEditPassword' => $form,
+        ]);
+    }
+
+    // Méthode pour afficher le profil public de l'utilisateur
+    #[Route('/{pseudo}', name: 'app_user_profile')]
+    #[IsGranted('ROLE_USER')]
+    public function publicProfile(string $pseudo, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
+
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+
+        return $this->render('user/publicProfile.html.twig', [
+            'controller_name' => 'UserController',
+            'user' => $user,
         ]);
     }
 
