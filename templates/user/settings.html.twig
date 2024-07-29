@@ -8,10 +8,16 @@
 <p>{{ app.user.roles | join(', ') }}</p>
 <a href="{{ path('app_user_profile', {'pseudo' : app.user.pseudo }) }}">My public profile</a>
 
-{{ form_start(formEditPassword) }}
-{{ form_row(formEditPassword.oldPassword) }}
-{{ form_row(formEditPassword.plainPassword) }}
-<button type="submit">Edit password</button>
-{{ form_end(formEditPassword) }}
+<div>
+    {{ form_start(formEditPassword) }}
+    {{ form_row(formEditPassword.oldPassword) }}
+    {{ form_row(formEditPassword.plainPassword) }}
+    <button type="submit">Edit password</button>
+    {{ form_end(formEditPassword) }}
+</div>
+
+{{ dump(app.user) }}
+
+<button><a href="{{ path('app_user_delete_account') }}">Delete account</a></button>
 
 {% endblock %}

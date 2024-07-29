@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -41,23 +42,6 @@ class UserController extends AbstractController
         return $this->render('user/settings.html.twig', [
             'controller_name' => 'UserController',
             'formEditPassword' => $form,
-        ]);
-    }
-
-    // Méthode pour afficher le profil public de l'utilisateur
-    #[Route('/{pseudo}', name: 'app_user_profile')]
-    #[IsGranted('ROLE_USER')]
-    public function publicProfile(string $pseudo, UserRepository $userRepository): Response
-    {
-        $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
-
-        if (!$user) {
-            throw $this->createNotFoundException('User not found');
-        }
-
-        return $this->render('user/publicProfile.html.twig', [
-            'controller_name' => 'UserController',
-            'user' => $user,
         ]);
     }
 
@@ -99,12 +83,13 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_user');
     }
 
-    public function deleteAccount()
+    #[Route('/delete-account', name: 'app_user_delete_account')]
+    #[IsGranted('ROLE_USER')]
+    public function deleteAccount(EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
     {
         /**
-         * @var User|null $user
-         */
-        
+        * @var User|null $user
+        */
         // Je récupère l'utilisateur actuellement connecté
         $user = $this->getUser();
 
@@ -112,7 +97,42 @@ class UserController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
+        $topics = $user->getTopics();
+        foreach ($topics as $topic) {
+            $topic->setUser(null);
+            $entityManager->persist($topic);    
+        }
 
         $posts = $user->getPosts();
+        foreach ($posts as $post) {
+            $post->setUser(null);
+            $entityManager->persist($post);
+        }
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $tokenStorage->setToken(null);
+
+        $this->addFlash('success', 'Account deleted successfully');
+
+        return $this->redirectToRoute('app_home');
+    }
+
+    // Méthode pour afficher le profil public de l'utilisateur
+    #[Route('/{pseudo}', name: 'app_user_profile')]
+    #[IsGranted('ROLE_USER')]
+    public function publicProfile(string $pseudo, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
+
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+
+        return $this->render('user/publicProfile.html.twig', [
+            'controller_name' => 'UserController',
+            'user' => $user,
+        ]);
     }
 }

@@ -51,6 +51,14 @@
 {# Main #}
 <div class="flex flex-col md:flex-row w-full gap-[20px]">
 
+    {% for label, messages in app.flashes %}
+    <div class="flash-{{ label }}">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
     {# Section principale #}
     <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem]">
         {# Liste des topics #}
@@ -86,7 +94,11 @@
                                 </a>
                             </div>
                         </td>
+                        {% if topic.user %}
                         <td class="px-6 py-4">{{ topic.user }}</td>
+                        {% else %}
+                        <td class="px-6 py-4">Deleted user</td>
+                        {% endif %}
                         <td class="px-6 py-4">
                             <p>{{ topic.posts|length }}</p>
                         </td>

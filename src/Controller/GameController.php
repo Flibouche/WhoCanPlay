@@ -354,7 +354,7 @@ class GameController extends AbstractController
             $em->commit();
 
             // J'ajoute un message flash de succès
-            $this->addFlash('success', 'Topic successfully created !');
+            $this->addFlash('success', 'Post successfully created !');
             // Je redirige vers le topic
             return $this->redirectToRoute('topic_game', [
                 'id' => $topic->getId(),

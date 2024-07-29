@@ -58,6 +58,14 @@
 
     <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem]">
 
+        {% for label, messages in app.flashes %}
+        <div class="flash-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
         {# bg-white dark:bg-neutral-800 #}
         {% for post in posts %}
         {% set color = (loop.index) % 2 == 0 ? 'white' : 'white/20' %}
@@ -69,7 +77,11 @@
                     <img src="https://avatar.iran.liara.run/public" alt="{{ post.user }}'s avatar" class="w-[50px] h-[50px]">
                 </div>
                 <div class="flex flex-col text-black dark:text-white">
+                    {% if post.user %}
                     <p id="username">{{ post.user.pseudo }}</p>
+                    {% else %}
+                    <p>Deleted user</p>
+                    {% endif %}
                     <time datetime="{{ post.publicationDate|date('c') }}">
                         {{ post.publicationDate|date('d/m/y H:i:s') }}
                     </time>
