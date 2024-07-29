@@ -25,36 +25,9 @@ class FeatureType extends AbstractType
         $builder
             ->add('id_game_api', HiddenType::class)
             ->add('disability', EntityType::class, [
-                'class' => Disability::class,
-                // 'attr' => [
-                //     'class' => 'w-full px-5 py-4 text-black/80 rounded-lg mt-2'
-                // ],
-                // 'label' => 'Choose a disability category <span class="text-red-500">*</span>',
-                // 'label_html' => true,
-                // 'label_attr' => [
-                //     'class' => 'text-black/80 dark:text-white/80'
-                // ]
-                ])
-            ->add('name', TextType::class, [
-                'attr' => [
-                    'class' => 'w-full px-5 py-4 text-gray-700 bg-gray-200 rounded-lg mt-2',
-                ],
-                'label' => 'Enter a feature title <span class="text-red-500">*</span>',
-                'label_html' => true,
-                'label_attr' => [
-                    'class' => 'text-black/80 dark:text-white/80'
-                ]
-            ])
-            ->add('content', TextareaType::class, [
-                'attr' => [
-                    'class' => 'w-full px-5 py-4 text-gray-700 bg-gray-200 rounded-lg mt-2',
-                ],
-                'label' => 'Enter content for the feature <span class="text-red-500">*</span>',
-                'label_html' => true,
-                'label_attr' => [
-                    'class' => 'text-black/80 dark:text-white/80'
-                ]
-            ])
+                'class' => Disability::class])
+            ->add('name', TextType::class)
+            ->add('content', TextareaType::class)
             ->add('images', FileType::class, [
                 'required' => true,
                 'label' => false,
@@ -75,11 +48,7 @@ class FeatureType extends AbstractType
             //     'class' => User::class,
             //     'choice_label' => 'id',
             // ])
-            ->add('submit', SubmitType::class, [
-                'attr' => [
-                    'class' => 'bg-red-500 px-3 py-1'
-                ]
-            ])
+            ->add('submit', SubmitType::class)
         ;
     }
 

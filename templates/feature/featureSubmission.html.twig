@@ -26,108 +26,125 @@
     </ol>
 </nav>
 
-{# Si je suis en édition #}
-{% set currentRoute = app.request.attributes.get('_route') %}
-{% if currentRoute == 'edit_feature' %}
+<div class="w-full sm:max-w-2xl p-6 rounded-lg bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">    {# Si je suis en édition #}
+    {% set currentRoute = app.request.attributes.get('_route') %}
+    {% if currentRoute == 'edit_feature' %}
 
-<h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5 text-black dark:text-white font-raleway font-bold">Edit this feature : </h1>
+    <h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5 text-black dark:text-white font-raleway font-bold">Edit this feature : </h1>
 
-<div class="search-container relative flex flex-col w-[300px] md:w-[600px]">
-    <h2 class="font-bold">Game</h2>
-    <label for="search" class="text-black/80">Choose game <span class="text-red-500">*</span></label>
-    <input type="search" id="search" class="w-full px-5 py-4 text-black/80 rounded-lg mt-2" placeholder="Ex : Hollow Knight" required value="{{ game[0].name }}" />
-    <div id="result"></div>
+    <div class="search-container relative flex flex-col w-[300px] md:w-[600px]">
+        <h2 class="font-bold">Game</h2>
+        <label for="search" class="text-black/80">Choose game <span class="text-red-500">*</span></label>
+        <input type="search" id="search" class="w-full px-5 py-4 text-black/80 rounded-lg mt-2" placeholder="Ex : Hollow Knight" required value="{{ game[0].name }}" />
+        <div id="result"></div>
+    </div>
+
+    {# Formulaire d'édition #}
+    {{ form_start(formSendFeatureToGame) }}
+    <div id="form">
+        {{ form_row(formSendFeatureToGame.id_game_api) }}
+
+        <div class="relative flex flex-col w-[300px] md:w-[600px]">
+            <h2 class="font-bold">Disability category</h2>
+            {{ form_row(formSendFeatureToGame.disability) }}
+        </div>
+
+        <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
+            <h2 class="font-bold">Feature title</h2>
+            {{ form_row(formSendFeatureToGame.name) }}
+        </div>
+
+        <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
+            <h2 class="font-bold">Feature content</h2>
+            {{ form_row(formSendFeatureToGame.content) }}
+        </div>
+
+        {# J'affiche les images si je suis en édition #}
+        {% for image in edit.images %}
+        <div class="flex">
+            <img src="{{ asset('assets/uploads/features/' ~ image.url ) }}" alt="">
+            <a href="{{ path('delete_image_feature', {'id': image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">Delete</a>
+        </div>
+        {% endfor %}
+
+        <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
+            {{ form_row(formSendFeatureToGame.images) }}
+        </div>
+
+        <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
+            {{ form_row(formSendFeatureToGame.description) }}
+        </div>
+
+        <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
+            {{ form_row(formSendFeatureToGame.submit) }}
+        </div>
+
+    </div>
+    {{ form_end(formSendFeatureToGame) }}
+
+    {# Si je suis en création #}
+    {% else %}
+    <h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5 text-black dark:text-white font-raleway font-bold">Submit an accessibility feature to a game</h1>
+
+    <div class="search-container relative flex flex-col w-full mb-2">
+        <label for="search" class="font-bold text-gray-900 dark:text-white mb-2">Choose game <span class="text-red-500">*</span></label>
+        <input type="search" id="search" class="w-full px-5 py-4 text-black/80 rounded-lg bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white" placeholder="Ex : Hollow Knight" required />
+        <div id="result"></div>
+    </div>
+
+    {# Formulaire de création #}
+    {{ form_start(formSendFeatureToGame) }}
+    <div id="form" class="hidden">
+        {{ form_row(formSendFeatureToGame.id_game_api) }}
+
+        <div class="flex flex-col w-full mb-2">
+            {{ form_label(formSendFeatureToGame.disability, 'Disability category <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'font-bold text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(formSendFeatureToGame.disability, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white'}}) }}
+            <div class="text-red-500">
+                {{ form_errors(formSendFeatureToGame.disability) }}
+            </div>
+        </div>
+
+        <div class="flex flex-col w-full mb-2">
+            {{ form_label(formSendFeatureToGame.name, 'Feature title <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'block mb-2 font-bold text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(formSendFeatureToGame.name, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white'}}) }}
+            <div class="text-red-500">
+                {{ form_errors(formSendFeatureToGame.name) }}
+            </div>
+        </div>
+
+        <div class="flex flex-col w-full mb-2">
+            {{ form_label(formSendFeatureToGame.content, 'Feature content <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'block mb-2 font-bold text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(formSendFeatureToGame.content, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white'}}) }}
+            <div class="text-red-500">
+                {{ form_errors(formSendFeatureToGame.content) }}
+            </div>
+        </div>
+
+        <div class="flex flex-col w-full mb-2">
+            {{ form_label(formSendFeatureToGame.images, 'Images', {'label_attr': {'class': 'block mb-2 font-bold text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(formSendFeatureToGame.images, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white'}}) }}
+            <div class="text-red-500">
+                {{ form_errors(formSendFeatureToGame.images) }}
+            </div>
+        </div>
+
+        <div class="flex flex-col w-full mb-2">
+            {{ form_label(formSendFeatureToGame.description, 'Description', {'label_attr': {'class': 'block mb-2 font-bold text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(formSendFeatureToGame.description, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white'}}) }}
+            <div class="text-red-500">
+                {{ form_errors(formSendFeatureToGame.description) }}
+            </div>
+        </div>
+
+        <div class="flex flex-col w-full mb-2">
+            {{ form_widget(formSendFeatureToGame.submit, {'attr': {'class': 'w-full text-white dark:text-black bg-indigo-800 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-800 dark:bg-indigo-200 dark:hover:bg-indigo-400 dark:focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center'}}) }}
+        </div>
+    </div>
+    {{ form_end(formSendFeatureToGame) }}
+
+    {% endif %}
 </div>
-
-{# Formulaire d'édition #}
-{{ form_start(formSendFeatureToGame) }}
-<div id="form">
-    {{ form_row(formSendFeatureToGame.id_game_api) }}
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px]">
-        <h2 class="font-bold">Disability category</h2>
-        {{ form_row(formSendFeatureToGame.disability) }}
-    </div>
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        <h2 class="font-bold">Feature title</h2>
-        {{ form_row(formSendFeatureToGame.name) }}
-    </div>
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        <h2 class="font-bold">Feature content</h2>
-        {{ form_row(formSendFeatureToGame.content) }}
-    </div>
-
-    {# J'affiche les images si je suis en édition #}
-    {% for image in edit.images %}
-    <div class="flex">
-        <img src="{{ asset('assets/uploads/features/' ~ image.url ) }}" alt="">
-        <a href="{{ path('delete_image_feature', {'id': image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">Delete</a>
-    </div>
-    {% endfor %}
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        {{ form_row(formSendFeatureToGame.images) }}
-    </div>
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        {{ form_row(formSendFeatureToGame.description) }}
-    </div>
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        {{ form_row(formSendFeatureToGame.submit) }}
-    </div>
-
-</div>
-{{ form_end(formSendFeatureToGame) }}
-
-{# Si je suis en création #}
-{% else %}
-<h1 class="text-center sm:text-left text-3xl pb-5 sm:pt-5 text-black dark:text-white font-raleway font-bold">Submit an accessibility feature to a game</h1>
-
-<div class="search-container relative flex flex-col w-[300px] md:w-[600px]">
-    <h2 class="font-bold">Game</h2>
-    <label for="search" class="text-black/80">Choose game <span class="text-red-500">*</span></label>
-    <input type="search" id="search" class="w-full px-5 py-4 text-black/80 rounded-lg mt-2" placeholder="Ex : Hollow Knight" required />
-    <div id="result"></div>
-</div>
-
-{# Formulaire de création #}
-{{ form_start(formSendFeatureToGame) }}
-<div id="form" class="hidden">
-    {{ form_row(formSendFeatureToGame.id_game_api) }}
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px]">
-        <h2 class="font-bold">Disability category</h2>
-        {{ form_row(formSendFeatureToGame.disability) }}
-    </div>
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        <h2 class="font-bold">Feature title</h2>
-        {{ form_row(formSendFeatureToGame.name) }}
-    </div>
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        <h2 class="font-bold">Feature content</h2>
-        {{ form_row(formSendFeatureToGame.content) }}
-    </div>
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        {{ form_row(formSendFeatureToGame.images) }}
-    </div>
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        {{ form_row(formSendFeatureToGame.description) }}
-    </div>
-
-    <div class="relative flex flex-col w-[300px] md:w-[600px] mt-5">
-        {{ form_row(formSendFeatureToGame.submit) }}
-    </div>
-</div>
-{{ form_end(formSendFeatureToGame) }}
-
-{% endif %}
 
 {# <div class="w-full">
     <h2 class="text-3xl font-semibold text-center mb-6 dark:text-white">File Upload</h2>
@@ -224,13 +241,13 @@
                         },
                         body: JSON.stringify({ '_token': this.dataset.token })
                     }).then(response => response.json())
-                    .then(data => {
-                        if(data.success) {
-                            this.parentElement.remove();
-                        } else {
-                            alert(data.error);
-                        }
-                    })
+                        .then(data => {
+                            if (data.success) {
+                                this.parentElement.remove();
+                            } else {
+                                alert(data.error);
+                            }
+                        })
                 }
             });
         }
