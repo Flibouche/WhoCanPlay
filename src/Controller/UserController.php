@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserController extends AbstractController
 {
@@ -75,7 +76,7 @@ class UserController extends AbstractController
         $oldPassword = $form->get('oldPassword')->getData();
 
         // Si le mot de passe actuel n'est pas valide, alors j'envoi un message d'erreur
-        if(!$passwordHasher->isPasswordValid($user, $oldPassword)) {
+        if (!$passwordHasher->isPasswordValid($user, $oldPassword)) {
             $this->addFlash('error', 'Invalid current password');
         } else {
             // Je récupère le nouveau mot de passe
@@ -94,7 +95,24 @@ class UserController extends AbstractController
 
             $this->addFlash('success', 'Password updated successfully');
         }
-        
+
         return $this->redirectToRoute('app_user');
+    }
+
+    public function deleteAccount()
+    {
+        /**
+         * @var User|null $user
+         */
+        
+        // Je récupère l'utilisateur actuellement connecté
+        $user = $this->getUser();
+
+        if (!$user instanceof UserInterface) {
+            throw new AccessDeniedException('Access denied');
+        }
+
+
+        $posts = $user->getPosts();
     }
 }

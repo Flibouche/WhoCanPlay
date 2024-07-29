@@ -9,19 +9,31 @@
     <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
     <div class="rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5 mt-5 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
 
+{{ dump(user) }}
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div class="bg-white p-4 rounded-lg shadow">
                 <h2>Informations</h2>
                 <div class="flex flex-col">
                     <div class="flex gap-5">
-                        <p>qsdqds</p>
-                        <p>123</p>
+                        <span>Topics :</span>
+                        <span>{{ user.topics|length }}</span>
+                    </div>
+                    <div class="flex gap-5">
+                        <span>Posts :</span>
+                        <span>{{ user.posts|length }}</span>
                     </div>
                 </div>
-
+                
             </div>
             <div class="bg-white p-4 rounded-lg shadow">
-                <h2>Bidule</h2>
+                <h2>Activity</h2>
+                <div class="flex flex-col">
+                    <span>Lasts topics :</span>
+                    {% for topic in user.topics|reverse|slice(0, 5) %}
+                        <span>{{ topic }}</span>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
