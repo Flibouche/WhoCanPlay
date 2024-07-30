@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -100,12 +101,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'user')]
     private Collection $images;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $biography = null;
+
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    private ?\DateTimeImmutable $registrationDate = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatar = null;
+
     public function __construct()
     {
         $this->features = new ArrayCollection();
         $this->topics = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->registrationDate = new \DateTimeImmutable();
     }
 
     #endregion
@@ -240,6 +251,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // =================== Biography ===================
+
+    public function getBiography(): ?string
+    {
+        return $this->biography;
+    }
+
+    public function setBiography(?string $biography): static
+    {
+        $this->biography = $biography;
+
+        return $this;
+    }
+
+    // =================== Registration Date ===================
+
+    public function getRegistrationDate(): ?\DateTimeImmutable
+    {
+        return $this->registrationDate;
+    }
+
+    public function setRegistrationDate(\DateTimeImmutable $registrationDate): static
+    {
+        $this->registrationDate = $registrationDate;
+
+        return $this;
+    }
+    
     #endregion
 
     #region COLLECTION(S)
@@ -387,4 +426,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     #endregion
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): static
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
 }
