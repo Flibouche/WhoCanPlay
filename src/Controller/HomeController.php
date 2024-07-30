@@ -155,4 +155,10 @@ class HomeController extends AbstractController
         ]);
     }
     #endregion
+
+    #[Route('/admin', name: 'redirect')]
+    public function redirectToRickRoll(): Response
+    {
+        return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    }
 }
