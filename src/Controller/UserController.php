@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Enum\FeatureState;
 use App\Form\EditPasswordFormType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,13 +11,13 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserController extends AbstractController
 {
@@ -165,11 +166,39 @@ class UserController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
+        // Je définis les états que je veux récupérer
+        $states = [FeatureState::NOT_OPENED, FeatureState::PENDING, FeatureState::PROCESSED, FeatureState::DENIED];
+
+        // Je récupère les fonctionnalités qui ont été soumise par l'utilisateur
         $features = $user->getFeatures();
+
+        // J'initialise un tableau vide pour stocker les fonctionnalités
+        $featuresGames = [
+            'notOpened' => [],
+            'pending' => [],
+            'processed' => [],
+            'denied' => [],
+        ];
+        
+        // Je détermine l'état de chaque fonctionnalités pour les classer correctement
+        foreach ($features as $feature) {
+            $stateKey = match ($feature->getState()) {
+                FeatureState::NOT_OPENED => 'notOpened',
+                FeatureState::PENDING => 'pending',
+                FeatureState::PROCESSED => 'processed',
+                FeatureState::DENIED => 'denied',
+                default => null,
+            };
+
+            // Si l'état n'est pas null, alors j'ajoute la fonctionnalité dans le tableau correspondant
+            if ($stateKey !== null) {
+                $featuresGames[$stateKey][] = $feature;
+            }
+        }
 
         return $this->render('user/submittedFeatures.html.twig', [
             'controller_name' => 'UserController',
-            'features' => $features,
+            'features' => $featuresGames,
         ]);
     }
     #endregion
