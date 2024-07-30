@@ -22,9 +22,9 @@ class UserController extends AbstractController
 {
     #region Settings
     // Méthode pour accéder au profil privé de l'utilisateur
-    #[Route('/settings', name: 'app_user')]
+    #[Route('/profile', name: 'app_user')]
     #[IsGranted('ROLE_USER')]
-    public function settings(Security $security): Response
+    public function general(Security $security): Response
     {
         // Je récupère l'utilisateur connecté
         $user = $security->getUser();
@@ -34,7 +34,7 @@ class UserController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
-        return $this->render('user/settings.html.twig', [
+        return $this->render('user/general.html.twig', [
             'controller_name' => 'UserController'
         ]);
     }
@@ -42,7 +42,7 @@ class UserController extends AbstractController
 
     #region Account
     // Méthode pour accéder aux paramètres du compte de l'utilisateur
-    #[Route('/account', name: 'app_user_account')]
+    #[Route('/profile/account', name: 'app_user_account')]
     public function account(Security $security, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         // Je récupère l'utilisateur connecté
@@ -112,7 +112,7 @@ class UserController extends AbstractController
     }
 
     // Méthode pour supprimer le compte de l'utilisateur et d'anonymiser les données
-    #[Route('/delete-account', name: 'app_user_delete_account')]
+    #[Route('/profile/delete-account', name: 'app_user_delete_account')]
     #[IsGranted('ROLE_USER')]
     public function deleteAccount(EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
     {
@@ -151,11 +151,25 @@ class UserController extends AbstractController
     
     #region Features
     // Méthode pour afficher les fonctionnalités soumises par l'utilisateur
-    #[Route('/submitted-features', name: 'app_user_submitted_features')]
+    #[Route('/profile/submitted-features', name: 'app_user_submitted_features')]
     public function submittedFeatures(Security $security): Response
     {
+        /**
+        * @var User|null $user
+        */
+        // Je récupère l'utilisateur connecté
+        $user = $security->getUser();
+
+        // Si l'utilisateur n'est pas connecté, alors je lève une exception
+        if (!$user instanceof PasswordAuthenticatedUserInterface) {
+            throw new AccessDeniedException('Access denied');
+        }
+
+        $features = $user->getFeatures();
+
         return $this->render('user/submittedFeatures.html.twig', [
             'controller_name' => 'UserController',
+            'features' => $features,
         ]);
     }
     #endregion

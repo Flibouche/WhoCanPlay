@@ -12,17 +12,59 @@
 
         {# Section secondaire #}
         <aside id="secondary" class="basis-0 min-w-[100%] sm:min-w-[20%] sm:basis-3/12 pr-5">
-            <div id="settings" class="relative bg-white dark:bg-neutral-800 flex flex-col mb-5 rounded-xl py-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
-                <h3 class=""><a href="">Settings</a></h2>
-                <h3 class=""><a href="">Account</a></h2>
-                <h3 class=""><a href="">Submitted Features</a></h2>
+            <div id="settings" class="relative bg-white dark:bg-neutral-800 flex flex-col mb-5 rounded-xl px-5 py-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+                <h3 class=""><a href="{{ path('app_user')}}">General</a></h3>
+                <h3 class=""><a href="{{ path('app_user_account')}}">Account</a></h3>
+                <h3 class=""><a href="{{ path('app_user_submitted_features')}}">Submitted Features</a></h3>
+                <h3 class=""><a href="{{ path('app_user_profile', {'pseudo' : app.user.pseudo }) }}">My public profile</a></h3>
             </div>
         </aside>
 
         {# Section principale #}
         <section id="primary" class="basis-0 min-w-[80%] max-w-[50rem] pr-5">
-            <div class="relative bg-white dark:bg-neutral-800 flex flex-col sm:flex-row mb-5 rounded-xl py-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <div class="relative bg-white dark:bg-neutral-800 flex flex-col mb-5 rounded-xl py-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
                 <h2 class="text-2xl fond-bold align">Submitted Features</h2>
+
+                {# {% for feature in features %}
+                    {{ dump(feature) }}
+                {% endfor %} #}
+
+                <section id="tab1" class="w-[90%] tab-content">
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <table id="dataTable1" class="w-full text-sm text-left rtl:text-right text-black dark:text-white stripe hover row-border order-column" style="width:100%">
+                            <thead class="text-xs uppercase text-white dark:text-black bg-indigo-800 dark:bg-indigo-200">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 w-[30%]">Game</th>
+                                    <th scope="col" class="px-6 py-3 w-[25%]">Send by</th>
+                                    <th scope="col" class="px-6 py-3 w-[5%]">Game in database</th>
+                                    <th scope="col" class="px-6 py-3 w-[10%]">State</th>
+                                    <th scope="col" class="px-6 py-3 w-[20%]">Date</th>
+                                    <th scope="col" class="px-6 py-3 w-[10%]" style="text-align:left">Disability</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for feature in features %}
+                                <tr>
+                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ feature.id }}#</td>
+                                    <td class="px-6 py-4">{{ feature.user }}</td>
+                                    <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
+                                    <td class="px-6 py-4">{{ feature.state.value }}</td>
+                                    <td class="px-6 py-4"> {{ feature.submissionDate|date('d.m.Y \\a\\t H:i:s') }}</td>
+                                    <td class="px-6 py-4"><img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"></td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">No feature found.</td>
+                                    <td class="px-6 py-4"></td>
+                                    <td class="px-6 py-4"></td>
+                                    <td class="px-6 py-4"></td>
+                                    <td class="px-6 py-4"></td>
+                                    <td class="px-6 py-4"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
         </section>
 
@@ -30,4 +72,13 @@
 
 </div>
 
-    {% endblock %}
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script>
+<script>
+    $('#dataTable1').DataTable({
+        responsive: true
+    });
+</script>
+
+{% endblock %}
