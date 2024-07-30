@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+
+<div class="w-full">
+    <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3">My profile</h1>
+    <hr class="my-3 w-full border-t-2 border-amber-800 dark:border-yellow-200" />
+
+    <div class="flex flex-col md:flex-row w-full gap-[20px]">
+
+        {# Section secondaire #}
+        <aside id="secondary" class="basis-0 min-w-[100%] sm:min-w-[20%] sm:basis-3/12 pr-5">
+            <div id="settings" class="relative bg-white dark:bg-neutral-800 flex flex-col mb-5 rounded-xl py-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+                <h3 class=""><a href="">Settings</a></h2>
+                <h3 class=""><a href="">Account</a></h2>
+                <h3 class=""><a href="">Submitted Features</a></h2>
+            </div>
+        </aside>
+
+        {# Section principale #}
+        <section id="primary" class="basis-0 min-w-[80%] max-w-[50rem] pr-5">
+            <div class="relative bg-white dark:bg-neutral-800 flex flex-col sm:flex-row mb-5 rounded-xl py-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+                <h2 class="text-2xl fond-bold align">Account</h2>
+            </div>
+        </section>
+
+    </div>
+
+</div>
+
+    {% endblock %}

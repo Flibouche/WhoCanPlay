@@ -27,6 +27,7 @@ class ModeratorController extends AbstractController
     }
 
     #region Submission Box
+    // Méthode pour afficher les features qui ont été soumises
     #[Route('/moderator', name: 'app_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
     public function submissionsBox(FeatureRepository $featureRepository): Response
@@ -95,6 +96,7 @@ class ModeratorController extends AbstractController
     #endregion
 
     #region Show Feature
+    // Méthode pour afficher une feature
     #[Route('/moderator/feature/{id}/{slug}', name: 'show_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
     public function showFeature(Feature $feature): Response
