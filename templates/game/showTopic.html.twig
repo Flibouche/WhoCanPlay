@@ -27,7 +27,7 @@
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
-                <a href="{{ path('show_game', {'id': topic.game.id, 'slug':topic.game.slug}) }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">{{ topic.game.slug|replace({'-': ' '})|title }}</a>
+                <a href="{{ path('show_game', {'id': topic.game.id, 'slug':topic.game.slug}) }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">{{ topic.game.slug|replace({'-': ' '})|title_with_roman }}</a>
             </div>
         </li>
         <li>
@@ -35,7 +35,7 @@
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
-                <a href="{{ path('forum_game', {'id': topic.game.id, 'slug':topic.game.slug}) }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Forum of {{ topic.game.slug|replace({'-': ' '})|title }}</a>
+                <a href="{{ path('forum_game', {'id': topic.game.id, 'slug':topic.game.slug}) }}" class="ms-1 md:ms-2 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Forum of {{ topic.game.slug|replace({'-': ' '})|title_with_roman }}</a>
             </div>
         </li>
         <li aria-current="{{ topic }}">

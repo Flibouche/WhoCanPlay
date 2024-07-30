@@ -41,7 +41,7 @@
                 {% for feature in user.features|reverse|slice(0,5) %}
                 <div class="flex gap-5">
                     <span>{{ feature }}</span>
-                    <span>{{ feature.game.slug|replace({'-': ' '})|title }}</span>
+                    <span>{{ feature.game.slug|replace({'-': ' '})|title_with_roman }}</span>
                 </div>
                 {% endfor %}
             </div>

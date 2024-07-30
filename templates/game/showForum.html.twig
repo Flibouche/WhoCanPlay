@@ -36,7 +36,7 @@
                 <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
-                <span class="ms-1 md:ms-2 text-black dark:text-white underline">Forum of {{ game.slug|replace({'-': ' '})|title }}</span>
+                <span class="ms-1 md:ms-2 text-black dark:text-white underline">Forum of {{ game.slug|replace({'-': ' '})|title_with_roman }}</span>
             </div>
         </li>
     </ol>
@@ -44,7 +44,7 @@
 
 {# En-tête #}
 <div class="w-full">
-    <h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Topics of {{ game.slug|replace({'-': ' '})|title }}</h1>
+    <h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Topics of {{ game.slug|replace({'-': ' '})|title_with_roman }}</h1>
     <hr class="mt-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
 </div>
 
