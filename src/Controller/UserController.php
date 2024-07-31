@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 use App\Enum\FeatureState;
 use App\Form\EditPasswordFormType;
 use App\Repository\UserRepository;
@@ -25,7 +26,7 @@ class UserController extends AbstractController
     // Méthode pour accéder au profil privé de l'utilisateur
     #[Route('/profile', name: 'app_user')]
     #[IsGranted('ROLE_USER')]
-    public function general(Security $security): Response
+    public function general(Security $security, Request $request): Response
     {
         // Je récupère l'utilisateur connecté
         $user = $security->getUser();
@@ -35,9 +36,25 @@ class UserController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $response = $this->updateUser($form, $user);
+
+            if ($response instanceof Response) {
+                return $response;
+            }
+        }
+
         return $this->render('user/general.html.twig', [
-            'controller_name' => 'UserController'
+            'controller_name' => 'UserController',
+            'formEditUser' => $form,
         ]);
+    }
+
+    private function updateUser()
+    {
+
     }
     #endregion
 

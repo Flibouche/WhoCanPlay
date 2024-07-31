@@ -281,6 +281,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    // =================== Avatar ===================
+    
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): static
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    // =================== Google User ===================
+
+    public function isGoogleUser(): ?bool
+    {
+        return $this->googleUser;
+    }
+
+    public function setGoogleUser(?bool $googleUser): static
+    {
+        $this->googleUser = $googleUser;
+
+        return $this;
+    }
     
     #endregion
 
@@ -429,28 +457,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     #endregion
-
-    public function getAvatar(): ?string
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar(?string $avatar): static
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    public function isGoogleUser(): ?bool
-    {
-        return $this->googleUser;
-    }
-
-    public function setGoogleUser(?bool $googleUser): static
-    {
-        $this->googleUser = $googleUser;
-
-        return $this;
-    }
 }

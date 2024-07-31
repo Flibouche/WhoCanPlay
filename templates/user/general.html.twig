@@ -4,6 +4,8 @@
 
 {% block body %}
 
+{{ dump(app.user) }}
+
 <div class="w-full">
     <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3">My profile</h1>
     <hr class="my-3 w-full border-t-2 border-amber-800 dark:border-yellow-200" />
@@ -29,6 +31,18 @@
                 <div class="flex flex-col">
                     <span>{{ app.user.pseudo }}</span>
                     <span>{{ app.user.email }}</span>
+                </div>
+
+                <div>
+                    {{ form_start(formEditUser) }}
+                    {{ form_row(formEditUser.pseudo) }}
+                    <div class="bg-red-500">
+                        {% if app.user.isGoogleUser == false %}
+                        {{ form_row(formEditUser.email) }}
+                        {% endif %}
+                    </div>
+
+                    {{ form_end(formEditUser) }}
                 </div>
 
             </div>
