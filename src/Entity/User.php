@@ -110,6 +110,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatar = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $googleUser = null;
+
     public function __construct()
     {
         $this->features = new ArrayCollection();
@@ -435,6 +438,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAvatar(?string $avatar): static
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function isGoogleUser(): ?bool
+    {
+        return $this->googleUser;
+    }
+
+    public function setGoogleUser(?bool $googleUser): static
+    {
+        $this->googleUser = $googleUser;
 
         return $this;
     }

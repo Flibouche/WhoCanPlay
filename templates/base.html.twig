@@ -237,6 +237,10 @@
         <script src="{{ asset('js/tarteaucitron/tarteaucitron.js') }}"></script>
 
         <script type="text/javascript">
+            (tarteaucitron.job = tarteaucitron.job || []).push('googlesignin');
+        </script>    
+
+        <script type="text/javascript">
         tarteaucitron.init({
     	    "privacyUrl": "{{ path('app_privacy_policy') }}", /* Privacy policy url */
             "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
