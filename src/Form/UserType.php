@@ -29,9 +29,16 @@ class UserType extends AbstractType
         }
 
         $builder
-            ->add('pseudo', TextType::class)
-            ->add('biography', TextareaType::class)
-            ->add('avatar', FileType::class)
+            ->add('pseudo', TextType::class, [
+                'required' => true,
+            ])
+            ->add('biography', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('avatar', FileType::class, [
+                'required' => false,
+                'mapped' => false,
+            ])
         ;
     }
 

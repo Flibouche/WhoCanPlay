@@ -26,7 +26,7 @@ class UserController extends AbstractController
     // Méthode pour accéder au profil privé de l'utilisateur
     #[Route('/profile', name: 'app_user')]
     #[IsGranted('ROLE_USER')]
-    public function general(Security $security, Request $request): Response
+    public function general(Security $security, Request $request, EntityManagerInterface $entityManager): Response
     {
         // Je récupère l'utilisateur connecté
         $user = $security->getUser();
@@ -39,7 +39,7 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $response = $this->updateUser($form, $user);
+            $response = $this->updateUser($security, $form, $entityManager);
 
             if ($response instanceof Response) {
                 return $response;
@@ -52,9 +52,24 @@ class UserController extends AbstractController
         ]);
     }
 
-    private function updateUser()
+    // Méthode pour modifier les informations de l'utilisateur
+    private function updateUser($security, $form, $entityManager): Response
     {
+        /**
+        * @var User|null $user
+        */
+        // Je récupère l'utilisateur connecté
+        $user = $security->getUser();
 
+        // Si l'utilisateur n'est pas connecté, alors je lève une exception
+        if (!$user instanceof PasswordAuthenticatedUserInterface) {
+            throw new AccessDeniedException('Access denied');
+        }
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user');
     }
     #endregion
 
@@ -165,15 +180,15 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
     #endregion
-    
+
     #region Features
     // Méthode pour afficher les fonctionnalités soumises par l'utilisateur
     #[Route('/profile/submitted-features', name: 'app_user_submitted_features')]
     public function submittedFeatures(Security $security): Response
     {
         /**
-        * @var User|null $user
-        */
+         * @var User|null $user
+         */
         // Je récupère l'utilisateur connecté
         $user = $security->getUser();
 
@@ -192,7 +207,7 @@ class UserController extends AbstractController
             'processed' => [],
             'denied' => [],
         ];
-        
+
         // Je détermine l'état de chaque fonctionnalités pour les classer correctement
         foreach ($features as $feature) {
             $stateKey = match ($feature->getState()) {
