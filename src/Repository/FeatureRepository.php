@@ -17,12 +17,27 @@ class FeatureRepository extends ServiceEntityRepository
     }
 
     // Méthode qui me permet de rechercher les Features par States
-    public function findFeaturesByStates(array $states): array
+    public function findFeatures(): array
     {
         $qb = $this->createQueryBuilder('f')
-            ->where('f.state IN (:states)')
-            ->setParameter('states', $states);
-        
+            ->select('f.id', 'f.state', 'f.submissionDate', 'f.slug', 'f.updatedAt',
+                    'd.id as disability_id', 'd.name as disability', 'd.icon',
+                    'g.id as game',
+                    'u.id as user_id', 'u.pseudo as user',
+                    'f.id_game_api')
+            ->leftJoin('f.disability', 'd')
+            ->leftJoin('f.game', 'g')
+            ->leftJoin('f.user', 'u')
+            ->orderBy('f.state', 'ASC');
+
+            /*
+                SELECT f0_.id AS id_0, f0_.state AS state_1, f0_.submission_date AS submission_date_2, f0_.slug AS slug_3, f0_.updated_at AS updated_at_4, d1_.id AS id_5, d1_.name AS name_6, d1_.icon AS icon_7, g2_.id AS id_8, u3_.id AS id_9, u3_.pseudo AS pseudo_10, f0_.id_game_api AS id_game_api_11 
+                FROM feature f0_ LEFT JOIN disability d1_ ON f0_.disability_id = d1_.id 
+                LEFT JOIN game g2_ ON f0_.game_id = g2_.id 
+                LEFT JOIN user u3_ ON f0_.user_id = u3_.id 
+                ORDER BY f0_.state ASC
+            */
+            
         return $qb->getQuery()->getResult();
     }
 

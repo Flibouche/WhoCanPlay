@@ -165,9 +165,6 @@ class UserController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
-        // Je définis les états que je veux récupérer
-        $states = [FeatureState::NOT_OPENED, FeatureState::PENDING, FeatureState::PROCESSED, FeatureState::DENIED];
-
         // Je récupère les fonctionnalités qui ont été soumise par l'utilisateur
         $features = $user->getFeatures();
 

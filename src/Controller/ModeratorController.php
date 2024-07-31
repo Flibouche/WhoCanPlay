@@ -33,14 +33,17 @@ class ModeratorController extends AbstractController
     public function submissionsBox(FeatureRepository $featureRepository): Response
     {
         // Je définis les états que je veux récupérer
-        $states = [FeatureState::NOT_OPENED, FeatureState::PENDING, FeatureState::PROCESSED, FeatureState::DENIED];
+        // $states = [FeatureState::NOT_OPENED, FeatureState::PENDING, FeatureState::PROCESSED, FeatureState::DENIED];
 
         // J'utilise la méthode findFeaturesByStates pour récupérer les Features par State
-        $features = $featureRepository->findFeaturesByStates($states);
+        $features = $featureRepository->findFeatures();
+        // dd($features);
+        // ! $features = $featureRepository->findAll();
 
         // J'extrait les ID des jeux associés aux Features et j'enlève les doublons avec array_unique
         // Je crée donc un tableau d'ID unique à partir des Features
-        $gameApiIds = array_unique(array_map(fn ($feature) => $feature->getIdGameApi(), $features));
+        // $gameApiIds = array_unique(array_map(fn ($feature) => $feature->getIdGameApi(), $features));
+        $gameApiIds = array_unique(array_map(fn ($feature) => $feature['id_game_api'], $features));
 
         // J'utilise le service pour obtenir les informations des jeux en utilisant les ID que j'ai récupéré plus haut
         $gamesApiData = $this->igdbApiService->getGameByIds($gameApiIds);
@@ -62,11 +65,12 @@ class ModeratorController extends AbstractController
         // Je fais une boucle foreach pour chaque Feature récupéré
         foreach ($features as $feature) {
             // Je récupère l'ID idGameApi à partir de $feature
-            $idGameApi = $feature->getIdGameApi();
+            // $idGameApi = $feature->getIdGameApi();
+            $idGameApi = $feature['id_game_api'];
 
             // Je détermine l'état du Feature pour le classer correctement
             // Utilisation de match plutôt que de switch pour rendre le code plus lisible
-            $stateKey = match ($feature->getState()) {
+            $stateKey = match ($feature['state']) {
                 FeatureState::NOT_OPENED => 'notOpened',
                 FeatureState::PENDING => 'pending',
                 FeatureState::PROCESSED => 'processed',
@@ -86,6 +90,8 @@ class ModeratorController extends AbstractController
                 ];
             } // TODO : gérer le cas où $stateKey est null
         }
+
+        // dd($featuresGames);
 
         // Je retourne la vue Twig et je passe le tableau $featuresGames à la vue
         return $this->render('moderator/submissionBox.html.twig', [
