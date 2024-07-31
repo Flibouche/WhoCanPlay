@@ -73,7 +73,6 @@ class UserController extends AbstractController
         ]);
     }
 
-
     // Méthode pour modifier le mot de passe de l'utilisateur
     private function updatePassword(Security $security, $form, $passwordHasher, $entityManager): Response
     {
