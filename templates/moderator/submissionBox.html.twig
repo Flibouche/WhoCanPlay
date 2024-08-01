@@ -87,7 +87,16 @@
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
                 <tr>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
+                    <td scope="row" class="px-6 py-4">
+                        <div class="flex flex-row items-center gap-5 font-bold whitespace-nowrap">
+                            <div class="flex-shrink-0">
+                                <img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.cover.image_id }}.jpg" alt="" class="w-20 h-10 object-cover">
+                            </div>
+                            <div class="flex-gros min-w-0">
+                                <a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}"><p class="truncate">{{ feature.id }}# {{ game.name }}</p></a>
+                            </div>
+                        </div>
+                    </td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -130,7 +139,16 @@
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
                 <tr>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
+                    <td scope="row" class="px-6 py-4">
+                        <div class="flex flex-row items-center gap-5 font-bold whitespace-nowrap">
+                            <div class="flex-shrink-0">
+                                <img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.cover.image_id }}.jpg" alt="" class="w-20 h-10 object-cover">
+                            </div>
+                            <div class="flex-gros min-w-0">
+                                <a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}"><p class="truncate">{{ feature.id }}# {{ game.name }}</p></a>
+                            </div>
+                        </div>
+                    </td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -173,9 +191,16 @@
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
                 <tr>
-                    {% if game is not null %}
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
-                    {% endif %}
+                    <td scope="row" class="px-6 py-4">
+                        <div class="flex flex-row items-center gap-5 font-bold whitespace-nowrap">
+                            <div class="flex-shrink-0">
+                                <img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.cover.image_id }}.jpg" alt="" class="w-20 h-10 object-cover">
+                            </div>
+                            <div class="flex-gros min-w-0">
+                                <a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}"><p class="truncate">{{ feature.id }}# {{ game.name }}</p></a>
+                            </div>
+                        </div>
+                    </td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -218,7 +243,16 @@
                 {% set feature = featureData.feature %}
                 {% set game = featureData.gameApi %}
                 <tr>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}# {{ game.name }}</a></td>
+                    <td scope="row" class="px-6 py-4">
+                        <div class="flex flex-row items-center gap-5 font-bold whitespace-nowrap">
+                            <div class="flex-shrink-0">
+                                <img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.cover.image_id }}.jpg" alt="" class="w-20 h-10 object-cover">
+                            </div>
+                            <div class="flex-gros min-w-0">
+                                <a href="{{ path('show_moderator', {'id': feature.id, 'slug': feature.slug}) }}"><p class="truncate">{{ feature.id }}# {{ game.name }}</p></a>
+                            </div>
+                        </div>
+                    </td>
                     <td class="px-6 py-4">{{ feature.user }}</td>
                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -246,7 +280,11 @@
 <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script>
 <script>
     $('#dataTable1').DataTable({
-        responsive: true
+        responsive: true,
+        columnDefs: [
+            { responsivePriority: 1, targets: 0 },
+            { responsivePriority: 3, targets: -1 },
+        ]
     });
     $('#dataTable2').DataTable({
         responsive: true
