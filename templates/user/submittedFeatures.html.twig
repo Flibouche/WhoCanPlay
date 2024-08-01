@@ -4,6 +4,27 @@
 
 {% block body %}
 
+<nav class="w-full flex text-sm" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+        <li class="inline-flex items-center">
+            <a href="{{ path('app_home') }}" class="inline-flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
+                <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                </svg>
+                Home
+            </a>
+        </li>
+        <li aria-current="Games">
+            <div class="flex items-center">
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                </svg>
+                <span class="ms-1 md:ms-2 text-black dark:text-white underline">Profile</span>
+            </div>
+        </li>
+    </ol>
+</nav>
+
 <div class="w-full">
     <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3">My profile</h1>
     <hr class="my-3 w-full border-t-2 border-amber-800 dark:border-yellow-200" />
@@ -56,7 +77,7 @@
         {# Section principale #}
         <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem] pr-5">
             <div class="relative bg-white dark:bg-neutral-800 flex flex-col mb-5 rounded-xl pt-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
-                <h2 class="text-2xl fond-bold align pl-5">Submitted features ({{ app.user.features|length }})</h2>
+                <h2 class="text-2xl font-bold text-black dark:text-white pl-5">Submitted features ({{ app.user.features|length }})</h2>
                 <hr class="mt-3 w-full border-t-2 border-amber-800 dark:border-yellow-200" />
 
                 {# Tabs section #}
@@ -118,7 +139,7 @@
                                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                     <td class="px-6 py-4">{{ feature.state.value }}</td>
                                     <td class="px-6 py-4"> {{ feature.submissionDate|date('d.m.Y \\a\\t H:i:s') }}</td>
-                                    <td class="px-6 py-4"><img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"></td>
+                                    <td class="px-6 py-4"><img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"></td>
                                 </tr>
                                 {% endfor %}
                                 {% else %}
@@ -159,7 +180,7 @@
                                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                     <td class="px-6 py-4">{{ feature.state.value }}</td>
                                     <td class="px-6 py-4"> {{ feature.submissionDate|date('d.m.Y \\a\\t H:i:s') }}</td>
-                                    <td class="px-6 py-4"><img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"></td>
+                                    <td class="px-6 py-4"><img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"></td>
                                 </tr>
                                 {% endfor %}
                                 {% else %}
@@ -200,7 +221,7 @@
                                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                     <td class="px-6 py-4">{{ feature.state.value }}</td>
                                     <td class="px-6 py-4"> {{ feature.submissionDate|date('d.m.Y \\a\\t H:i:s') }}</td>
-                                    <td class="px-6 py-4"><img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"></td>
+                                    <td class="px-6 py-4"><img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"></td>
                                 </tr>
                                 {% endfor %}
                                 {% else %}
@@ -241,7 +262,7 @@
                                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                     <td class="px-6 py-4">{{ feature.state.value }}</td>
                                     <td class="px-6 py-4"> {{ feature.submissionDate|date('d.m.Y \\a\\t H:i:s') }}</td>
-                                    <td class="px-6 py-4"><img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"></td>
+                                    <td class="px-6 py-4"><img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter"></td>
                                 </tr>
                                 {% endfor %}
                                 {% else %}

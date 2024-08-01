@@ -64,7 +64,7 @@
         <div id="game-card" class="rounded-xl overflow-hidden flex flex-col bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
             <div class="relative">
                 <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_screenshot_med/{{ game.api.cover.image_id }}.jpg" alt="{{ game.api.name }}">
+                    <img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_screenshot_med/{{ game.api.cover.image_id }}.jpg" alt="{{ game.api.name }}">
                     <div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
                 </a>
             </div>
@@ -91,7 +91,7 @@
                     {% set firstImage = false %}
                     {% for image in feature.images %}
                     {% if not firstImage %}
-                    <img src="{{ asset('assets/uploads/features/' ~ image.url) }}" alt="{{ image.title }}" class="object-fill">
+                    <img loading="lazy" src="{{ asset('assets/uploads/features/' ~ image.url) }}" alt="{{ image.title }}" class="object-fill">
                     <div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
                     {% set firstImage = true %}
                     {% endif %}

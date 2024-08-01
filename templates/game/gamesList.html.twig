@@ -188,7 +188,7 @@
                     <td scope="row" class="px-6 py-4">
                         <div class="flex flex-row items-center gap-5 font-bold whitespace-nowrap">
                             <div class="flex-shrink-0">
-                                <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}"><img src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.api.cover.image_id }}.jpg" alt="" class="w-20 h-10 object-cover"></a>
+                                <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}"><img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_thumb/{{ game.api.cover.image_id }}.jpg" alt="" class="w-20 h-10 object-cover"></a>
                             </div>
                             <div class="flex-grow min-w-0">
                                 <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}"><p class="truncate">{{ game.api.name }}</p></a>
@@ -201,7 +201,7 @@
                     <td class="px-6 py-4">
                         <div class="flex gap-1">
                             {% for disability in game.uniqueDisabilities %}
-                                <img src="{{ disability.icon }}" alt="{{ disability }}'s icon" value="{{ disability }}" title="{{ disability }}" width="25" height="25" data-disability="{{ disability }}" class="dark:invert dark:brightness-0 dark:filter">
+                                <img loading="lazy" src="{{ disability.icon }}" alt="{{ disability }}'s icon" value="{{ disability }}" title="{{ disability }}" width="25" height="25" data-disability="{{ disability }}" class="dark:invert dark:brightness-0 dark:filter">
                             {% endfor %}
                         </div>
                     </td>

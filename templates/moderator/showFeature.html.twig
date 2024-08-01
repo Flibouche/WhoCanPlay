@@ -68,12 +68,12 @@
             <h2 class="">Game : {{ gameApi[0].name }}</h2>
             <div class="flex gap-3 pb-3">
                 <h3>Disability category : {{ feature.disability.name }}</h3>
-                <img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+                <img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
             </div>
             <div class="flex flex-col sm:flex-row justify-between">
                 <div class="flex items-center gap-[10px]">
                     {# TODO : mettre l'image de profil #}
-                    <img src="https://avatar.iran.liara.run/public" alt="{{ feature.user }}'s avatar" class="w-[50px] h-[50px]">
+                    <img loading="lazy" src="https://avatar.iran.liara.run/public" alt="{{ feature.user }}'s avatar" class="w-[50px] h-[50px]">
                     <p>FROM {{ feature.user }}</p>
                 </div>
                 <div class="flex">
@@ -100,7 +100,7 @@
             <div class="w-full">
                 <h4 class="text-2xl font-bold pb-2 text-black dark:text-white">Game :</h4>
                 <div class="flex flex-col justify-center items-center gap-3">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="{{ gameApi[0].name }}'s cover" class="rounded-xl">
+                    <img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="{{ gameApi[0].name }}'s cover" class="rounded-xl">
                     <h5 class="text-2xl font-bold text-indigo-800 dark:text-indigo-200">{{ gameApi[0].name }}</h5>
                 </div>
             </div>
@@ -109,7 +109,7 @@
             <div class="w-full my-3 text-black dark:text-white">
                 <h4 class="text-2xl font-bold pb-2">Disability category :</h4>
                 <div class="flex gap-3">
-                    <img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+                    <img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
                     <p>{{ feature.disability.name }}</p>
                 </div>
             </div>
@@ -118,7 +118,7 @@
             <div class="w-full my-3 text-black dark:text-white">
                 <h4 class="text-2xl font-bold pb-2">Feature title :</h4>
                 <div class="flex gap-3">
-                    <img src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+                    <img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
                     <p>{{ feature }}</p>
                 </div>
             </div>
@@ -138,7 +138,7 @@
                         {% for image in feature.images %}
                         <li class="hidden">
                             <div class="flex flex-col h-[40vh]">
-                                <img class="w-full h-full object-contain lg:object-none" src="{{ asset('assets/uploads/features/' ~ image.url ) }}" alt="">
+                                <img loading="lazy" class="w-full h-full object-contain lg:object-none" src="{{ asset('assets/uploads/features/' ~ image.url ) }}" alt="">
                                 <div class="p-4 bg-white/70 dark:bg-black/70 text-black dark:text-white">
                                     <h5 class="text-xl font-semibold mb-2">{{ image.title }}</h5>
                                     <p>{{ image.description }}</p>

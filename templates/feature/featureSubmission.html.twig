@@ -62,7 +62,7 @@
         {# J'affiche les images si je suis en édition #}
         {% for image in edit.images %}
         <div class="flex">
-            <img src="{{ asset('assets/uploads/features/' ~ image.url ) }}" alt="">
+            <img loading="lazy" src="{{ asset('assets/uploads/features/' ~ image.url ) }}" alt="">
             <a href="{{ path('delete_image_feature', {'id': image.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ image.id) }}">Delete</a>
         </div>
         {% endfor %}
@@ -89,6 +89,7 @@
     <div class="search-container relative flex flex-col w-full mb-2">
         <label for="search" class="font-bold text-gray-900 dark:text-white mb-2">Choose game <span class="text-red-500">*</span></label>
         <input type="search" id="search" class="w-full px-5 py-4 text-black/80 rounded-lg bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white" placeholder="Ex : Hollow Knight" required />
+        <span id="spinner" class="absolute bottom-4 right-0 pr-5 hidden"><i class="fa fa-spinner fa-spin text-black dark:text-white"></i></span>
         <div id="result"></div>
     </div>
 
@@ -169,6 +170,7 @@
 
             if (query.length > 2) {
                 searchTimeout = setTimeout(function () {
+                    $('#spinner').removeClass('hidden');
                     $.ajax({
                         url: '{{ path("search_api_game") }}',
                         type: 'GET',
@@ -180,14 +182,17 @@
                             if (data.length > 0) {
                                 var list = $('<ul class="search-results absolute w-[100%] z-50 p-0 m-0 bg-red-200"></ul>');
                                 data.forEach(function (item) {
-                                    list.append('<li class="result-item p-[10px] cursor-pointer hover:bg-red-800" data-id="' + item.id + '">' + item.name + '<img src=`item.cover`>' + '</li>');
+                                    $('#spinner').addClass('hidden');
+                                    list.append('<li class="result-item p-[10px] cursor-pointer hover:bg-red-800" data-id="' + item.id + '">' + item.name + '<img loading="lazy" src=`item.cover`>' + '</li>');
                                 });
                                 resultDiv.append(list);
                             } else {
+                                $('#spinner').addClass('hidden');
                                 resultDiv.append('<div class="no-results">No results found</div>');
                             }
                         },
                         error: function () {
+                            $('#spinner').addClass('hidden');
                             $('#result').html('<div class="no-results">An error occurred</div>');
                         }
                     });
@@ -202,7 +207,7 @@
             var gameId = $(this).data('id');
             $('#search').val(selectedGame);
             $('#result').empty();
-            $('#form').removeClass('hidden');
+            $('#form').slideToggle('slow');
             $('#form').addClass(' flex flex-col items-center justify-center');
             console.log("Selected game ID:", gameId);
 

@@ -27,7 +27,7 @@
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ disability.name }}</td>
                     <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">
                         <div class="flex gap-5">
-                            <img src="{{ asset(disability.icon) }}" alt="{{ disability.name }}" width="20" height="20" title="{{ disability.name }}">
+                            <img loading="lazy" src="{{ asset(disability.icon) }}" alt="{{ disability.name }}" width="20" height="20" title="{{ disability.name }}">
                             {{ disability.icon }}
                         </div>
                     </td>

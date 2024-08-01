@@ -12,7 +12,7 @@
             <li class="my-3"><strong>ID</strong> : {{ disability.id }}</li>
             <li class="my-3"><strong>Name</strong> : {{ disability.name }}</li>
             <li class="my-3"><strong>Icon text</strong> : {{ disability.icon }}</li>
-            <li class="my-3 flex"><strong>Icon img</strong> : <img src="{{ asset(disability.icon) }}" alt="{{ disability.name }}" width="20" height="20" title="{{ disability.name }}"></li>
+            <li class="my-3 flex"><strong>Icon img</strong> : <img loading="lazy" src="{{ asset(disability.icon) }}" alt="{{ disability.name }}" width="20" height="20" title="{{ disability.name }}"></li>
             <li class="my-3"><strong>Slug</strong> : {{ disability.slug }}</li>
         </ul>
     </div>
