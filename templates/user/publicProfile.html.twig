@@ -5,49 +5,91 @@
 {% block body %}
 
 <div class="w-full">
-    <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3">{{ user }}</h1>
+    <div class="flex flex-col justify-center items-center space-y-3">
+        <img loading="lazy" src="https://avatar.iran.liara.run/public" alt="{{ app.user }}'s avatar" class="w-[100px] h-[100px]">
+        <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3">{{ user }}</h1>
+    </div>
     <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
-    <div class="rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5 mt-5 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <div class="bg-white p-4 rounded-lg shadow">
-                <h2 class="text-2xl font-bold text-center">Informations</h2>
-                <div class="flex flex-col">
-                    <div class="flex gap-5">
-                        <span>Topics :</span>
-                        <span>{{ user.topics|length }}</span>
-                    </div>
-                    <div class="flex gap-5">
-                        <span>Posts :</span>
-                        <span>{{ user.posts|length }}</span>
-                    </div>
-                </div>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <div class="bg-white p-4 rounded-lg shadow">
-                <h2 class="text-2xl font-bold text-center">Activity</h2>
-                <div class="flex flex-col">
-                    <span>Lasts topics :</span>
-                    {% for topic in user.topics|reverse|slice(0, 5) %}
-                    <span>{{ topic }}</span>
-                    {% endfor %}
+        <div class="flex flex-col text-black dark:text-white bg-white dark:bg-neutral-800 p-5 rounded-lg shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <h2 class="text-2xl font-bold text-center mb-2">Informations</h2>
+            <div class="flex flex-col flex-grow justify-center bg-neutral-200 dark:bg-zinc-700 rounded-lg py-5 px-5 border border-amber-800 dark:border-yellow-200">
+                
+                <div class="flex gap-5">
+                    <table class="w-full">
+                        <tbody>
+                            <tr>
+                                <td class="font-bold">Topics</td>
+                                <td>{{ user.topics|length }} {% if user.topics|length <= 1 %} topic {% else %} topics {% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Posts</td>
+                                <td>{{ user.posts|length }} {% if user.posts|length <= 1 %} post {% else %} posts {% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Member since</td>
+                                <td>{{ user.registrationDate|date('d.m.Y') }} ({{ (date('now').diff(user.registrationDate)).days }} days)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                 </div>
+
             </div>
         </div>
 
-        <div class="grid grid-cols-1 mt-5">
-            <div class="bg-white p-4 rounded-lg shadow">
-                <h2 class="text-2xl font-bold text-center">Features requested ({{ user.features|length }}) :</h2>
+        <div class="flex flex-col text-black dark:text-white bg-white dark:bg-neutral-800 p-5 rounded-lg shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <h2 class="text-2xl font-bold text-center mb-2">Activity</h2>
+            <div class="flex flex-col flex-grow bg-neutral-200 dark:bg-zinc-700 rounded-lg py-5 px-5 border border-amber-800 dark:border-yellow-200">
+                <span class="font-bold">Lasts topics :</span>
+                {% for topic in user.topics|reverse|slice(0, 5) %}
+                <a href="{{ path('topic_game', {'id': topic.id, 'slug':topic.slug}) }}" class="hover:text-indigo-800 dark:hover:text-indigo-200 hover:underline">{{ topic }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 mt-5">
+
+        <div class="text-black dark:text-white bg-white dark:bg-neutral-800 p-5 rounded-lg shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <h2 class="text-2xl font-bold text-center mb-2">Biography</h2>
+            <div class="flex flex-col flex-grow bg-neutral-200 dark:bg-zinc-700 rounded-lg py-5 px-5 border border-amber-800 dark:border-yellow-200">
+
+                <div class="flex gap-5 justify-between">
+                    <svg class="w-4 h-4 mr-2 fill-current dark:invert dark:brightness-0 dark:filter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M0 216C0 149.7 53.7 96 120 96l8 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-8 0c-30.9 0-56 25.1-56 56l0 8 64 0c35.3 0 64 28.7 64 64l0 64c0 35.3-28.7 64-64 64l-64 0c-35.3 0-64-28.7-64-64l0-32 0-32 0-72zm256 0c0-66.3 53.7-120 120-120l8 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-8 0c-30.9 0-56 25.1-56 56l0 8 64 0c35.3 0 64 28.7 64 64l0 64c0 35.3-28.7 64-64 64l-64 0c-35.3 0-64-28.7-64-64l0-32 0-32 0-72z"/>
+                    </svg>
+                    <p>{{ user.biography|raw }}</p>
+                    <svg class="w-4 h-4 mr-2 fill-current dark:invert dark:brightness-0 dark:filter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M448 296c0 66.3-53.7 120-120 120l-8 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l8 0c30.9 0 56-25.1 56-56l0-8-64 0c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l64 0c35.3 0 64 28.7 64 64l0 32 0 32 0 72zm-256 0c0 66.3-53.7 120-120 120l-8 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l8 0c30.9 0 56-25.1 56-56l0-8-64 0c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l64 0c35.3 0 64 28.7 64 64l0 32 0 32 0 72z"/>
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 mt-5">
+
+        <div class="text-black dark:text-white bg-white dark:bg-neutral-800 p-5 rounded-lg shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+            <h2 class="text-2xl font-bold text-center mb-2">Features requested ({{ user.features|length }}) :</h2>
+            <div class="flex flex-col flex-grow bg-neutral-200 dark:bg-zinc-700 rounded-lg py-5 px-5 border border-amber-800 dark:border-yellow-200">
+
                 {% for feature in user.features|reverse|slice(0,5) %}
                 <div class="flex gap-5">
                     <span>{{ feature }}</span>
                     <span>{{ feature.game.slug|replace({'-': ' '})|title_with_roman }}</span>
                 </div>
                 {% endfor %}
+
             </div>
         </div>
 
     </div>
+
 </div>
 
 {% endblock %}
