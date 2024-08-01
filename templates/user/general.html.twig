@@ -23,25 +23,57 @@
         {# Section principale #}
         <section id="primary" class="basis-0 min-w-[80%] max-w-[50rem] pr-5">
             <div class="relative bg-white dark:bg-neutral-800 flex flex-col mb-5 rounded-xl px-5 py-5 text-black dark:text-white shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
-                <div class="text-center">
-                    <h2 class="text-2xl fond-bold align">Welcome to your profile {{ app.user.pseudo }}</h2>
-                </div>
-                <div class="flex flex-col">
-                    <span>{{ app.user.pseudo }}</span>
-                    <span>{{ app.user.email }}</span>
-                </div>
+                <div class="p-4">
+                    <h2 class="text-2xl font-bold text-black dark:text-white mb-4">Edit Profile</h2>
 
-                <div>
-                    {{ form_start(formEditUser) }}
-                    {{ form_row(formEditUser.pseudo) }}
-                    {% if app.user.isGoogleUser == false %}
-                        {{ form_row(formEditUser.email) }}
+                    {% if app.user.isGoogleUser == true %}
+                    <div class="mb-4">
+                        <label for="email" class="font-bold text-black dark:text-white">Email</label>
+                        <input type="email" value="{{ app.user.email }}" class="form-control w-full px-5 py-4 text-black/60 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white" disabled/>
+                        <p class="text-red-500">If you're a google user, you cannot update your email.</p>
+                    </div>
                     {% endif %}
-                    {{ form_row(formEditUser.biography) }}
-                    {{ form_row(formEditUser.avatar) }}
+
+                    {{ form_start(formEditUser) }}
+
+                    <div class="mb-4">
+                        {{ form_label(formEditUser.pseudo, 'Username <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'font-bold text-black dark:text-white'}}) }}
+                        {{ form_widget(formEditUser.pseudo, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter your username'}}) }}
+                        <div class="text-red-500">
+                            {{ form_errors(formEditUser.pseudo) }}
+                        </div>
+                    </div>
+
+                    {% if app.user.isGoogleUser == false %}
+                    <div class="mb-4">
+                        {{ form_label(formEditUser.email, 'Email <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'font-bold text-black dark:text-white'}}) }}
+                        {{ form_widget(formEditUser.email, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter your email'}}) }}
+                        <div class="text-red-500">
+                            {{ form_errors(formEditUser.email) }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-4">
+                        {{ form_label(formEditUser.biography, 'Biography', {'label_attr': {'class': 'font-bold text-black dark:text-white'}}) }}
+                        {{ form_widget(formEditUser.biography, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter your biography'}}) }}
+                        <div class="text-red-500">
+                            {{ form_errors(formEditUser.biography) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_label(formEditUser.avatar, 'Avatar', {'label_attr': {'class': 'font-bold text-black dark:text-white'}}) }}
+                        {{ form_widget(formEditUser.avatar, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white'}}) }}
+                        <div class="text-red-500">
+                            {{ form_errors(formEditUser.avatar) }}
+                        </div>
+                    </div>
+
                     <button type="submit" class="w-full my-2 text-white dark:text-black bg-indigo-800 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-800 dark:bg-indigo-200 dark:hover:bg-indigo-400 dark:focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Edit profile</button>
                     {{ form_end(formEditUser) }}
                 </div>
+            </div>
 
             </div>
         </section>
