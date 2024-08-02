@@ -32,9 +32,6 @@ class EditPasswordFormType extends AbstractType
                 ->add('oldPassword', PasswordType::class, [
                     'label' => 'Old Password',
                     'mapped' => false,
-                    'attr' => [
-                        'autocomplete' => 'current-password',
-                    ],
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Please enter your current password',
@@ -46,11 +43,6 @@ class EditPasswordFormType extends AbstractType
                 ])
                 ->add('plainPassword', RepeatedType::class, [
                     'type' => PasswordType::class,
-                    'options' => [
-                        'attr' => [
-                            'autocomplete' => 'new-password',
-                        ],
-                    ],
                     'first_options' => [
                         'label' => 'New Password',
                         'constraints' => [
