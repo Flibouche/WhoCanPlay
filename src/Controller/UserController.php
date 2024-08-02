@@ -233,11 +233,14 @@ class UserController extends AbstractController
 
     #region Public Profile
     // Méthode pour afficher le profil public de l'utilisateur
-    #[Route('/{pseudo}', name: 'app_user_profile')]
+    #[Route('/profile/{pseudo}', name: 'app_user_profile')]
     #[IsGranted('ROLE_USER')]
     public function publicProfile(string $pseudo, UserRepository $userRepository): Response
     {
-        $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
+        // $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
+        $user = $userRepository->findOneByPublicInformations($pseudo);
+
+        // dd($user);
 
         if (!$user) {
             throw $this->createNotFoundException('User not found');
