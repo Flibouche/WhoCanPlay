@@ -90,15 +90,13 @@ class FeatureController extends AbstractController
         $idGameApi = $form->get('id_game_api')->getData();
         $featureName = $form->get('name')->getData();
         $featureContent = $form->get('content')->getData();
-        $imagesDescription = $form->get('description')->getData();
 
-        // Je nettoie le nom de la feature, l'alt que ça attribu à l'image et la description de l'image pour éviter les failles XSS
+        // Je nettoie le nom de la feature, l'alt que ça attribu à l'image pour éviter les failles XSS
         $sanitizedName = $this->htmlSanitizer->sanitize($featureName);
         $sanitizedContent = $this->htmlSanitizer->sanitize($featureContent);
-        $sanitizedDescription = $this->htmlSanitizer->sanitize($imagesDescription);
 
         // Je vérifie que le nom et le contenu ne sont pas vides pour éviter l'ajout de données vides en base de données
-        if (empty($sanitizedName) || empty($sanitizedContent) || empty($sanitizedDescription)) {
+        if (empty($sanitizedName) || empty($sanitizedContent)) {
             return;
         }
 
@@ -115,7 +113,6 @@ class FeatureController extends AbstractController
 
             $img->setTitle($sanitizedName);
             $img->setAltText($sanitizedName);
-            $img->setDescription($sanitizedDescription);
 
             $feature->addImage($img);
         }

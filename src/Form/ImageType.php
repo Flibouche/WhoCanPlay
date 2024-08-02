@@ -22,12 +22,6 @@ class ImageType extends AbstractType
             ->add('url', HiddenType::class)
             ->add('title', HiddenType::class)
             ->add('altText', HiddenType::class)
-            ->add('description', TextareaType::class, [
-                'label' => 'Description',
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-            ])
             // ->add('submissionDate', null, [
             //     'widget' => 'single_text',
             // ])

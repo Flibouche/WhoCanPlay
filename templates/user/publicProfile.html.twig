@@ -112,7 +112,7 @@
                         <tbody>
                             {% for feature in user.features|reverse|slice(0,5) %}
                             <tr>
-                                <td>{{ feature.name }}</td>
+                                <td><a href="{{ path('show_game', {'id': feature.game_id, 'slug':feature.game_slug}) }}">{{ feature.name }}</a></td>
                                 <td>{{ feature.game_slug|replace({'-': ' '})|title_with_roman }}</td>
                                 <td>{{ feature.submissionDate|date('d.m.Y') }}</td>
                             </tr>

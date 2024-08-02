@@ -150,6 +150,7 @@ class GameController extends AbstractController
             $featureId = $feature['id'];
             $featureName = $feature['featureName'];
             $disabilityName = $feature['disabilityName'];
+            $pseudo = $feature['pseudo'];
 
             // Si la fonctionnalité n'existe pas encore dans le tableau, je l'ajoute avec ses informations
             if (!isset($features[$featureName])) {
@@ -160,7 +161,8 @@ class GameController extends AbstractController
                     'content' => $feature['content'],
                     'disabilityName' => $disabilityName,
                     'icon' => $feature['icon'],
-                    'images' => []
+                    'images' => [],
+                    'user' => $pseudo
                 ];
             }
 
@@ -170,7 +172,6 @@ class GameController extends AbstractController
                     'url' => $feature['url'],
                     'altText' => $feature['altText'],
                     'title' => $feature['title'],
-                    'description' => $feature['description'],
                     'submissionDate' => $feature['submissionDate']
                 ];
             }

@@ -116,6 +116,8 @@
                 </div>
             </nav>
 
+            {{ dump() }}
+
             {# Tab Disabilities #}
             <div id="tab1" class="w-full tab-content hidden px-5 mt-5 py-5">
                 {# Boucle pour récupérer et trier les features par disability sans doublons #}
@@ -124,7 +126,7 @@
                 <article id="disability">
                     <header class="flex gap-3 brd-purple">
                         <img loading="lazy" src="{{ asset(features[0].icon) }}" alt="{{ features[0].disabilityName }}" title="{{ features[0].disabilityName }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
-                        <h2 class="text-2xl dark:text-white">{{ disability }}</h2>
+                        <h2 class="text-2xl fond-bold dark:text-white">{{ disability }}</h2>
                     </header>
 
                     <hr class="my-3 border-t-2 w-full border-amber-800 dark:border-yellow-200" />
@@ -132,15 +134,16 @@
                     {# Liste des features par disability #}
                     <ul id="feature-list">
                         {% for feature in features %}
-                        <li id="feature" class="mb-5">
-                            <h3 class="text-xl pb-2 dark:text-white">{{ feature.name }}</h3>
+                        <li id="feature" class="mb-5 relative">
+                            <h3 class="text-xl font-bold pb-2 dark:text-white">{{ feature.name }} <span class="text-sm">({{ feature.id }}#)</span></h3>
+                            <span class="absolute text-sm top-0 right-0 text-black dark:text-white"><a href="{{ path('app_user_profile', {'pseudo': feature.user} )}}">by {{ feature.user }}</a></span>
                             <div id="feature-content" class="dark:text-white">
                                 {{ feature.content|raw }}
                             </div>
 
                             {% if feature.images is not empty %}
                             <div class="my-3 w-full">
-                                <h4 class="text-2xl font-bold pb-2 text-black dark:text-white">Content image(s) :</h4>
+                                <h4 class="text-md font-bold pb-2 text-black dark:text-white">Content image(s) :</h4>
                                 <!-- Carousel -->
                                 <div class="relative bg-black/20 dark:bg-black/50 rounded-xl overflow-hidden shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
                                     <ul id="slider-{{ feature.id }}" class="relative">
@@ -150,7 +153,6 @@
                                                 <img loading="lazy" class="w-full h-full object-contain lg:object-none" src="{{ asset('assets/uploads/features/' ~ image.url) }}" alt="{{ image.altText }}">
                                                 <div class="p-4 bg-white/70 dark:bg-black/70 text-black dark:text-white">
                                                     <h5 class="text-xl font-semibold mb-2">{{ image.title }}</h5>
-                                                    <p>{{ image.description }}</p>
                                                 </div>
                                             </div>
                                         </li>

@@ -34,11 +34,6 @@ class FeatureType extends AbstractType
                 'multiple' => true,
                 'mapped' => false,
             ])
-            ->add('description', TextareaType::class, [
-                'required' => true,
-                'mapped' => false,
-                'label' => false,
-            ])
             // ->add('state')
             // ->add('Game', EntityType::class, [
             //     'class' => Game::class,

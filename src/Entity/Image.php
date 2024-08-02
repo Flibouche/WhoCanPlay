@@ -54,13 +54,6 @@ class Image
     )]
     private ?string $altText = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Assert\Regex(
-        pattern: '/^[\p{L}\p{N}\s.,!?\'"()-:]+$/u',
-        message: 'The title can only contain letters, numbers, spaces, and certain punctuation.'
-    )]
-    private ?string $description = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotNull(message: 'The submission date of the image cannot be empty.')]
     #[Assert\Type(
@@ -150,20 +143,6 @@ class Image
     public function setAltText(string $altText): static
     {
         $this->altText = $altText;
-
-        return $this;
-    }
-
-    // =================== Description ===================
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
 
         return $this;
     }

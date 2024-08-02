@@ -71,7 +71,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $user['posts'] = $posts;
 
             $features = $this->getEntityManager()->createQueryBuilder()
-                ->select('f.id', 'f.name', 'f.state', 'f.submissionDate', 'g.slug as game_slug')
+                ->select('f.id', 'f.name', 'f.state', 'f.submissionDate','g.id as game_id', 'g.slug as game_slug')
                 ->from('App\Entity\Feature', 'f')
                 ->join('f.game', 'g')
                 ->where('f.user = :userId')
