@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /moderator/
+Disallow: /profile/
+
+Sitemap: https://127.0.0.1:8000/sitemap.xml
