@@ -7,22 +7,17 @@
 <nav class="w-full flex text-sm" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
         <li class="inline-flex items-center">
-            <a href="{{ path('app_home') }}"
-                class="inline-flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
-                <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                    viewBox="0 0 20 20">
-                    <path
-                        d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+            <a href="{{ path('app_home') }}" class="inline-flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
+                <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                 </svg>
                 Home
             </a>
         </li>
         <li aria-current="Site Map">
             <div class="flex items-center">
-                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 9 4-4-4-4" />
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
                 </svg>
                 <span class="ms-1 md:ms-2 text-black dark:text-white underline">Site Map</span>
             </div>
@@ -33,22 +28,68 @@
 <div>
     <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pr-3">Site Map</h1>
     <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
-    <div
-        class="rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5 mt-5 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+    <div class="rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5 mt-5 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
         <p class="text-black dark:text-white pb-5">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vitae
             doloribus ullam laudantium nisi libero consectetur, fuga laborum rem sed at molestias illo minima
             dignissimos, atque quidem. Quos dolorum debitis dicta!</p>
 
-        <details class="mt-5 border rounded-xl border-black">
-            <summary class="bg-white/20 dark:bg-neutral-800 p-4 rounded-lg cursor-pointer shadow-md mb-4">
-                <span class="font-semibold text-black dark:text-white">HTML Version</span>
+        <details class="group bg-gray-200 dark:bg-gray-800 border rounded-xl mb-5">
+            <summary class="flex justify-between items-center font-bold cursor-pointer list-none py-5 px-5 gap-3">
+                <span class="text-black dark:text-white underline">HTML Version</span>
+                <span class="transition group-open:rotate-180">
+                    <svg fill="white" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                        <path d="M6 9l6 6 6-6"></path>
+                    </svg>
+                </span>
             </summary>
-            <div class="px-5 py-5 dark:bg-neutral-800">
+            <div class="px-5 py-5">
                 <ul class="text-slate-700 text-sm leading-6">
                     {# Home #}
                     <li>
-                        <a href="{{ path('app_home') }}" class="block py-1 font-bold text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Home</a>
                         <ul>
+                            <a href="{{ path('app_home') }}" class="block py-1 font-bold text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Home</a>
+                            <li class="ml-4">
+                                <p class="group select-none flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Sign Up
+                                </p>
+                            </li>
+                            <li class="ml-4">
+                                <p class="group select-none flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Sign In
+                                </p>
+                            </li>
+                            <li class="ml-4">
+                                <p class="group select-none flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Profile
+                                </p>
+                            </li>
+                            <li class="ml-8">
+                                <p class="group select-none flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Account
+                                </p>
+                            </li>
+                            <li class="ml-8">
+                                <p class="group select-none flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
+                                    <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
+                                        <path d="M0 0L3 3L0 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                                    </svg>Submitted features
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {# About #}
+                    <li>
+                        <ul>
+                            <span class="block py-1 font-bold text-black dark:text-white">About</span>
                             <li class="ml-4">
                                 <a href="{{ path('app_sitemap') }}" class="group flex items-start py-1 hover:text-indigo-800 dark:hover:text-indigo-200 text-black dark:text-white">
                                     <svg width="3" height="24" viewBox="0 -9 3 24" class="mr-2 overflow-visible">
@@ -93,7 +134,7 @@
                             </li>
                         </ul>
                     </li>
-                    
+
                     {# Games #}
                     <li>
                         <a href="{{ path('app_games') }}" class="block py-1 font-bold text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Games</a>
@@ -122,24 +163,40 @@
                         </ul>
                     </li>
 
+                    {# F.A.Q. #}
+                    <li>
+                        <a href="{{ path('app_faq') }}" class="block py-1 font-bold text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">F.A.Q.</a>
+                    </li>
+                    
                     {# Make a submission #}
                     <li>
                         <a href="{{ path('app_feature') }}" class="block py-1 font-bold text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">Make a submission</a>
                     </li>
-                    
+
                 </ul>
             </div>
         </details>
 
-        <details class="mt-5">
-            <summary class="bg-white/20 dark:bg-neutral-800 p-4 rounded-lg cursor-pointer shadow-md mb-4">
-                <span class="font-semibold text-black dark:text-white">Flat Version</span>
+        <details class="group bg-gray-200 dark:bg-gray-800 border rounded-xl mb-5">
+            <summary class="flex justify-between items-center font-bold cursor-pointer list-none py-5 px-5 gap-3">
+                <span class="text-black dark:text-white underline">Flat Version</span>
+                <span class="transition group-open:rotate-180">
+                    <svg fill="white" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                        <path d="M6 9l6 6 6-6"></path>
+                    </svg>
+                </span>
             </summary>
             <div id="flat">
                 <pre>
-                    <code>
+                    <code class="text-black dark:text-white">
                         Who Can Play ?
                         ├─ Home
+                        │ ├─ Sign Up
+                        │ ├─ Sign In
+                        │ └─ Profile
+                        │ │ └─ Account
+                        │ │ └─ Submitted features
+                        ├─ About
                         │ ├─ Site Map
                         │ ├─ Help
                         │ ├─ Contact
@@ -150,19 +207,27 @@
                         │ └─ Game informations
                         │ │ └─ Forum of the game
                         │ │ │ └─ Topics of the forum
-                        ├─ Make a submission
+                        ├─ F.A.Q.
+                        └─ Make a submission
                     </code>
                 </pre>
             </div>
         </details>
 
-        <details class="mt-5">
-            <summary class="bg-white/20 dark:bg-neutral-800 p-4 rounded-lg cursor-pointer shadow-md mb-4">
-                <span class="font-semibold text-black dark:text-white">Visual Version</span>
+        <details class="group bg-gray-200 dark:bg-gray-800 border rounded-xl">
+            <summary class="flex justify-between items-center font-bold cursor-pointer list-none py-5 px-5 gap-3">
+                <span class="text-black dark:text-white underline">Visual Version</span>
+                <span class="transition group-open:rotate-180">
+                    <svg fill="white" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24">
+                        <path d="M6 9l6 6 6-6"></path>
+                    </svg>
+                </span>
             </summary>
-            <div></div>
+            <div>
+                <img src="img/sitemap/sitemap.webp" alt="Sitemap of Who Can Play">
+            </div>
         </details>
-        
+
     </div>
 </div>
 
