@@ -95,16 +95,6 @@ class HomeController extends AbstractController
         ]);
     }
 
-    // Méthode pour afficher la page de contact
-    #[Route('/contact', name: 'app_contact')]
-    public function contact(): Response
-    {
-
-        return $this->render('home/contact.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-
     // Méthode pour afficher la page de FAQ
     #[Route('/faq', name: 'app_faq')]
     public function faq(): Response

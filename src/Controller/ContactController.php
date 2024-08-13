@@ -14,8 +14,8 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class ContactController extends AbstractController
 {
-    #[Route('/contact2', name: 'app_contact2')]
-    public function index(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    #[Route('/contact', name: 'app_contact')]
+    public function contact(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         /**
          * @var User|null $user
@@ -53,7 +53,7 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('contact/index.html.twig', [
+        return $this->render('contact/contact.html.twig', [
             'controller_name' => 'ContactController',
             'formContact' => $form,
         ]);
