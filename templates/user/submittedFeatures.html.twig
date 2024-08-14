@@ -136,7 +136,7 @@
                                 {% if features.notOpened %}
                                 {% for feature in features.notOpened %}
                                 <tr>
-                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ feature.id }}#</td>
+                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('app_user_show_feature', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}#</a></td>
                                     <td class="px-6 py-4">{{ feature.user }}</td>
                                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -177,7 +177,7 @@
                                 {% if features.pending %}
                                 {% for feature in features.pending %}
                                 <tr>
-                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ feature.id }}#</td>
+                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('app_user_show_feature', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}#</a></td>
                                     <td class="px-6 py-4">{{ feature.user }}</td>
                                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -218,7 +218,7 @@
                                 {% if features.processed %}
                                 {% for feature in features.processed %}
                                 <tr>
-                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ feature.id }}#</td>
+                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('app_user_show_feature', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}#</a></td>
                                     <td class="px-6 py-4">{{ feature.user }}</td>
                                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                     <td class="px-6 py-4">{{ feature.state.value }}</td>
@@ -259,7 +259,7 @@
                                 {% if features.denied %}
                                 {% for feature in features.denied %}
                                 <tr>
-                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ feature.id }}#</td>
+                                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a href="{{ path('app_user_show_feature', {'id': feature.id, 'slug': feature.slug}) }}">{{ feature.id }}#</a></td>
                                     <td class="px-6 py-4">{{ feature.user }}</td>
                                     <td class="px-6 py-4">{{ feature.game ? 'Yes' : 'No' }}</td>
                                     <td class="px-6 py-4">{{ feature.state.value }}</td>

@@ -1,0 +1,185 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApiController!{% endblock %}
+
+{% block body %}
+
+{% include 'includes/_flash_messages.html.twig' %}
+
+<div class="w-full rounded-xl bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+    {# En-tête #}
+    <div class="relative overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5">
+        {# Badges #}
+        <div>
+            {% if feature.state.value == "Pending" %}
+            <span class="select-none absolute flex items-center top-0 right-0 mt-8 mr-8 sm:mt-8 sm:mr-8 border border-indigo-800 dark:border-indigo-200 rounded-full px-4 text-sm text-black dark:text-white py-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-4 h-4 mr-2 fill-current dark:invert dark:brightness-0 dark:filter">
+                    <path d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z" />
+                </svg>
+                {{ feature.state.value }}
+            </span>
+            {% elseif feature.state.value == "Processed" %}
+            <span class="select-none absolute flex items-center top-0 right-0 mt-8 mr-8 sm:mt-8 sm:mr-8 border border-green-500 rounded-full px-4 text-sm text-black dark:text-white py-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-4 h-4 mr-2 fill-current dark:invert dark:brightness-0 dark:filter">
+                    <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                </svg>
+                {{ feature.state.value }}
+            </span>
+            {% else %}
+            <span class="select-none absolute flex items-center top-0 right-0 mt-8 mr-8 sm:mt-8 sm:mr-8 border border-red-500 rounded-full px-4 text-sm text-black dark:text-white py-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-4 h-4 mr-2 fill-current dark:invert dark:brightness-0 dark:filter">
+                    <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+                </svg>
+                {{ feature.state.value }}
+            </span>
+            {% endif %}
+        </div>
+        {# Titre #}
+        <h1 class="text-3xl text-black dark:text-white font-raleway font-bold pb-3">Request n°{{ feature.id }} : </h1>
+        {# Informations générales feature #}
+        <div class="text-black dark:text-white">
+            <h2 class="">Game : {{ gameApi[0].name }}</h2>
+            <div class="flex gap-3 pb-3">
+                <h3>Disability category : {{ feature.disability.name }}</h3>
+                <img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+            </div>
+            <div class="flex flex-col sm:flex-row justify-between">
+                <div class="flex items-center gap-[10px]">
+                    {# TODO : mettre l'image de profil #}
+                    <img loading="lazy" src="https://avatar.iran.liara.run/public" alt="{{ feature.user }}'s avatar" class="w-[50px] h-[50px]">
+                    <p>FROM {{ feature.user }}</p>
+                </div>
+                <div class="flex">
+                    <p>{{ feature.submissionDate | date('d.m.Y \\a\\t H:i:s') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="w-full border-t-2 border-amber-800 dark:border-yellow-200" />
+
+    {# Contenu feature #}
+    <div class="relative overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5">
+        <div class="flex flex-col justify-center items-center sm:items-start">
+
+            {# Game #}
+            <div class="w-full">
+                <h4 class="text-2xl font-bold pb-2 text-black dark:text-white">Game :</h4>
+                <div class="flex flex-col justify-center items-center gap-3">
+                    <img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_cover_big/{{ gameApi[0].cover.image_id }}.jpg" alt="{{ gameApi[0].name }}'s cover" class="rounded-xl">
+                    <h5 class="text-2xl font-bold text-indigo-800 dark:text-indigo-200">{{ gameApi[0].name }}</h5>
+                </div>
+            </div>
+
+            {# Disability #}
+            <div class="w-full my-3 text-black dark:text-white">
+                <h4 class="text-2xl font-bold pb-2">Disability category :</h4>
+                <div class="flex gap-3">
+                    <img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+                    <p>{{ feature.disability.name }}</p>
+                </div>
+            </div>
+
+            {# Feature titre #}
+            <div class="w-full my-3 text-black dark:text-white">
+                <h4 class="text-2xl font-bold pb-2">Feature title :</h4>
+                <div class="flex gap-3">
+                    <img loading="lazy" src="{{ asset(feature.disability.icon) }}" alt="{{ feature.disability.name }}" title="{{ feature.disability.name }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+                    <p>{{ feature }}</p>
+                </div>
+            </div>
+
+            {# Feature contenu #}
+            <div class="w-full my-3 text-black dark:text-white">
+                <h4 class="text-2xl font-bold pb-2">Feature content :</h4>
+                <p>{{ feature.content|raw }}</p>
+            </div>
+
+            {# Feature image #}
+            <div class="my-3 w-full">
+                <h4 class="text-2xl font-bold pb-2 text-black dark:text-white">Content image(s) :</h4>
+                <!-- Carousel -->
+                <div class="relative bg-black/20 dark:bg-black/50 rounded-xl overflow-hidden shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+                    <ul id="slider" class="relative">
+                        {% for image in feature.images %}
+                        <li class="hidden">
+                            <div class="flex flex-col h-[40vh]">
+                                <img loading="lazy" class="w-full h-full object-contain lg:object-none" src="{{ asset('assets/uploads/features/' ~ image.url ) }}" alt="">
+                                <div class="p-4 bg-white/70 dark:bg-black/70 text-black dark:text-white">
+                                    <h5 class="text-xl font-semibold mb-2">{{ image.title }}</h5>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="absolute px-5 flex h-full w-full top-0 left-0">
+                        <div class="my-auto w-full flex justify-between">
+                            <button id="previous-slide" class="bg-white p-3 rounded-full bg-opacity-80 shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-6 h-6 fill-current">
+                                    <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                                </svg>
+                            </button>
+                            <button id="next-slide" class="bg-white p-3 rounded-full bg-opacity-80 shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-6 h-6 fill-current">
+                                    <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // J'attends que le DOM soit chargé
+    document.addEventListener('DOMContentLoaded', function () {
+        // Je récupère tous les éléments dont j'ai besoin
+        let currentSlideId = 1;
+        const sliderElement = document.getElementById('slider');
+        const slides = sliderElement.getElementsByTagName('li');
+        const totalSlides = slides.length;
+        const nextButton = document.getElementById('next-slide');
+        const previousButton = document.getElementById('previous-slide');
+
+        // Fonction pour afficher la diapositive actuelle
+        function showSlide() {
+            for (let index = 0; index < totalSlides; index++) {
+                const element = slides[index];
+                if (currentSlideId === index + 1) {
+                    element.classList.remove('hidden');
+                } else {
+                    element.classList.add('hidden');
+                }
+            }
+        }
+
+        // Fonctions pour passer à la diapositive suivante
+        function next() {
+            if (currentSlideId < totalSlides) {
+                currentSlideId++;
+            } else {
+                currentSlideId = 1; // Revenir au début si on est à la fin
+            }
+            showSlide();
+        }
+
+        // Fonctions pour passer à la diapositive précédente
+        function previous() {
+            if (currentSlideId > 1) {
+                currentSlideId--;
+            } else {
+                currentSlideId = totalSlides; // Aller à la dernière diapositive si on est au début
+            }
+            showSlide();
+        }
+
+        // Initialisation de la diapositive au chargement de la page
+        showSlide();
+
+        // Ajout des écouteurs d'événements aux boutons
+        nextButton.addEventListener('click', next);
+        previousButton.addEventListener('click', previous);
+    });
+</script>
+
+{% endblock %}

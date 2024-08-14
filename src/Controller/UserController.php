@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Feature;
 use App\Enum\FeatureState;
 use App\Form\EditPasswordFormType;
 use App\Repository\UserRepository;
+use App\Service\IgdbApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -227,6 +229,22 @@ class UserController extends AbstractController
         return $this->render('user/submittedFeatures.html.twig', [
             'controller_name' => 'UserController',
             'features' => $featuresGames,
+        ]);
+    }
+
+    // Méthode pour afficher les détails d'une fonctionnalité soumise par l'utilisateur
+    #[Route('/profile/submitted-features/{id}/{slug}', name: 'app_user_show_feature')]
+    #[IsGranted('ROLE_USER')]
+    public function showFeature(Security $security, Feature $feature, IgdbApiService $igdbApiService): Response
+    {
+        // Je récupère les informations du jeu associé à l'ID de l'API du jeu
+        $idGameApi = $feature->getIdGameApi();
+        $gameApiData = $igdbApiService->getGameById($idGameApi);
+
+        return $this->render('user/showFeature.html.twig', [
+            'controller_name' => 'UserController',
+            'feature' => $feature,
+            'gameApi' => $gameApiData,
         ]);
     }
     #endregion
