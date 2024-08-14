@@ -75,4 +75,46 @@ class UserAdminController extends AbstractController
 
         return $this->redirectToRoute('app_admin_user_show', ['secret' => $secret]);
     }
+
+    // Méthode pour bannir un utilisateur
+    #[Route('/ban/{id}', name: 'ban')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function banUser(string $secret, User $user): Response
+    {
+        $expectedSecret = $this->getParameter('admin_secret');
+        if ($secret !== $expectedSecret) {
+            throw $this->createAccessDeniedException('Page not found');
+        }
+
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+
+        $user->setBanned(true);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_user_show', ['secret' => $secret]);
+    }
+
+    // Méthode pour débannir un utilisateur
+    #[Route('/unban/{id}', name: 'unban')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function unbanUser(string $secret, User $user): Response
+    {
+        $expectedSecret = $this->getParameter('admin_secret');
+        if ($secret !== $expectedSecret) {
+            throw $this->createAccessDeniedException('Page not found');
+        }
+
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+
+        $user->setBanned(false);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('app_admin_user_show', ['secret' => $secret]);
+    }
 }
