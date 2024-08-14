@@ -93,6 +93,7 @@ class UserAdminController extends AbstractController
         $user->setBanned(true);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+        $this->addFlash('success', 'User has been banned');
 
         return $this->redirectToRoute('app_admin_user_show', ['secret' => $secret]);
     }
@@ -114,6 +115,7 @@ class UserAdminController extends AbstractController
         $user->setBanned(false);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+        $this->addFlash('success', 'User has been unbanned');
 
         return $this->redirectToRoute('app_admin_user_show', ['secret' => $secret]);
     }

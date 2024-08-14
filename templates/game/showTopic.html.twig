@@ -49,6 +49,8 @@
     </ol>
 </nav>
 
+{% include 'includes/_flash_messages.html.twig' %}
+
 <div class="w-full">
     <h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Subject : {{ topic.title }}</h1>
     <hr class="mt-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
@@ -57,14 +59,6 @@
 <div class="flex flex-col md:flex-row w-full gap-[20px]">
 
     <section id="primary" class="basis-0 min-w-[70%] max-w-[50rem]">
-
-        {% for label, messages in app.flashes %}
-        <div class="flash-{{ label }}">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-        {% endfor %}
 
         {# bg-white dark:bg-neutral-800 #}
         {% for post in posts %}

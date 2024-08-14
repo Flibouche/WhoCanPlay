@@ -3,9 +3,8 @@
 {% block title %}Reset your password{% endblock %}
 
 {% block body %}
-{% for flash_error in app.flashes('reset_password_error') %}
-<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-{% endfor %}
+
+{% include 'includes/_flash_messages.html.twig' %}
 
 <div class="w-full sm:max-w-md rounded-lg bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
 

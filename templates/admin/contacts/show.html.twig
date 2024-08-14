@@ -3,6 +3,9 @@
 {% block title %}Show Contacts{% endblock %}
 
 {% block bodyAdmin %}
+
+{% include 'includes/_flash_messages.html.twig' %}
+
 <h1 class="text-3xl text-black dark:text-white font-raleway font-bold">List of contacts</h1>
 <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

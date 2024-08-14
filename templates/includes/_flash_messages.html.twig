@@ -1,0 +1,91 @@
+{% for label, messages in app.flashes %}
+{% for message in messages %}
+<div id="alert-additional-content-{{ loop.index }}" class="p-4 mb-4 text-white border rounded-lg 
+                {% if label == 'info' %}
+                    bg-blue-50 border-blue-300 text-blue-800 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800
+                {% elseif label == 'error' %}
+                    bg-red-50 border-red-300 text-red-800 dark:bg-gray-800 dark:text-red-400 dark:border-red-800
+                {% elseif label == 'success' %}
+                    bg-green-50 border-green-300 text-green-800 dark:bg-gray-800 dark:text-green-400 dark:border-green-800
+                {% endif %}
+                " role="alert">
+    <div class="flex items-center">
+        <svg class="flex-shrink-0 w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+        </svg>
+        <span class="sr-only">
+            {% if label == 'info' %}
+            Info
+            {% elseif label == 'error' %}
+            Error
+            {% elseif label == 'success' %}
+            Success
+            {% endif %}
+        </span>
+        <h3 class="text-lg font-medium">
+            {% if label == 'info' %}
+            This is an info alert
+            {% elseif label == 'error' %}
+            This is a error alert
+            {% elseif label == 'success' %}
+            This is a success alert
+            {% endif %}
+        </h3>
+    </div>
+    <div class="mt-2 mb-4 text-sm">
+        {{ message }}
+    </div>
+    <div class="flex">
+        <button type="button" class="text-white 
+                        {% if label == 'info' %}
+                            bg-blue-800 hover:bg-blue-900 focus:ring-blue-200 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+                        {% elseif label == 'error' %}
+                            bg-red-800 hover:bg-red-900 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800
+                        {% elseif label == 'success' %}
+                            bg-green-800 hover:bg-green-900 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800
+                        {% endif %}
+                        font-medium rounded-lg text-xs px-3 py-1.5 mr-2 text-center inline-flex items-center">
+            <svg class="mr-2 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                <path d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+            </svg>
+            View more
+        </button>
+        <button type="button" class="
+                        {% if label == 'info' %}
+                            text-blue-800 bg-transparent border border-blue-800 hover:bg-blue-900 hover:text-white focus:ring-blue-200 dark:hover:bg-blue-600 dark:border-blue-600 dark:text-blue-400 dark:hover:text-white dark:focus:ring-blue-800
+                        {% elseif label == 'error' %}
+                            text-red-800 bg-transparent border border-red-800 hover:bg-red-900 hover:text-white focus:ring-red-300 dark:hover:bg-red-600 dark:border-red-600 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800
+                        {% elseif label == 'success' %}
+                            text-green-800 bg-transparent border border-green-800 hover:bg-green-900 hover:text-white focus:ring-green-300 dark:hover:bg-green-600 dark:border-green-600 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800
+                        {% endif %}
+                        font-medium rounded-lg text-xs px-3 py-1.5 text-center" data-dismiss-target="#alert-additional-content-{{ loop.index }}" aria-label="Close">
+            Dismiss
+        </button>
+    </div>
+</div>
+{% endfor %}
+{% endfor %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Je sélectionne toutes les alertes ayant un ID de type "alert-additional-content-"
+        const alerts = document.querySelectorAll('[id^="alert-additional-content-"]');
+    
+        alerts.forEach(alert => {
+            // Je récupère le bouton de fermeture pour chaque alerte
+            const dismissButton = alert.querySelector('[data-dismiss-target]');
+    
+            if (dismissButton) {
+                // J'ajoute un gestionnaire d'événements pour fermer l'alerte lorsque le bouton est cliqué
+                dismissButton.addEventListener('click', () => {
+                    alert.remove();
+                });
+            }
+    
+            // J'enlève l'alerte après 5 secondes si elle n'a pas été fermée manuellement
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        });
+    });
+</script>

@@ -26,6 +26,8 @@
     </ol>
 </nav>
 
+{% include 'includes/_flash_messages.html.twig' %}
+
 <div class="w-full sm:max-w-2xl p-6 rounded-lg bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]"> {# Si je suis en édition #}
     {% set currentRoute = app.request.attributes.get('_route') %}
     {% if currentRoute == 'edit_feature' %}

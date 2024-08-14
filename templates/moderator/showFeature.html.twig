@@ -33,6 +33,8 @@
     </ol>
 </nav>
 
+{% include 'includes/_flash_messages.html.twig' %}
+
 <div class="w-full rounded-xl bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
     {# En-tête #}
     <div class="relative overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5">
@@ -192,10 +194,6 @@
         {% endif %}
     </div>
 </div>
-
-<dialog>
-
-</dialog>
 
 <script>
     // J'attends que le DOM soit chargé

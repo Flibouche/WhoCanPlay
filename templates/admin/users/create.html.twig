@@ -3,6 +3,9 @@
 {% block title %}{% if edit %}Edit User N°{{ user.id }} {% else %}Create User{% endif %}{% endblock %}
 
 {% block bodyAdmin %}
+
+{% include 'includes/_flash_messages.html.twig' %}
+
 {% if edit %}
 <h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Edit user N°{{ User.id }}</h1>
 {% else %}
