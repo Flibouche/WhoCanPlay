@@ -31,19 +31,19 @@
             </thead>
             <tbody>
                 {% for feature in features %}
-                <tr>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ feature.id }}</td>
-                    <td class="px-6 py-4 truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[50px]">{{ feature.disability }}</td>
-                    <td class="px-6 py-4">{{ feature.game.id|default('N/A') }}</td>
-                    <td class="px-6 py-4">{{ feature.user }}</td>
-                    <td class="px-6 py-4">{{ feature.idGameApi }}</td>
-                    <td class="px-6 py-4">{{ feature.name }}</td>
-                    <td class="px-6 py-4 truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[50px]">{{ feature.content }}</td>
-                    <td class="px-6 py-4 truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[50px]">{{ feature.state.value }}</td>
-                    <td class="px-6 py-4">{{ feature.submissionDate|date('d.m.Y') }}</td>
-                    <td class="px-6 py-4 truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[50px]">{{ feature.slug }}</td>
-                    <td class="px-6 py-4">{{ feature.updatedAt|date('d.m.Y') }}</td>
-                    <td class="px-6 py-4">
+                <tr class="group cursor-pointer" data-href="{{ path('app_admin_feature_details', {'id': feature.id, 'secret': admin_secret}) }}">
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200 font-bold">{{ feature.id }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200 truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[50px]">{{ feature.disability }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ feature.game.id|default('N/A') }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ feature.user }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ feature.idGameApi }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ feature.name }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200 truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[50px]">{{ feature.content|raw }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200 truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[50px]">{{ feature.state.value }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ feature.submissionDate|date('d.m.Y') }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200 truncate whitespace-nowrap overflow-hidden text-ellipsis max-w-[50px]">{{ feature.slug }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ feature.updatedAt|date('d.m.Y') }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">
                         <div class="flex items-center">
                             <form>
                                 <button>
@@ -79,5 +79,7 @@
         });
     })
 </script>
+
+<script src="{{ asset('js/tables.js') }}"></script>
 
 {% endblock %}

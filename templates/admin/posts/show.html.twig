@@ -26,13 +26,13 @@
             </thead>
             <tbody>
                 {% for post in posts %}
-                <tr>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.id }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.topic }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.user }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.content }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.publicationDate|date('d.m.Y') }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ post.updatedAt|date('d.m.Y') }}</td>
+                <tr class="group cursor-pointer" data-href="{{ path('app_admin_post_details', {'id': post.id, 'secret': admin_secret}) }}">
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ post.id }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ post.topic }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ post.user }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ post.content }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ post.publicationDate|date('d.m.Y') }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ post.updatedAt|date('d.m.Y') }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
                         <div class="flex items-center">
                             <form>
@@ -69,5 +69,7 @@
         });
     })
 </script>
+
+<script src="{{ asset('js/tables.js') }}"></script>
 
 {% endblock %}

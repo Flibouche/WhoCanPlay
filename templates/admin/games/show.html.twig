@@ -24,11 +24,11 @@
             </thead>
             <tbody>
                 {% for game in games %}
-                <tr>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ game.id }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ game.idGameApi }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ game.status }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ game.slug }}</td>
+                <tr  class="group cursor-pointer" data-href="{{ path('app_admin_game_details', {'id': game.id, 'secret': admin_secret}) }}">
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ game.id }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ game.idGameApi }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ game.status }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ game.slug }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
                         <div class="flex items-center">
                             <form>
@@ -65,5 +65,7 @@
         });
     })
 </script>
+
+<script src="{{ asset('js/tables.js') }}"></script>
 
 {% endblock %}

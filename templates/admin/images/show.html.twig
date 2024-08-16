@@ -30,17 +30,17 @@
             </thead>
             <tbody>
                 {% for image in images %}
-                <tr>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.id }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.disability }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.feature }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.user }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.url }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.title }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.altText }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.submissionDate|date('d.m.Y') }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.updatedAt|date('d.m.Y') }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ image.slug }}</td>
+                <tr class="group cursor-pointer" data-href="{{ path('app_admin_image_details', {'id': image.id, 'secret': admin_secret}) }}">
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.id }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.disability }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.feature }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.user }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.url }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.title }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.altText }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.submissionDate|date('d.m.Y') }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.updatedAt|date('d.m.Y') }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.slug }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
                         <div class="flex items-center">
                             <form>
@@ -77,5 +77,7 @@
         });
     })
 </script>
+
+<script src="{{ asset('js/tables.js') }}"></script>
 
 {% endblock %}

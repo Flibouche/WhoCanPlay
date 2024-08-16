@@ -27,14 +27,14 @@
             </thead>
             <tbody>
                 {% for topic in topics %}
-                <tr>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ topic.id }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ topic.game.id|default('N/A') }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ topic.user }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ topic.title }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ topic.creationDate|date('d.m.Y') }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ topic.isLocked }}</td>
-                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ topic.slug }}</td>
+                <tr class="group cursor-pointer" data-href="{{ path('app_admin_topic_details', {'id': topic.id, 'secret': admin_secret}) }}">
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ topic.id }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ topic.game.id|default('N/A') }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ topic.user }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ topic.title }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ topic.creationDate|date('d.m.Y') }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ topic.isLocked }}</td>
+                    <td scope="row" class="px-6 py-4 text-gray-900 dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ topic.slug }}</td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
                         <div class="flex items-center">
                             <form>
@@ -71,5 +71,7 @@
         });
     })
 </script>
+
+<script src="{{ asset('js/tables.js') }}"></script>
 
 {% endblock %}
