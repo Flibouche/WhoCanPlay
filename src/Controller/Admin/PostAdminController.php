@@ -57,19 +57,14 @@ class PostAdminController extends AbstractController
         ]);
     }
 
-    // Méthode pour créer ou modifier un commentaire
-    #[Route('/create', name: 'create')]
+    // Méthode pour modifier un commentaire
     #[Route('/edit/{id}', name: 'edit')]
     #[IsGranted('ROLE_ADMIN')]
-    public function createOrEditPost(string $secret, ?Post $post, Request $request): Response
+    public function editPost(string $secret, ?Post $post, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
-        }
-
-        if (!$post) {
-            $post = new Post();
         }
 
         $form = $this->createForm(PostType::class, $post);
@@ -81,8 +76,9 @@ class PostAdminController extends AbstractController
             return $this->redirectToRoute('app_admin_post_show', ['secret' => $secret]);
         }
 
-        return $this->render('admin/posts/create.html.twig', [
+        return $this->render('admin/posts/edit.html.twig', [
             'controller_name' => 'FeatureAdminController',
+            'formEditPost' => $form->createView(),
             'post' => $post,
         ]);
     }

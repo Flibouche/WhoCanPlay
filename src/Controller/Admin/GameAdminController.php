@@ -60,13 +60,21 @@ class GameAdminController extends AbstractController
     // Méthode pour supprimer un jeu
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function deleteGame(string $secret): Response
+    public function deleteGame(string $secret, Game $game): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
+        if(!$game) {
+            throw $this->createNotFoundException('Game not found');
+        }
+
+        $this->entityManager->remove($game);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Game deleted successfully');
         return $this->redirectToRoute('app_admin_game_show', ['secret' => $secret]);
     }
 }

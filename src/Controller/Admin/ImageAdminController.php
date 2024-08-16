@@ -57,38 +57,6 @@ class ImageAdminController extends AbstractController
         ]);
     }
 
-    // Méthode pour créer ou modifier une image
-    #[Route('/create', name: 'create')]
-    #[Route('/edit/{id}', name: 'edit')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function createOrEditImage(string $secret, ?Image $image, Request $request): Response
-    {
-        $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
-            throw $this->createAccessDeniedException('Page not found');
-        }
-
-        if (!$image) {
-            $image = new Image();
-        }
-
-        $form = $this->createForm(ImageType::class, $image);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($image);
-            $this->entityManager->flush();
-
-            return $this->redirectToRoute('app_admin_image_show', ['secret' => $secret]);
-        }
-
-        return $this->render('admin/images/create.html.twig', [
-            'controller_name' => 'FeatureAdminController',
-            'formAddImage' => $form,
-            'image' => $image,
-            'edit' => $image->getId(),
-        ]);
-    }
-
     // Méthode pour supprimer une image
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]

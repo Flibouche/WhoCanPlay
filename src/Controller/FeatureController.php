@@ -63,7 +63,7 @@ class FeatureController extends AbstractController
         // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
             // J'appelle la méthode privée pour envoyer la feature au jeu
-            $this->sendFeatureToGame($feature, $form, $em, $is);
+            $this->sendFeatureToGame($feature, $form);
             $this->addFlash('success', 'Your feature has been sent to the moderators for processing.');
             return $this->redirectToRoute('app_home');
         }
@@ -103,6 +103,13 @@ class FeatureController extends AbstractController
         // J'ajoute le nom et le contenu sanitizé à la feature
         $feature->setName($sanitizedName);
         $feature->setContent($sanitizedContent);
+
+        // Si edit, je met à jour les images existantes
+        foreach ($feature->getImages() as $existingImage) {
+            $existingImage->setTitle($sanitizedName);
+            $existingImage->setAltText($sanitizedName);
+            $existingImage->setUpdatedAt(new \DateTime());
+        }
     
         // Pour chaque image, je la traite et l'ajoute à la feature
         foreach ($images as $image) {
