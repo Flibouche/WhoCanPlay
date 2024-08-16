@@ -70,9 +70,6 @@ class Image
     private ?string $slug = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
-    private ?Disability $disability = null;
-
-    #[ORM\ManyToOne(inversedBy: 'images')]
     private ?Feature $feature = null;
 
     #[ORM\ManyToOne(inversedBy: 'images')]
@@ -205,20 +202,6 @@ class Image
     // =======================================
     // ======== Region : COLLECTION(S) =======
     // =======================================
-
-    // =================== Disability ===================
-
-    public function getDisability(): ?Disability
-    {
-        return $this->disability;
-    }
-
-    public function setDisability(?Disability $disability): static
-    {
-        $this->disability = $disability;
-
-        return $this;
-    }
 
     // =================== Feature ===================
 

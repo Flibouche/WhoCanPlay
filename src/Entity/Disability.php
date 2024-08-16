@@ -51,12 +51,6 @@ class Disability
     #[ORM\OneToMany(targetEntity: Feature::class, mappedBy: 'disability')]
     private Collection $features;
 
-    /**
-     * @var Collection<int, Image>
-     */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'disability')]
-    private Collection $images;
-
     #endregion
 
     #region CONSTRUCT
@@ -69,7 +63,6 @@ class Disability
     public function __construct()
     {
         $this->features = new ArrayCollection();
-        $this->images = new ArrayCollection();
     }
     #endregion
 
@@ -170,38 +163,6 @@ class Disability
             // set the owning side to null (unless already changed)
             if ($feature->getDisability() === $this) {
                 $feature->setDisability(null);
-            }
-        }
-
-        return $this;
-    }
-
-    // =================== Images ===================
-
-    /**
-     * @return Collection<int, Image>
-     */
-    public function getImages(): Collection
-    {
-        return $this->images;
-    }
-
-    public function addImage(Image $image): static
-    {
-        if (!$this->images->contains($image)) {
-            $this->images->add($image);
-            $image->setDisability($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): static
-    {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getDisability() === $this) {
-                $image->setDisability(null);
             }
         }
 
