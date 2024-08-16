@@ -57,38 +57,6 @@ class GameAdminController extends AbstractController
         ]);
     }
 
-    // Méthode pour créer ou modifier un jeu
-    #[Route('/create', name: 'create')]
-    #[Route('/edit/{id}', name: 'edit')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function createOrEditGame(string $secret, ?Game $game, Request $request): Response
-    {
-        $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
-            throw $this->createAccessDeniedException('Page not found');
-        }
-
-        if (!$game) {
-            $game = new Game();
-        }
-
-        $form = $this->createForm(GameType::class, $game);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($game);
-            $this->entityManager->flush();
-
-            return $this->redirectToRoute('app_admin_game_show', ['secret' => $secret]);
-        }
-
-        return $this->render('admin/games/create.html.twig', [
-            'controller_name' => 'FeatureAdminController',
-            'formAddGame' => $form,
-            'game' => $game,
-            'edit' => $game->getId(),
-        ]);
-    }
-
     // Méthode pour supprimer un jeu
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]

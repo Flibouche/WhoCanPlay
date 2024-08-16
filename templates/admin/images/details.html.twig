@@ -6,4 +6,24 @@
 
 {% include 'includes/_flash_messages.html.twig' %}
 
+<h1 class="text-3xl text-black dark:text-white font-raleway font-bold">Details Image N°{{ image.id }}</h1>
+<hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
+<div class="text-black dark:text-white rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-5 mt-5 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+    <div>
+        <ul>
+            <li class="my-3"><strong>ID</strong> : {{ image.id }}</li>
+            <li class="my-3"><strong>Disability ID</strong> : {{ image.disability }}</li>
+            <li class="my-3"><strong>Feature ID</strong> : {{ image.feature }}</li>
+            <li class="my-3"><strong>User ID</strong> : {{ image.user }}</li>
+            <li class="my-3"><strong>URL</strong> : {{ image.url }}</li>
+            <li class="my-3"><strong>Title</strong> : {{ image.title }}</li>
+            <li class="my-3"><strong>Alt Text</strong> : {{ image.altText }}</li>
+            <li class="my-3"><strong>Submission Date</strong> : {{ image.submissionDate|date('d.m.Y') }}</li>
+            <li class="my-3"><strong>Updated At</strong> : {{ image.updatedAt|date('d.m.Y') }}</li>
+            <li class="my-3"><strong>Slug</strong> : {{ image.slug }}</li>
+            <li class="my-3"><strong>Image</strong> : <img loading="lazy" class="my-3" src="{{ asset('assets/uploads/features/' ~ image.url ) }}" alt=""></li>
+        </ul>
+    </div>
+</div>
+
 {% endblock %}
