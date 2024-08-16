@@ -1,6 +1,6 @@
 {% for label, messages in app.flashes %}
 {% for message in messages %}
-<div id="alert-additional-content-{{ loop.index }}" class="p-4 mb-4 text-white border rounded-lg 
+<div id="alert-additional-content-{{ loop.index }}" class="p-4 mb-4 text-black border rounded-lg 
                 {% if label == 'info' %}
                     bg-blue-50 border-blue-300 text-blue-800 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800
                 {% elseif label == 'error' %}

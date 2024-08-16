@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Feature;
 use App\Form\FeatureType;
 use App\Repository\FeatureRepository;
+use App\Service\IgdbApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,39 +55,6 @@ class FeatureAdminController extends AbstractController
         return $this->render('admin/features/details.html.twig', [
             'controller_name' => 'FeatureAdminController',
             'feature' => $feature,
-        ]);
-    }
-
-    // Méthode pour créer ou modifier une fonctionnalité
-    #[Route('/create', name: 'create')]
-    #[Route('/edit/{id}', name: 'edit')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function createOrEditFeature(string $secret, ?Feature $feature, Request $request): Response
-    {
-        $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
-            throw $this->createAccessDeniedException('Page not found');
-        }
-
-        if (!$feature) {
-            $feature = new Feature();
-        }
-
-        $form = $this->createForm(FeatureType::class, $feature);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($feature);
-            $this->entityManager->flush();
-
-            return $this->redirectToRoute('app_admin_feature_show', ['secret' => $secret]);
-        }
-
-        return $this->render('admin/features/create.html.twig', [
-            'controller_name' => 'FeatureAdminController',
-            'formAddFeature' => $feature,
-            'feature' => $feature,
-            'edit' => $feature->getId(),
         ]);
     }
 
