@@ -1,0 +1,67 @@
+{% extends 'admin/_base.html.twig' %}
+
+{% block title %}Show Topics{% endblock %}
+
+{% block bodyAdmin %}
+
+{% include 'includes/_flash_messages.html.twig' %}
+
+<section id="tab1" class="w-full px-10 py-10">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="h-[30vh] w-full">
+            <canvas id="featuresChart"></canvas>
+        </div>
+        
+        <div class="h-[30vh] w-full">
+            <canvas id="gamesChart"></canvas>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Je récupère le canvas
+    const ctx = document.getElementById('featuresChart').getContext('2d');
+    
+    // Je récupère les données de mon controller et je les transforme en objet JS 
+    const labels = JSON.parse('{{ featuresByState|keys|json_encode()|raw }}');
+    const data = JSON.parse('{{ featuresByState|map(value => value)|json_encode()|raw }}');
+    
+    // Je crée un nouvel objet Chart
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Features by states',
+                data: data,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+
+
+
+{% endblock %}
