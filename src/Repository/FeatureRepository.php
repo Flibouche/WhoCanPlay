@@ -41,6 +41,16 @@ class FeatureRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    // Méthode qui me permet de compter les Fonctionnalités par État
+    public function countByState(): array
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->select('f.state', 'COUNT(f.id) as total')
+            ->groupBy('f.state');
+        
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Feature[] Returns an array of Features objects
     //     */

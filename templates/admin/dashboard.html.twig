@@ -21,32 +21,25 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Je récupère le canvas
-    const ctx = document.getElementById('featuresChart').getContext('2d');
-    
-    // Je récupère les données de mon controller et je les transforme en objet JS 
-    const labels = JSON.parse('{{ featuresByState|keys|json_encode()|raw }}');
-    const data = JSON.parse('{{ featuresByState|map(value => value)|json_encode()|raw }}');
-    
-    // Je crée un nouvel objet Chart
-    new Chart(ctx, {
-        type: 'bar',
+    var ctx = document.getElementById('featuresChart').getContext('2d');
+    var featuresChart = new Chart(ctx, {
+        type: 'bar',  // Vous pouvez changer 'bar' en 'pie', 'line', etc.
         data: {
-            labels: labels,
+            labels: {{ labels|raw }},  // Injecter les labels ici
             datasets: [{
-                label: 'Features by states',
-                data: data,
+                label: 'Number of Features',
+                data: {{ data|raw }},  // Injecter les données ici
                 backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
                 ],
                 borderColor: [
+                    'rgba(75, 192, 192, 1)',
                     'rgba(255, 99, 132, 1)',
                     'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)'
                 ],
                 borderWidth: 1
             }]

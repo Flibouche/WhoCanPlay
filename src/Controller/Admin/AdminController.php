@@ -21,17 +21,26 @@ class AdminController extends AbstractController
             throw $this->createAccessDeniedException('Page not found');
         }
 
-        $features = $featureRepository->findFeatures();
-
-        $featuresByState = [];
-
+        $features = $featureRepository->countByState();
+        
+        $labels = [];
+        $data = [];
+        
         foreach ($features as $feature) {
-            $state = $feature['state']->value;
-            if (!isset($featuresByState[$state])) {
-                $featuresByState[$state] = 0;
-            }
-            $featuresByState[$state]++;
+            $labels[] = $feature['state'];
+            $data[] = $feature['total'];
         }
+        
+        // $features = $featureRepository->findFeatures();
+        // $featuresByState = [];
+
+        // foreach ($features as $feature) {
+        //     $state = $feature['state']->value;
+        //     if (!isset($featuresByState[$state])) {
+        //         $featuresByState[$state] = 0;
+        //     }
+        //     $featuresByState[$state]++;
+        // }
         
         $games = $gameRepository->findBy(['status' => 1], ['id' => 'ASC']);
         $featuresByGame = [];
@@ -42,7 +51,9 @@ class AdminController extends AbstractController
         
         return $this->render('admin/dashboard.html.twig', [
             'controller_name' => 'AdminController',
-            'featuresByState' => $featuresByState,
+            'labels' => json_encode($labels),
+            'data' => json_encode($data),
+            // 'featuresByState' => $featuresByState,
             'featuresByGame' => $games,
         ]);
     }
