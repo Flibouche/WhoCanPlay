@@ -27,7 +27,7 @@ class AdminController extends AbstractController
         $data = [];
         
         foreach ($features as $feature) {
-            $labels[] = $feature['state'];
+            $labels[] = $feature['state']->value;
             $data[] = $feature['total'];
         }
         
