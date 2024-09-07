@@ -4,6 +4,9 @@ Who Can Play is an initiative born of an end-of-study project aimed at democrati
 
 ## Project Contents
 
+- User Authentification and Authorization
+- Responsive UI built with Twig templates and designed with TailwindCSS
+
 ## Features
 
 - **Light/Dark Mode** : Added a Light/DarkMode with TailwindCSS.
@@ -32,7 +35,8 @@ Who Can Play is an initiative born of an end-of-study project aimed at democrati
 
 ### Prerequisites
 
-- PHP >=8.2
+- PHP >= 8.2
+- Apache >= 2.4.59
 - Composer
 - Symfony CLI
 - A web server like Laragon or XAMPP
