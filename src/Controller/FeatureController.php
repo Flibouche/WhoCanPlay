@@ -49,17 +49,17 @@ class FeatureController extends AbstractController
         if (!$feature) {
             $feature = new Feature();
         }
-        
+
         // Si la feature existe, on récupère le nom du jeu
         if ($feature && $feature->getIdGameApi()) {
             $idGameApi = $feature->getIdGameApi();
             $gameName = $this->igdbApiService->getGameById($idGameApi);
         }
-    
+
         // Je crée le formulaire
         $form = $this->createForm(FeatureType::class, $feature);
         $form->handleRequest($request);
-    
+
         // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
             // J'appelle la méthode privée pour envoyer la feature au jeu
@@ -67,7 +67,7 @@ class FeatureController extends AbstractController
             $this->addFlash('success', 'Your feature has been sent to the moderators for processing.');
             return $this->redirectToRoute('app_home');
         }
-    
+
         // J'affiche la vue avec le formulaire et les données
         return $this->render('feature/featureSubmission.html.twig', [
             'controller_name' => 'FeatureController',
@@ -76,7 +76,7 @@ class FeatureController extends AbstractController
             'game' => $gameName,
         ]);
     }
-    
+
     // Méthode privée pour envoyer une feature à un jeu pour traitement
     private function sendFeatureToGame(Feature $feature, FormInterface $form): void
     {
@@ -110,7 +110,7 @@ class FeatureController extends AbstractController
             $existingImage->setAltText($sanitizedName);
             $existingImage->setUpdatedAt(new \DateTime());
         }
-    
+
         // Pour chaque image, je la traite et l'ajoute à la feature
         foreach ($images as $image) {
             $folder = 'features';
@@ -123,18 +123,18 @@ class FeatureController extends AbstractController
 
             $feature->addImage($img);
         }
-    
+
         // Je cherche si le jeu existe déjà dans la base de données en fonction de l'id de l'API
         $game = $em->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
         // Si le jeu n'existe pas, j'ajoute l'id de l'API à la feature
         if ($game) {
             $feature->setGame($game);
         }
-    
+
         // J'ajoute l'utilisateur et l'id de l'API à la feature
         $feature->setUser($user);
         $feature->setIdGameApi($idGameApi);
-        
+
         // Je persiste et flush la feature
         $em->persist($feature);
         $em->flush();
@@ -152,12 +152,12 @@ class FeatureController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         // Si le token csrf est valide
-        if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])) {
+        if ($this->isCsrfTokenValid('delete' . $image->getId(), $data['_token'])) {
             // Je récupère l'URL de l'image
             $url = $image->getUrl();
 
             // Si la suppression de l'image est un succès
-            if($is->delete($url, 'features', 300, 300)) {
+            if ($is->delete($url, 'features', 300, 300)) {
                 // Je supprime l'image de la base de données
                 $em->remove($image);
                 $em->flush();
@@ -183,11 +183,12 @@ class FeatureController extends AbstractController
         $games = $this->igdbApiService->getGames($name);
 
         // Je formate les jeux pour les afficher dans la vue
-        $formattedGames = array_map(function($game) {
+        $formattedGames = array_map(function ($game) {
             return [
                 'id' => $game['id'],
                 'name' => $game['name'],
                 'cover' => $game['cover'],
+                'date' => date('Y', $game['first_release_date']),
             ];
         }, $games);
 

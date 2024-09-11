@@ -31,7 +31,7 @@ class IgdbApiService
         $this->logger->info('Access token obtained', ['access_token' => $accessToken]);
 
         // Construction de la requête pour l'API IGDB
-        $queryString = "fields id,name,cover.url,cover.image_id; where category = 0 & version_parent = null; limit 5;";
+        $queryString = "fields id,name,first_release_date,cover.image_id; where category = 0 & version_parent = null; limit 5;";
         if ($name) {
             $queryString = "search \"$name\"; " . $queryString;
         }
