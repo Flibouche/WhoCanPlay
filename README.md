@@ -48,7 +48,7 @@ Who Can Play is an initiative born of an end-of-study project aimed at democrati
 1. Clone the repository:
 
     ```bash
-    make sfsessions
+    make whocanplay
     ```
 
 2. Name the repo
