@@ -47,8 +47,8 @@
                 <div id="navAuth" class="hidden md:flex gap-[24px] items-center">
                     {% if app.user %}
                     <div id="dropdown-profile" class="dropdown relative group cursor-pointer z-50">
-                        <a href="{{ path('app_user') }}" class="fill-white hover:fill-indigo-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20">
+                        <a href="{{ path('app_user') }}" class="fill-white hover:fill-indigo-200" aria-label="My profile">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20" aria-label="User icon">
                                 <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
                             </svg>
                         </a>
@@ -102,10 +102,10 @@
                     {# Dark Mode #}
                     <div class="hidden md:flex">
                         <button id="toggle" class="h-12 w-12 rounded-lg p-2" aria-label="Dark Mode Button">
-                            <svg class="fill-white hover:fill-indigo-200 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="fill-white hover:fill-indigo-200 block dark:hidden" fill="currentColor" viewBox="0 0 20 20" aria-label="Moon icon">
                                 <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                             </svg>
-                            <svg class="fill-white hover:fill-yellow-200 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="fill-white hover:fill-yellow-200 hidden dark:block" fill="currentColor" viewBox="0 0 20 20" aria-label="Sun icon">
                                 <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
                             </svg>
                         </button>
@@ -171,18 +171,26 @@
                         <h2 class="text-white font-bold">WhoCanPlay</h2>
                         <p class="mt-[18px] text-[15px] text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, fugit non. Incidunt dolorum adipisci, tempore asperiores nemo odio facere officiis enim animi placeat eaque nesciunt alias beatae id, at dicta.</p>
                         <nav aria-label="Social media links" class="mt-[18px] flex gap-4">
-                            <a class="hover:scale-110" target="_blank" href="https://facebook.com/WhoCanPlay" aria-label="Facebook"><svg class="fill-white hover:fill-indigo-200" width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <a class="hover:scale-110" target="_blank" href="https://facebook.com/WhoCanPlay" aria-label="Facebook">
+                                <svg class="fill-white hover:fill-indigo-200" width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-label="Facebook icon">
                                     <path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z" />
-                                </svg></a>
-                            <a class="hover:scale-110" target="_blank" href="https://instagram.com/WhoCanPlay" aria-label="Instagram"><svg class="fill-white hover:fill-indigo-200" width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                </svg>
+                            </a>
+                            <a class="hover:scale-110" target="_blank" href="https://instagram.com/WhoCanPlay" aria-label="Instagram">
+                                <svg class="fill-white hover:fill-indigo-200" width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-label="Instagram icon">
                                     <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
-                                </svg></a>
-                            <a class="hover:scale-110" target="_blank" href="https://x.com/WhoCanPlay" aria-label="X (Twitter)"><svg class="fill-white hover:fill-indigo-200" width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                </svg>
+                            </a>
+                            <a class="hover:scale-110" target="_blank" href="https://x.com/WhoCanPlay" aria-label="X (Twitter)">
+                                <svg class="fill-white hover:fill-indigo-200" width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-label="X (Twitter) icon">
                                     <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
-                                </svg></a>
-                            <a class="hover:scale-110" target="_blank" href="https://youtube.com/@WhoCanPlay" aria-label="YouTube"><svg class="fill-white hover:fill-indigo-200" width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                </svg>
+                            </a>
+                            <a class="hover:scale-110" target="_blank" href="https://youtube.com/@WhoCanPlay" aria-label="YouTube">
+                                <svg class="fill-white hover:fill-indigo-200" width="25" height="25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" aria-label="Youtube Icon">
                                     <path d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z" />
-                                </svg></a>
+                                </svg>
+                            </a>
                         </nav>
                     </section>
                     {# Footer menu #}
@@ -239,59 +247,59 @@
 
         <script type="text/javascript">
             (tarteaucitron.job = tarteaucitron.job || []).push('googlesignin');
-        </script>    
+        </script>
 
         <script type="text/javascript">
-        tarteaucitron.init({
-    	    "privacyUrl": "{{ path('app_privacy_policy') }}", /* Privacy policy url */
-            "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
+            tarteaucitron.init({
+                "privacyUrl": "{{ path('app_privacy_policy') }}", /* Privacy policy url */
+                "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
 
-    	    "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
-    	    "cookieName": "tarteaucitron", /* Cookie name */
-    
-    	    "orientation": "middle", /* Banner position (top - bottom) */
+                "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
+                "cookieName": "tarteaucitron", /* Cookie name */
 
-            "groupServices": false, /* Group services by category */
-            "showDetailsOnClick": true, /* Click to expand the description */
-            "serviceDefaultState": "wait", /* Default state (true - wait - false) */
+                "orientation": "middle", /* Banner position (top - bottom) */
 
-    	    "showAlertSmall": false, /* Show the small banner on bottom right */
-    	    "cookieslist": true, /* Show the cookie list */
+                "groupServices": false, /* Group services by category */
+                "showDetailsOnClick": true, /* Click to expand the description */
+                "serviceDefaultState": "wait", /* Default state (true - wait - false) */
 
-            "closePopup": false, /* Show a close X on the banner */
+                "showAlertSmall": false, /* Show the small banner on bottom right */
+                "cookieslist": true, /* Show the cookie list */
 
-            "showIcon": true, /* Show cookie icon to manage cookies */
-            //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
-            "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
+                "closePopup": false, /* Show a close X on the banner */
 
-    	    "adblocker": false, /* Show a Warning if an adblocker is detected */
+                "showIcon": true, /* Show cookie icon to manage cookies */
+                //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
+                "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
 
-            "DenyAllCta" : true, /* Show the deny all button */
-            "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
-            "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
-            "alwaysNeedConsent": false, /* Ask the consent for "Privacy by design" services */
+                "adblocker": false, /* Show a Warning if an adblocker is detected */
 
-    	    "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+                "DenyAllCta": true, /* Show the deny all button */
+                "AcceptAllCta": true, /* Show the accept all button when highPrivacy on */
+                "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
+                "alwaysNeedConsent": false, /* Ask the consent for "Privacy by design" services */
 
-    	    "removeCredit": false, /* Remove credit link */
-    	    "moreInfoLink": true, /* Show more info link */
+                "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
 
-            "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
-            "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
+                "removeCredit": false, /* Remove credit link */
+                "moreInfoLink": true, /* Show more info link */
 
-    	    //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
+                "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+                "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
 
-            "readmoreLink": "", /* Change the default readmore link */
+                //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
 
-            "mandatory": true, /* Show a message about mandatory cookies */
-            "mandatoryCta": true, /* Show the disabled accept button when mandatory on */
-    
-            //"customCloserId": "", /* Optional a11y: Custom element ID used to open the panel */
+                "readmoreLink": "", /* Change the default readmore link */
 
-            "googleConsentMode": true, /* Enable Google Consent Mode v2 for Google ads and GA4 */
+                "mandatory": true, /* Show a message about mandatory cookies */
+                "mandatoryCta": true, /* Show the disabled accept button when mandatory on */
 
-            "partnersList": false /* Show the number of partners on the popup/middle banner */
-        });
+                //"customCloserId": "", /* Optional a11y: Custom element ID used to open the panel */
+
+                "googleConsentMode": true, /* Enable Google Consent Mode v2 for Google ads and GA4 */
+
+                "partnersList": false /* Show the number of partners on the popup/middle banner */
+            });
         </script>
 
         {% endblock %}
