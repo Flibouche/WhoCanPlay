@@ -51,6 +51,16 @@ class FeatureRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function nbFeaturesByDisability(): array
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->select('d.name as disability', 'COUNT(f.id) as features')
+            ->innerJoin('f.disability', 'd')
+            ->groupBy('d.name');
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Feature[] Returns an array of Features objects
     //     */
