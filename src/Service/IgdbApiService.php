@@ -119,7 +119,7 @@ class IgdbApiService
         $idsString = implode(',', $ids);
 
         // Construction de la requête pour l'API IGDB
-        $queryString = "fields id,name,cover.image_id,slug; limit 500; where id = ($idsString);";
+        $queryString = "fields id,name,cover.image_id,summary,slug; limit 500; where id = ($idsString);";
 
         // Envoi de la requête à l'API IGDB
         $response = $this->httpClient->request('POST', 'https://api.igdb.com/v4/games', [

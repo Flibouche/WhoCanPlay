@@ -37,7 +37,7 @@
             </div>
             <div class="px-6 py-4 mb-auto">
                 <a href="{{ path('show_game', {'id': game.db.id, 'slug':game.db.slug}) }}" class="text-black dark:text-white font-bold">{{ game.api.name }}</a>
-                <p class="text-gray-500 dark:text-white text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <p class="text-gray-500 dark:text-white text-sm line-clamp-3">{{ game.api.summary }}</p>
             </div>
         </div>
         {% endfor %}
