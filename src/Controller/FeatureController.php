@@ -19,13 +19,7 @@ use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 
 class FeatureController extends AbstractController
 {
-
-    private $igdbApiService;
-    private $entityManager;
-    private $imageService;
-    private $htmlSanitizer;
-
-    public function __construct(IgdbApiService $igdbApiService, EntityManagerInterface $entityManager, ImageService $imageService, HtmlSanitizerInterface $htmlSanitizer)
+    public function __construct(private IgdbApiService $igdbApiService, private EntityManagerInterface $entityManager, private ImageService $imageService, private HtmlSanitizerInterface $htmlSanitizer)
     {
         $this->igdbApiService = $igdbApiService;
         $this->entityManager = $entityManager;
