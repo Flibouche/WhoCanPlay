@@ -23,7 +23,16 @@
 <div>
     <div class="flex justify-between items-end">
         <h2 class="text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Latest games added</h2>
-        <a href="{{ path('app_games') }}" class="text-black dark:text-white">See All</a>
+        <button aria-label="Go to forum button">
+            <a href="{{ path('app_games') }}" class="text-indigo-800 border border-indigo-800 dark:text-indigo-200 dark:border-indigo-200 hover:bg-indigo-800 hover:text-white dark:hover:bg-indigo-200 dark:hover:text-black dark:hover:border-indigo-200 font-bold py-2 px-6 gap-2 rounded inline-flex items-center">
+                <span>
+                    See all games
+                </span>
+                <svg class="w-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6 ml-2" aria-label="Go to forum icon">
+                    <path d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </a>
+        </button>
     </div>
     <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
     <div id="game-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-5">
@@ -67,19 +76,11 @@
             </div>
             <div class="px-6 py-4 mb-auto">
                 <a href="{{ path('show_game', {'id': feature.game.id, 'slug':feature.game.slug}) }}" class="text-black dark:text-white font-bold">{{ feature }}</a>
-                <p class="text-gray-500 dark:text-white text-sm">{{ feature.content }}</p>
+                <p class="text-gray-500 dark:text-white text-sm line-clamp-3">{{ feature.content }}</p>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
-
-{# <button id="open-button">Open</button>
-
-<dialog id="modal">
-    <h2>Ceci est un test</h2>
-    <p>Test</p>
-    <button id="close-button">Close</button>
-</dialog> #}
 
 {% endblock %}
