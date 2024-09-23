@@ -198,6 +198,7 @@ class ModeratorController extends AbstractController
         if (!$game) {
             $game = new Game();
             $game->setIdGameApi($idGameApi);
+            $game->setName($this->igdbApiService->getGameById($idGameApi)[0]["name"]);
             $game->setSlug($slug);
             $em->persist($game);
             $em->flush();

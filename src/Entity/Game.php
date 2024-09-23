@@ -29,6 +29,10 @@ class Game
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(max: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 255)]
     private ?string $slug = null;
 
     /**
@@ -42,7 +46,6 @@ class Game
      */
     #[ORM\OneToMany(targetEntity: Topic::class, mappedBy: 'game', orphanRemoval: true)]
     private Collection $topics;
-
     #endregion
 
     #region CONSTRUCT
@@ -94,6 +97,20 @@ class Game
     public function setStatus(bool $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    // =================== Name ===================
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }
