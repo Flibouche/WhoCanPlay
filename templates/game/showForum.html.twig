@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ApiController!{% endblock %}
+{% block title %}Forum of {{ game.slug|replace({'-': ' '})|title_with_roman }}{% endblock %}
 
 {% block body %}
 
@@ -131,7 +131,7 @@
 
                 <div class="mb-2 mx-5">
                     <h2 class="font-bold text-black dark:text-white">Title <span class="text-red-500">*</span></h2>
-                    {{ form_widget(formAddTopic.title, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter a title'}}) }}
+                    {{ form_widget(formAddTopic.title, { 'attr': { 'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter a title'} }) }}
                     <div class="text-red-500">
                         {{ form_errors(formAddTopic.title) }}
                     </div>
@@ -139,7 +139,7 @@
 
                 <div class="mb-2 mx-5">
                     <h2 class="font-bold text-black dark:text-white">Message content <span class="text-red-500">*</span></h2>
-                    {{ form_widget(formAddTopic.post, {'attr': {'class': 'w-full text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter a message'}}) }}
+                    {{ form_widget(formAddTopic.post, { 'attr' : { 'placeholder': 'Enter a message'} }) }}
                     <div class="text-red-500">
                         {{ form_errors(formAddTopic.post) }}
                     </div>
@@ -153,12 +153,19 @@
 
     {# Section secondaire #}
     <aside id="secondary" class="basis-0 min-w-[100%] sm:min-w-[30%] sm:basis-3/12 pr-5">
-        <div id="forum">
-            <a href="{{ path('forum_game', {'id': game.id, 'slug':game.slug}) }}">
-                <h2 class="text-left md:text-right text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Forum</h2>
-            </a>
+        <div id="rules">
+            <h2 class="text-left md:text-right text-2xl dark:text-white font-raleway font-bold pr-3 pt-5">Rules</h2>
             <hr class="my-3 w-[100%] border-t-2 border-amber-800 dark:border-yellow-200" />
         </div>
+        <p class="text-black dark:text-white text-sm">
+            Be respectful to all members, harassment, hate speech, and personal attack are not tolerated.<br />
+            No spamming, advertising, or self-promotion.<br />
+            No NSFW content.<br />
+            No piracy or cheating discussions.<br />
+            No sharing of personal information.<br />
+            No political or religious discussions.<br />
+            No off-topic discussions.<br />
+        </p>
     </aside>
 
 </div>

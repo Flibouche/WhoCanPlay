@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class TopicType extends AbstractType
 {
@@ -18,7 +19,7 @@ class TopicType extends AbstractType
             ->add('title', TextType::class, [
                 'required' => true,
             ])
-            
+
             ->add('post', PostType::class, [
                 'required' => true,
                 'mapped' => false,
