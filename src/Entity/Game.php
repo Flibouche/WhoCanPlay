@@ -32,6 +32,9 @@ class Game
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $imageUrl = null;
+
+    #[ORM\Column(length: 255)]
     #[Assert\Length(max: 255)]
     private ?string $slug = null;
 
@@ -111,6 +114,20 @@ class Game
     public function setName(?string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    // =================== Image URL ===================
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(?string $imageUrl): static
+    {
+        $this->imageUrl = $imageUrl;
 
         return $this;
     }
