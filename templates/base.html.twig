@@ -33,6 +33,20 @@
                     <a href="{{ path('app_home') }}">Logo WhoCanPlay</a>
                 </div>
 
+                <div class="flex">
+                    <div class="relative w-full mr-3">
+                        <label for="search" class="sr-only">Search</label>
+                        <input type="search" name="search" id="search" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-800 focus:border-indigo-800 block w-full p-2.5" placeholder="Search game" required />
+                        <div id="result"></div>
+                    </div>
+                    <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-indigo-800 rounded-lg border border-indigo-800 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                        <span class="sr-only">Search</span>
+                    </button>
+                </div>
+
                 {# Nav Links #}
                 <div id="navLinks" class="hidden md:flex gap-5">
                     <a href="{{ path('app_home') }}" class="hover:text-indigo-200 hover:underline">Home</a>
@@ -239,8 +253,53 @@
         {{ importmap('app') }}
         {% endblock %}
 
-        {#
-        <script src="{{ asset('js/ajax.js') }}"></script> #}
+        <script src="{{ asset('js/ajax.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+        <script>
+            let routeTemplate = "{{ path('show_game', { 'id': 'ID_PLACEHOLDER', 'slug': 'SLUG_PLACEHOLDER' }) }}";
+            $(document).ready(function () {
+                var searchTimeout;
+                $('#search').on('input', function () {
+                    var query = $(this).val();
+                    clearTimeout(searchTimeout);
+                    if (query.length > 2) {
+                        searchTimeout = setTimeout(function () {
+                            $.ajax({
+                                url: '/searchGame',
+                                type: 'GET',
+                                data: { search: query },
+                                success: function (data) {
+                                    var resultDiv = $('#result');
+                                    resultDiv.empty();
+                                    if (data.length > 0) {
+                                        var list = $('<ul class="absolute w-[100%] z-50 p-0 m-0 bg-gray-700"></ul>');
+                                        data.forEach(function (item) {
+                                            let itemUrl = routeTemplate.replace('ID_PLACEHOLDER', item.id).replace('SLUG_PLACEHOLDER', item.slug);
+                                            list.append(
+                                                '<li class="result-item flex items-center px-2 justify-between cursor-pointer hover:bg-indigo-200 my-2" data-id="' + item.id + '">' +
+                                                '<a href="' + itemUrl + '" class="flex items-center justify-between w-full">' +
+                                                '<span class="name-date">' + item.name + '</span>' +
+                                                `<img loading="lazy" src='https://images.igdb.com/igdb/image/upload/t_thumb/${item.imageUrl}.jpg' alt='${item.name} cover' class="w-20 h-10 object-cover">` +
+                                                '</a>' +
+                                                '</li>'
+
+                                            );
+                                        });
+                                        resultDiv.append(list);
+                                    } else {
+                                        $('#result').html('<div>No result found</div>');
+                                    }
+                                }
+                            });
+                        }, 300);
+                    } else {
+                        $('#result').empty();
+                    }
+                });
+            });
+        </script>
+
         <script src="{{ asset('js/script.js') }}"></script>
 
         <script src="{{ asset('js/tarteaucitron/tarteaucitron.js') }}"></script>

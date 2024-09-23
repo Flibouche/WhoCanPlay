@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Service\IgdbApiService;
 use App\Repository\GameRepository;
 use App\Repository\FeatureRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HomeController extends AbstractController
 {
@@ -49,25 +51,25 @@ class HomeController extends AbstractController
     {
         // Je cherche directement les jeux ayant le statut 1 (actifs), les range par ID décroissante, et je limite les résultats selon le paramètre $limit
         $activeGames = $this->gameRepository->findBy(['status' => 1], ['id' => 'DESC'], $limit);
-        
+
         // Si je ne trouve aucun jeu actif, j'ajoute un message flash d'avertissement "No game found!" et retourne un tableau vide
         if (empty($activeGames)) {
             $this->addFlash('warning', "No game found!");
             return [];
         }
-    
+
         // Je crée un tableau des ID de l'API de jeux en utilisant la méthode array_map pour extraire les ID de chaque jeu actif
         $gameApiIds = array_map(fn($game) => $game->getIdGameApi(), $activeGames);
-        
+
         // Je récupère les données des jeux depuis l'API IGDB en utilisant les ID que j'ai obtenus
         $gamesApiData = $this->igdbApiService->getGameByIds($gameApiIds);
-        
+
         // Je crée un tableau indexé par les ID des jeux pour faciliter l'accès aux données des jeux API
         $gamesApiDataById = array_column($gamesApiData, null, 'id');
-    
+
         // Je combine les données des jeux de ma base de données avec celles de l'API.
         // Pour chaque jeu actif, je retourne un tableau associatif contenant les données de ma base de données et de l'API
-        return array_map(function($gameDb) use ($gamesApiDataById) {
+        return array_map(function ($gameDb) use ($gamesApiDataById) {
             return [
                 'db' => $gameDb,
                 'api' => $gamesApiDataById[$gameDb->getIdGameApi()] ?? null,
@@ -150,5 +152,24 @@ class HomeController extends AbstractController
     public function redirectToRickRoll(): Response
     {
         return $this->redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    }
+
+    #[Route('/searchGame', name: 'app_search_game', methods: ['GET'])]
+    public function search(GameRepository $gameRepository, Request $request): JsonResponse
+    {
+        $key = $request->query->get('search', '');
+
+        $games = $gameRepository->findByWord($key);
+
+        $gamesContent = array_map(function ($game) {
+            return [
+                'id' => $game->getId(),
+                'name' => $game->getName(),
+                'imageUrl' => $game->getImageUrl(),
+                'slug' => $game->getSlug(),
+            ];
+        }, $games);
+
+        return new JsonResponse($gamesContent);
     }
 }

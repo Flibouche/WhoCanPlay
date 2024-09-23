@@ -54,18 +54,13 @@ class GameRepository extends ServiceEntityRepository
 
     public function findByWord($key)
     {
-
-        $sub = $this->getEntityManager()->createQueryBuilder();
-
-        $qb = $sub;
-
-        $qb = $this->createQueryBuilder('g')
-            ->select('g')
-            ->from('App\Entity\Game', 'g')
-            ->where('g.name LIKE :key')
-            ->setParameter('key', '%' . $key . '%');
-
-        return $qb->getQuery()->getResult();
+        return $this->createQueryBuilder('g')
+            ->where('LOWER(g.name) LIKE LOWER(:key)')
+            ->setParameter('key', '%' . $key . '%')
+            ->orderBy('g.name', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**
