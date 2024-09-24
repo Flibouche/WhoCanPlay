@@ -35,9 +35,9 @@
 
                 <div class="flex">
                     <div class="relative w-full mr-3">
-                        <label for="search" class="sr-only">Search</label>
-                        <input type="search" name="search" id="search" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-800 focus:border-indigo-800 block w-full p-2.5" placeholder="Search game" required />
-                        <div id="result"></div>
+                        <label for="searchBar" class="sr-only">Search</label>
+                        <input type="search" name="searchBar" id="searchBar" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-800 focus:border-indigo-800 block w-full p-2.5" placeholder="Search game" required />
+                        <div id="resultBar"></div>
                     </div>
                     <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-indigo-800 rounded-lg border border-indigo-800 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -259,7 +259,7 @@
             let routeTemplate = "{{ path('show_game', { 'id': 'ID_PLACEHOLDER', 'slug': 'SLUG_PLACEHOLDER' }) }}";
             $(document).ready(function () {
                 var searchTimeout;
-                $('#search').on('input', function () {
+                $('#searchBar').on('input', function () {
                     var query = $(this).val();
                     clearTimeout(searchTimeout);
                     if (query.length > 2) {
@@ -269,8 +269,8 @@
                                 type: 'GET',
                                 data: { search: query },
                                 success: function (data) {
-                                    var resultDiv = $('#result');
-                                    resultDiv.empty();
+                                    var resultDivBar = $('#resultBar');
+                                    resultDivBar.empty();
                                     if (data.length > 0) {
                                         var list = $('<ul class="absolute w-[100%] z-50 p-0 m-0 bg-gray-700"></ul>');
                                         data.forEach(function (item) {
@@ -285,7 +285,7 @@
 
                                             );
                                         });
-                                        resultDiv.append(list);
+                                        resultDivBar.append(list);
                                     } else {
                                         $('#result').html('<div>No result found</div>');
                                     }

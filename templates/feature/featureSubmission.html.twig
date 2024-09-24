@@ -42,7 +42,7 @@
     </div>
 
     {# Formulaire d'édition #}
-    {{ form_start(formSendFeatureToGame) }}
+    {{ form_start(formSendFeatureToGame, {'method': 'POST'}) }}
     <div id="form">
         {{ form_row(formSendFeatureToGame.id_game_api) }}
 
@@ -164,6 +164,10 @@
     </div>
     <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-md w-full mt-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:ring-opacity-50">Upload</button>
 </div> #}
+
+{% endblock %}
+
+{% block javascripts %}
 
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
