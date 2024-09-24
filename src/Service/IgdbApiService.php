@@ -6,6 +6,7 @@ use Exception;
 use InvalidArgumentException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class IgdbApiService
 {
@@ -22,8 +23,8 @@ class IgdbApiService
         $this->logger = $logger;
     }
 
-    // Méthode pour obtenir les jeux, avec un nom optionnel pour la recherche
-    public function getGames(string $name = null): array
+    // Méthode pour obtenir les jeux
+    public function getGames(string $name = null): JsonResponse
     {
         // Obtention du token d'accès via le service d'authentification
         $accessToken = $this->authService->getAccessToken();
@@ -60,8 +61,18 @@ class IgdbApiService
             throw new Exception('Failed to fetch all games');
         }
 
-        // Retourne les données obtenues
-        return $data;
+        // Formatage des données avant de les retourner en JSON
+        $formattedGames = array_map(function ($game) {
+            return [
+                'id' => $game['id'],
+                'name' => $game['name'],
+                'cover' => $game['cover'],
+                'date' => date('Y', $game['first_release_date']),
+            ];
+        }, $data);
+
+        // Retourne les données en JSON
+        return new JsonResponse($formattedGames);
     }
 
     // Méthode pour obtenir les détails d'un jeu par ID

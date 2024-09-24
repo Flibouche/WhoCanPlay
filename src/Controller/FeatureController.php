@@ -174,19 +174,6 @@ class FeatureController extends AbstractController
         $name = $request->query->get('game');
 
         // Je fais appel au service pour récupérer les jeux basés sur le nom
-        $games = $this->igdbApiService->getGames($name);
-
-        // Je formate les jeux pour les afficher dans la vue
-        $formattedGames = array_map(function ($game) {
-            return [
-                'id' => $game['id'],
-                'name' => $game['name'],
-                'cover' => $game['cover'],
-                'date' => date('Y', $game['first_release_date']),
-            ];
-        }, $games);
-
-        // Je retourne une réponse JSON avec les jeux formatés
-        return new JsonResponse($formattedGames);
+        return $this->igdbApiService->getGames($name);
     }
 }

@@ -187,6 +187,7 @@
                         data: { game: query },
                         success: function (data) {
                             var resultDiv = $('#result');
+                            console.log(data);
                             resultDiv.empty();
 
                             if (data.length > 0) {
