@@ -108,7 +108,7 @@ class FeatureController extends AbstractController
         // Pour chaque image, je la traite et l'ajoute à la feature
         foreach ($images as $image) {
             $folder = 'features';
-            $file = $is->add($image, $folder, 300, 300);
+            $file = $is->add($image, $folder);
             $img = new Image();
             $img->setUrl($file);
 
