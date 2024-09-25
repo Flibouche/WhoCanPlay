@@ -22,6 +22,8 @@ class FeatureType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $isEdit = $options['is_edit'];
+
         $builder
             ->add('id_game_api', HiddenType::class)
             ->add('disability', EntityType::class, [
@@ -29,7 +31,8 @@ class FeatureType extends AbstractType
             ->add('name', TextType::class)
             ->add('content', TextareaType::class)
             ->add('images', FileType::class, [
-                'required' => true,
+                
+                'required' => !$isEdit,
                 'label' => false,
                 'multiple' => true,
                 'mapped' => false,
@@ -52,6 +55,7 @@ class FeatureType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Feature::class,
             'sanitize_html' => true,
+            'is_edit' => false,
         ]);
     }
 }

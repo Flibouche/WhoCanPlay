@@ -51,7 +51,9 @@ class FeatureController extends AbstractController
         }
 
         // Je crée le formulaire
-        $form = $this->createForm(FeatureType::class, $feature);
+        $form = $this->createForm(FeatureType::class, $feature, [
+            'is_edit' => $feature->getId() !== null,
+        ]);
         $form->handleRequest($request);
 
         // Si le formulaire est soumis et valide
