@@ -18,12 +18,10 @@ class ModeratorController extends AbstractController
 {
 
     private $igdbApiService;
-    private $entityManager;
 
-    public function __construct(IgdbApiService $igdbApiService, EntityManagerInterface $entityManager)
+    public function __construct(IgdbApiService $igdbApiService, private EntityManagerInterface $entityManager)
     {
         $this->igdbApiService = $igdbApiService;
-        $this->entityManager = $entityManager;
     }
 
     #region Submission Box
@@ -134,9 +132,6 @@ class ModeratorController extends AbstractController
     #[IsGranted('ROLE_MODERATOR')]
     public function validateFeature(?Feature $feature): Response
     {
-        // Je récupère l'entity manager
-        $em = $this->entityManager;
-
         // Je vérifie si la feature est null et je lance une exception si c'est le cas
         if (!$feature) {
             throw $this->createNotFoundException('Feature not found');
@@ -144,7 +139,7 @@ class ModeratorController extends AbstractController
 
         // Je commence une transaction pour garantir l'atomicité des opérations pour l'ajout en BDD
         // Atomicité : ensemble d'opérations d'un programme qui s'exécutent entièrement sans pouvoir être interrompues avant la fin de leur déroulement
-        $em->beginTransaction();
+        $this->entityManager->beginTransaction();
         try {
 
             // Je change le State de mon objet Feature à ACCEPTED
@@ -159,22 +154,22 @@ class ModeratorController extends AbstractController
                 if (!$game->isStatus()) {
                     $game->setStatus(true);
                     // Je prépare mes données à être insérées dans mon objet Game
-                    $em->persist($game);
+                    $this->entityManager->persist($game);
                 }
 
                 // J'associe enfin mon objet Game à mon objet Feature
                 $feature->setGame($game);
                 // Je prépare mes données à être insérées dans mon objet Feature
-                $em->persist($feature);
+                $this->entityManager->persist($feature);
             }
 
             // Je flush mes opérations en attente (persist) vers ma base de données
-            $em->flush();
+            $this->entityManager->flush();
             // J'envoie la transaction
-            $em->commit();
+            $this->entityManager->commit();
         } catch (\Exception $e) {
             // En cas d'exception, j'annule toutes les opérations de la transaction
-            $em->rollback();
+            $this->entityManager->rollback();
             throw $e;
         }
 
