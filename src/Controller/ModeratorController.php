@@ -105,14 +105,11 @@ class ModeratorController extends AbstractController
     #[IsGranted('ROLE_MODERATOR')]
     public function showFeature(Feature $feature): Response
     {
-        // Je récupère l'entity manager
-        $em = $this->entityManager;
-
         // Dès que j'accède à un objet Feature, si son State est "Not opened", il passe automatiquement en "Pending"
         if ($feature->getState() == FeatureState::NOT_OPENED) {
             $feature->setState(FeatureState::PENDING);
-            $em->persist($feature);
-            $em->flush();
+            $this->entityManager->persist($feature);
+            $this->entityManager->flush();
         }
 
         // Je récupère les informations du jeu associé à l'ID de l'API du jeu
@@ -180,11 +177,8 @@ class ModeratorController extends AbstractController
     // Méthode privée pour obtenir ou créer un jeu basé sur l'ID de l'API du jeu
     private function getOrCreateGame($idGameApi): Game
     {
-        // Je récupère l'entity manager
-        $em = $this->entityManager;
-
         // Je cherche le jeu dans ma base de données en utilisant l'ID de l'API du jeu
-        $game = $em->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
+        $game = $this->entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
 
         $slugger = new AsciiSlugger();
         $slug = $slugger->slug($this->igdbApiService->getGameById($idGameApi)[0]["slug"]);
@@ -196,8 +190,8 @@ class ModeratorController extends AbstractController
             $game->setName($this->igdbApiService->getGameById($idGameApi)[0]["name"]);
             $game->setImageUrl($this->igdbApiService->getGameById($idGameApi)[0]["cover"]["image_id"]);
             $game->setSlug($slug);
-            $em->persist($game);
-            $em->flush();
+            $this->entityManager->persist($game);
+            $this->entityManager->flush();
         }
 
         // Je retourne le jeu trouvé ou crée
@@ -209,16 +203,13 @@ class ModeratorController extends AbstractController
     #[IsGranted('ROLE_MODERATOR')]
     public function denyFeature(?Feature $feature): Response
     {
-        // Je récupère l'entity manager
-        $em = $this->entityManager;
-
         // Je passe le State de mon objet Feature à DENIED, je persist et je flush les informations
         $feature->setState(FeatureState::DENIED);
-        $em->persist($feature);
-        $em->flush();
+        $this->entityManager->persist($feature);
+        $this->entityManager->flush();
 
         // Ensuite je met à jour le Status du jeu associé si besoin
-        $this->updateGameStatus($feature->getGame(), $em);
+        $this->updateGameStatus($feature->getGame(), $this->entityManager);
 
         // Je redirige l'utilisateur vers la route 'app_moderator' après la validation des opérations
         return $this->redirectToRoute('app_moderator');
@@ -228,9 +219,6 @@ class ModeratorController extends AbstractController
     // Le jeu reste dans la base de données, si le jeu possède minimum une Feature en State "ACCEPTED", le jeu restera en Status "1", autrement il passe à 0 et n'est donc pas visible dans la gamelist.
     private function updateGameStatus(?Game $game): void
     {
-        // Je récupère l'entity manager
-        $em = $this->entityManager;
-
         // Si $game est null, la méthode se termine ici car il n'y a rien à mettre à jour
         if ($game === null) {
             return;
@@ -249,8 +237,8 @@ class ModeratorController extends AbstractController
         }
 
         // Je persist et je flush les informations
-        $em->persist($game);
-        $em->flush();
+        $this->entityManager->persist($game);
+        $this->entityManager->flush();
     }
     #endregion
 }
