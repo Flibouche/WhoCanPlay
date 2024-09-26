@@ -135,9 +135,7 @@ class ModeratorController extends AbstractController
         // Atomicité : ensemble d'opérations d'un programme qui s'exécutent entièrement sans pouvoir être interrompues avant la fin de leur déroulement
         $this->entityManager->beginTransaction();
         try {
-
-            // Je change le State de mon objet Feature à ACCEPTED
-            $feature->setState(FeatureState::PROCESSED);
+            $feature->setState(FeatureState::PROCESSED); // Je change le State de mon objet Feature à ACCEPTED
 
             // Je vérifie si le State de mon objet Feature a bien été changé en ACCEPTED
             if ($feature->getState() == FeatureState::PROCESSED) {
@@ -219,7 +217,7 @@ class ModeratorController extends AbstractController
         }
 
         $acceptedFeatures = $gameRepository->findProcessedFeaturesByGame($game);
-        
+
         // Si aucune fonctionnalité dans le State "ACCEPTED" n'est trouvée, le statut du jeu est mis à false, sinon à true
         if (count($acceptedFeatures) === 0) {
             $game->setStatus(false);

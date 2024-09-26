@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GameController extends AbstractController
 {
@@ -124,6 +125,7 @@ class GameController extends AbstractController
         $processedFeatures = $gameRepository->findProcessedFeaturesByGame($gameId);
 
         if(count($processedFeatures) === 0) {
+            // throw new NotFoundHttpException('No features found for this game');
             throw $this->createNotFoundException('No features found for this game');
         }
 

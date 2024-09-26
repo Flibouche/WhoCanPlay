@@ -20,18 +20,13 @@ class Redirect404
     // Méthode appelé lorsqu'une exception se produit
     public function onKernelException(ExceptionEvent $event)
     {
-        // Récupère l'exception
+        // Je récupère l'exception
         $exception = $event->getThrowable();
 
-        // Vérifie si l'exception est de type NotFoundHttpException (erreur 404)
-        if (!$exception instanceof NotFoundHttpException) {
-            return; // Si ce n'est pas une erreur 404, ne fait rien
+        // Je vérifie si l'exception est de type NotFoundHttpException, autrement je ne fais rien
+        if ($exception instanceof NotFoundHttpException) {
+            $response = new RedirectResponse($this->router->generate('app_error_404'));
+            $event->setResponse($response);
         }
-
-        // Redirection vers la page d'accueil
-        $response = new RedirectResponse($this->router->generate('app_home'));
-
-        // Associe la réponse à l'événement
-        $event->setResponse($response);
     }
 }
