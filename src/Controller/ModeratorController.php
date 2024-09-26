@@ -176,8 +176,8 @@ class ModeratorController extends AbstractController
         // Je cherche le jeu dans ma base de données en utilisant l'ID de l'API du jeu
         $game = $this->entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
 
-        $slugger = new AsciiSlugger();
-        $slug = $slugger->slug($this->igdbApiService->getGameById($idGameApi)[0]["slug"]);
+        // $slugger = new AsciiSlugger();
+        // $slug = $slugger->slug($this->igdbApiService->getGameById($idGameApi)[0]["slug"]);
 
         // Si aucun jeu n'est trouvé, je crée un nouveau jeu
         if (!$game) {
@@ -185,7 +185,8 @@ class ModeratorController extends AbstractController
             $game->setIdGameApi($idGameApi);
             $game->setName($this->igdbApiService->getGameById($idGameApi)[0]["name"]);
             $game->setImageUrl($this->igdbApiService->getGameById($idGameApi)[0]["cover"]["image_id"]);
-            $game->setSlug($slug);
+            $game->setSlug($this->igdbApiService->getGameById($idGameApi)[0]["slug"]);
+            // $game->setSlug($slug);
             $this->entityManager->persist($game);
             $this->entityManager->flush();
         }

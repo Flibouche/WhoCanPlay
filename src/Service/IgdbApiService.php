@@ -24,20 +24,26 @@ class IgdbApiService
     }
 
     // Méthode pour obtenir les jeux
-    public function getGames(string $name = null): JsonResponse
+    public function getGames(?string $name = null): JsonResponse
     {
-        // Obtention du token d'accès via le service d'authentification
         $accessToken = $this->authService->getAccessToken();
-        // Log du token d'accès
         $this->logger->info('Access token obtained', ['access_token' => $accessToken]);
 
-        // Construction de la requête pour l'API IGDB
-        $queryString = "fields id,name,first_release_date,cover.image_id; where category = 0 & version_parent = null; limit 5;";
+        // Je construis la requête pour l'API IGDB
+        $queryString = "fields id,name,first_release_date,cover.image_id; where category = 0 & version_parent = null;";
+
+        // Si un nom est fourni, je l'ajoute à la requête
         if ($name) {
-            $queryString = "search \"$name\"; " . $queryString;
+            // Je convertis le nom en minuscules pour une recherche insensible à la casse
+            $nameLower = strtolower($name);
+            // Je recherche les jeux dont le nom ou un nom alternatif
+            $queryString = "fields id,name,first_release_date,cover.image_id; 
+                            where category = 0 & version_parent = null & 
+                            (name ~ *\"$nameLower\"* | alternative_names.name ~ *\"$nameLower\"*);"; // ~ signifie "contient", * signifie "n'importe quel nombre de caractères"
         }
 
-        // Envoi de la requête à l'API IGDB
+        $queryString .= " limit 5;"; // Je limite le nombre de résultats à 5
+
         $response = $this->httpClient->request('POST', 'https://api.igdb.com/v4/games', [
             'headers' => [
                 'Client-ID' => $this->authService->getClientId(),
@@ -46,32 +52,49 @@ class IgdbApiService
             'body' => $queryString,
         ]);
 
-        // Traitement de la réponse de l'API
         $statusCode = $response->getStatusCode();
         $data = $response->toArray(false);
 
-        // Vérification du statut de la réponse
         if ($statusCode !== 200) {
-            // Log de l'erreur si le statut n'est pas 200
-            $this->logger->error('Failed to fetch all games', [
+            $this->logger->error('Failed to fetch games', [
                 'status_code' => $statusCode,
                 'response' => $data,
+                'query' => $queryString
             ]);
-            // Lève une exception en cas d'échec
-            throw new Exception('Failed to fetch all games');
+            throw new Exception('Failed to fetch games');
         }
 
-        // Formatage des données avant de les retourner en JSON
         $formattedGames = array_map(function ($game) {
             return [
                 'id' => $game['id'],
                 'name' => $game['name'],
-                'cover' => $game['cover'],
-                'date' => date('Y', $game['first_release_date']),
+                'cover' => $game['cover'] ?? null,
+                'date' => isset($game['first_release_date']) ? date('Y', $game['first_release_date']) : 'N/A',
             ];
         }, $data);
 
-        // Retourne les données en JSON
+        // Tri des résultats pour mettre en premier ceux qui commencent exactement par la recherche
+        if ($name) {
+            usort($formattedGames, function ($currentGame, $comparisonGame) use ($name) {
+                $nameStartPattern = '/^' . preg_quote($name, '/') . '/i';
+                $currentGameStarts = preg_match($nameStartPattern, $currentGame['name']);
+                $comparisonGameStarts = preg_match($nameStartPattern, $comparisonGame['name']);
+
+                if ($currentGameStarts && !$comparisonGameStarts) {
+                    return -1; // Le jeu actuel doit venir en premier
+                } elseif (!$currentGameStarts && $comparisonGameStarts) {
+                    return 1; // Le jeu de comparaison doit venir en premier
+                }
+                return 0; // Les deux jeux sont égaux en priorité
+            });
+        }
+
+        $this->logger->info('Search results', [
+            'query' => $name,
+            'results_count' => count($formattedGames),
+            'results' => $formattedGames
+        ]);
+
         return new JsonResponse($formattedGames);
     }
 
