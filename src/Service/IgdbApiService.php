@@ -76,7 +76,7 @@ class IgdbApiService
         // Tri des résultats pour mettre en premier ceux qui commencent exactement par la recherche
         if ($name) {
             usort($formattedGames, function ($currentGame, $comparisonGame) use ($name) {
-                $nameStartPattern = '/^' . preg_quote($name, '/') . '/i';
+                $nameStartPattern = '/^' . preg_quote($name, '/') . '/i'; // Preg_quote permet d'échapper les caractères spéciaux
                 $currentGameStarts = preg_match($nameStartPattern, $currentGame['name']);
                 $comparisonGameStarts = preg_match($nameStartPattern, $comparisonGame['name']);
 
