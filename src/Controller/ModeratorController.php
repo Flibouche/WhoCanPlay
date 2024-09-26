@@ -16,12 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ModeratorController extends AbstractController
 {
-
-    private $igdbApiService;
-
-    public function __construct(IgdbApiService $igdbApiService, private EntityManagerInterface $entityManager)
+    public function __construct(private IgdbApiService $igdbApiService, private EntityManagerInterface $entityManager)
     {
-        $this->igdbApiService = $igdbApiService;
     }
 
     #region Submission Box
