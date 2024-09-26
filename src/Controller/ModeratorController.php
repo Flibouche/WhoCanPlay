@@ -7,6 +7,7 @@ use App\Entity\Feature;
 use App\Enum\FeatureState;
 use App\Service\IgdbApiService;
 use App\Repository\FeatureRepository;
+use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -176,9 +177,6 @@ class ModeratorController extends AbstractController
         // Je cherche le jeu dans ma base de données en utilisant l'ID de l'API du jeu
         $game = $this->entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
 
-        // $slugger = new AsciiSlugger();
-        // $slug = $slugger->slug($this->igdbApiService->getGameById($idGameApi)[0]["slug"]);
-
         // Si aucun jeu n'est trouvé, je crée un nouveau jeu
         if (!$game) {
             $game = new Game();
@@ -186,7 +184,6 @@ class ModeratorController extends AbstractController
             $game->setName($this->igdbApiService->getGameById($idGameApi)[0]["name"]);
             $game->setImageUrl($this->igdbApiService->getGameById($idGameApi)[0]["cover"]["image_id"]);
             $game->setSlug($this->igdbApiService->getGameById($idGameApi)[0]["slug"]);
-            // $game->setSlug($slug);
             $this->entityManager->persist($game);
             $this->entityManager->flush();
         }
@@ -198,7 +195,7 @@ class ModeratorController extends AbstractController
     // Méthode pour refuser une feature
     #[Route('/moderator/feature/{id}/{slug}/deny', name: 'deny_feature_moderator')]
     #[IsGranted('ROLE_MODERATOR')]
-    public function denyFeature(?Feature $feature): Response
+    public function denyFeature(?Feature $feature, GameRepository $gameRepository): Response
     {
         // Je passe le State de mon objet Feature à DENIED, je persist et je flush les informations
         $feature->setState(FeatureState::DENIED);
@@ -206,7 +203,7 @@ class ModeratorController extends AbstractController
         $this->entityManager->flush();
 
         // Ensuite je met à jour le Status du jeu associé si besoin
-        $this->updateGameStatus($feature->getGame(), $this->entityManager);
+        $this->updateGameStatus($feature->getGame(), $gameRepository);
 
         // Je redirige l'utilisateur vers la route 'app_moderator' après la validation des opérations
         return $this->redirectToRoute('app_moderator');
@@ -214,20 +211,17 @@ class ModeratorController extends AbstractController
 
     // Méthode privée qui me permet de mettre à jour le statut du jeu de true à false si aucune feature d'accessibilité ne lui est attribué suite à des modifications parvenues, ou en cas de mauvaise manipulation.
     // Le jeu reste dans la base de données, si le jeu possède minimum une Feature en State "ACCEPTED", le jeu restera en Status "1", autrement il passe à 0 et n'est donc pas visible dans la gamelist.
-    private function updateGameStatus(?Game $game): void
+    private function updateGameStatus(?Game $game, GameRepository $gameRepository): void
     {
         // Si $game est null, la méthode se termine ici car il n'y a rien à mettre à jour
         if ($game === null) {
             return;
         }
 
-        // Je filtre les Features acceptées du jeu
-        $acceptedFeatures = $game->getFeatures()->filter(function (Feature $feature) {
-            return $feature->getState() === FeatureState::PROCESSED;
-        });
-
+        $acceptedFeatures = $gameRepository->findProcessedFeaturesByGame($game);
+        
         // Si aucune fonctionnalité dans le State "ACCEPTED" n'est trouvée, le statut du jeu est mis à false, sinon à true
-        if ($acceptedFeatures->isEmpty()) {
+        if (count($acceptedFeatures) === 0) {
             $game->setStatus(false);
         } else {
             $game->setStatus(true);

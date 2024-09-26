@@ -123,6 +123,10 @@ class GameController extends AbstractController
         // Je récupère les détails des fonctionnalités traitées du jeu en faisant appel à la méthode du repository
         $processedFeatures = $gameRepository->findProcessedFeaturesByGame($gameId);
 
+        if(count($processedFeatures) === 0) {
+            throw $this->createNotFoundException('No features found for this game');
+        }
+
         // J'appelle la méthode privée pour organiser les fonctionnalités par handicap
         $featuresByDisability = $this->organizeFeaturesByDisability($processedFeatures);
 
