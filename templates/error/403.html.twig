@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error 403{% endblock %}
+
+{% block body %}
+<section class="w-full rounded-xl overflow-hidden flex flex-col px-8 py-8 sm:px-5 sm:py-20 bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+    <div class="container flex flex-col items-center ">
+        <div class="flex flex-col gap-6 max-w-md text-center">
+            <h2 class="font-extrabold text-9xl text-indigo-800 dark:text-indigo-200">
+                <span class="sr-only">Error</span>403
+            </h2>
+            <p class="text-2xl md:text-3xl text-black dark:text-white">Sorry, you don't have permission to access this page.</p>
+            <p class="text-2xl text-black dark:text-white">You will be redirected automatically in <span id="timer"></span> </p>
+            <a href="{{ path('app_home') }}" class="px-8 py-4 text-xl font-semibold rounded bg-indigo-800 dark:bg-indigo-200 text-white dark:text-black hover:text-gray-200">Back to home</a>
+            <div id="redirectData" data-redirect-url="{{ path('app_home') }}"></div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('js/timer.js') }}"></script>
+{% endblock %}
