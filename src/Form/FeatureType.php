@@ -6,6 +6,9 @@ use App\Entity\Game;
 use App\Entity\User;
 use App\Entity\Feature;
 use App\Entity\Disability;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -31,12 +34,19 @@ class FeatureType extends AbstractType
             ->add('name', TextType::class)
             ->add('content', TextareaType::class)
             ->add('images', FileType::class, [
-                
                 'required' => !$isEdit,
                 'label' => false,
                 'multiple' => true,
                 'mapped' => false,
             ])
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+                $images = $form->get('images')->getData();
+                
+                if (is_array($images) && count($images) > 3) {
+                    $form->get('images')->addError(new FormError('You can only upload up to 3 images.'));
+                }
+            })
             // ->add('state')
             // ->add('Game', EntityType::class, [
             //     'class' => Game::class,
