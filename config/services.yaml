@@ -47,8 +47,6 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
 
-    App\Service\HoneypotChecker: ~
-
     # Example of a service definition:
     # App\Service\ExampleService:
     #     arguments:
