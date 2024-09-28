@@ -32,7 +32,7 @@ services:
             $clientSecret: '%env(TWITCH_CLIENT_SECRET)%'
             $logger: '@logger'
 
-    App\Service\Redirect403:
+    App\Security\Redirect403:
         arguments: ['@router']
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
@@ -42,7 +42,7 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
 
-    App\Service\Redirect500:
+    App\Security\Redirect500:
         arguments: ['@router']
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
