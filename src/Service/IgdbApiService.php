@@ -101,6 +101,9 @@ class IgdbApiService
     // Méthode pour obtenir les détails d'un jeu par ID
     public function getGameById(string $idGameApi = null): array
     {
+        if (empty($idGameApi)) {
+            throw new \InvalidArgumentException('Game ID cannot be null or empty !');
+        }
         // Obtention du token d'accès via le service d'authentification
         $accessToken = $this->authService->getAccessToken();
         // Log du token d'accès

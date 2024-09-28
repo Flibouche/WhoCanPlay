@@ -55,11 +55,19 @@ class FeatureController extends AbstractController
         }
 
         // Si le formulaire est soumis et valide
-        if ($form->isSubmitted() && $form->isValid()) {
-            // J'appelle la méthode privée pour envoyer la feature au jeu
-            $this->sendFeatureToGame($feature, $form);
-            $this->addFlash('success', 'Your feature has been sent to the moderators for processing.');
-            return $this->redirectToRoute('app_home');
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                // Si l'envoi de la feature échoue, ajouter un message d'erreur
+                if (!$this->sendFeatureToGame($feature, $form)) {
+                    $this->addFlash('error', 'The game ID provided does not exist. Please check and try again.');
+                } else {
+                    // Sinon, ajouter un message de succès
+                    $this->addFlash('success', 'Your feature has been sent to the moderators for processing.');
+                    return $this->redirectToRoute('app_home');
+                }
+            } else {
+                $this->addFlash('error', 'There was an error with your submission. Please check the form and try again.');
+            }
         }
 
         // J'affiche la vue avec le formulaire et les données
@@ -72,7 +80,7 @@ class FeatureController extends AbstractController
     }
 
     // Méthode privée pour envoyer une feature à un jeu pour traitement
-    private function sendFeatureToGame(Feature $feature, FormInterface $form): void
+    private function sendFeatureToGame(Feature $feature, FormInterface $form): bool
     {
         $user = $this->getUser();
 
@@ -82,13 +90,18 @@ class FeatureController extends AbstractController
         $featureName = $form->get('name')->getData();
         $featureContent = $form->get('content')->getData();
 
+        $idOnTheApi = $this->igdbApiService->getGameById($idGameApi);
+        if (!$idOnTheApi) {
+            return false;
+        }
+
         // Je nettoie le nom de la feature, l'alt que ça attribu à l'image pour éviter les failles XSS
         $sanitizedName = $this->htmlSanitizer->sanitize($featureName);
         $sanitizedContent = $this->htmlSanitizer->sanitize($featureContent);
 
         // Je vérifie que le nom et le contenu ne sont pas vides pour éviter l'ajout de données vides en base de données
         if (empty($sanitizedName) || empty($sanitizedContent)) {
-            return;
+            return false;
         }
 
         // J'ajoute le nom et le contenu sanitizé à la feature
@@ -129,6 +142,8 @@ class FeatureController extends AbstractController
         // Je persiste et flush la feature
         $this->entityManager->persist($feature);
         $this->entityManager->flush();
+
+        return true;
     }
 
     // Méthode pour supprimer une image d'une feature
