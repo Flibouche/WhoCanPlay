@@ -16,26 +16,18 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class FeatureController extends AbstractController
 {
-    public function __construct(private IgdbApiService $igdbApiService, private EntityManagerInterface $entityManager, private ImageService $imageService, private HtmlSanitizerInterface $htmlSanitizer)
-    {
-        $this->igdbApiService = $igdbApiService;
-        $this->entityManager = $entityManager;
-        $this->imageService = $imageService;
-        $this->htmlSanitizer = $htmlSanitizer;
-    }
+    public function __construct(private IgdbApiService $igdbApiService, private EntityManagerInterface $entityManager, private ImageService $imageService, private HtmlSanitizerInterface $htmlSanitizer) {}
 
     // Méthode pour envoyer une Feature à un jeu pour traitement
     #[Route('/feature', name: 'app_feature')]
     #[Route('/feature/{id}/{slug}/edit', name: 'edit_feature')]
+    #[IsGranted('ROLE_USER')]
     public function featureSubmission(?Feature $feature, Request $request): Response
     {
-        // Je récupère l'entity manager et le service d'image
-        $em = $this->entityManager;
-        $is = $this->imageService;
-
         // Récupère le nom du jeu si je suis en mode édition
         $gameName = null;
 
@@ -55,6 +47,12 @@ class FeatureController extends AbstractController
             'is_edit' => $feature->getId() !== null,
         ]);
         $form->handleRequest($request);
+
+        $honeyPot = filter_input(INPUT_POST, 'email_confirm', FILTER_SANITIZE_SPECIAL_CHARS);
+        if ($honeyPot) {
+            $this->addFlash('info', 'Oh hi Mark !');
+            return $this->redirectToRoute('app_home');
+        }
 
         // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
@@ -76,9 +74,6 @@ class FeatureController extends AbstractController
     // Méthode privée pour envoyer une feature à un jeu pour traitement
     private function sendFeatureToGame(Feature $feature, FormInterface $form): void
     {
-        // Je récupère l'entity manager, le service d'image et l'utilisateur
-        $em = $this->entityManager;
-        $is = $this->imageService;
         $user = $this->getUser();
 
         // Je récupère les images du formulaire et l'id du jeu de l'API
@@ -110,7 +105,7 @@ class FeatureController extends AbstractController
         // Pour chaque image, je la traite et l'ajoute à la feature
         foreach ($images as $image) {
             $folder = 'features';
-            $file = $is->add($image, $folder);
+            $file = $this->imageService->add($image, $folder);
             $img = new Image();
             $img->setUrl($file);
 
@@ -121,7 +116,7 @@ class FeatureController extends AbstractController
         }
 
         // Je cherche si le jeu existe déjà dans la base de données en fonction de l'id de l'API
-        $game = $em->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
+        $game = $this->entityManager->getRepository(Game::class)->findOneBy(['id_game_api' => $idGameApi]);
         // Si le jeu n'existe pas, j'ajoute l'id de l'API à la feature
         if ($game) {
             $feature->setGame($game);
@@ -132,18 +127,14 @@ class FeatureController extends AbstractController
         $feature->setIdGameApi($idGameApi);
 
         // Je persiste et flush la feature
-        $em->persist($feature);
-        $em->flush();
+        $this->entityManager->persist($feature);
+        $this->entityManager->flush();
     }
 
     // Méthode pour supprimer une image d'une feature
     #[Route('/delete/image/{id}', name: 'delete_image_feature', methods: ['DELETE'])]
     public function deleteImage(Image $image, Request $request): JsonResponse
     {
-        // Je récupère l'entity manager et le service d'image
-        $em = $this->entityManager;
-        $is = $this->imageService;
-
         // Je récupère le contenu de la requête et le décode
         $data = json_decode($request->getContent(), true);
 
@@ -153,10 +144,10 @@ class FeatureController extends AbstractController
             $url = $image->getUrl();
 
             // Si la suppression de l'image est un succès
-            if ($is->delete($url, 'features', 300, 300)) {
+            if ($this->imageService->delete($url, 'features')) {
                 // Je supprime l'image de la base de données
-                $em->remove($image);
-                $em->flush();
+                $this->entityManager->remove($image);
+                $this->entityManager->flush();
 
                 // Je retourne une réponse JSON avec un message de succès
                 return new JsonResponse(['success' => true], 200);

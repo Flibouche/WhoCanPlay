@@ -148,6 +148,11 @@
             <img src="" alt="" class="max-w-[500px] space-y-5">
         </div>
 
+        <div class="hidden">
+            <label for="email_confirm">Email confirm</label>
+            <input type="text" id="email_confirm" name="email_confirm" value="">
+        </div>
+
         <div class="flex flex-col w-full mb-2">
             {{ form_widget(formSendFeatureToGame.submit, {'attr': {'class': 'w-full text-white dark:text-black bg-indigo-800 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-800 dark:bg-indigo-200 dark:hover:bg-indigo-400 dark:focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center'}}) }}
         </div>
@@ -167,7 +172,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script src="{{ asset('js/submission.js') }}"></script>
 
-{# <script>
+{#
+<script>
     $(document).ready(function () {
         var searchTimeout;
 

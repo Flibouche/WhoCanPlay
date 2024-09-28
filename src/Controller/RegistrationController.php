@@ -19,9 +19,7 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private EmailVerifier $emailVerifier)
-    {
-    }
+    public function __construct(private EmailVerifier $emailVerifier) {}
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, HtmlSanitizerInterface $htmlSanitizer): Response
@@ -29,6 +27,13 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+
+        // honeypot verification
+        $honeyPot = filter_input(INPUT_POST, 'email_confirm', FILTER_SANITIZE_SPECIAL_CHARS);
+        if ($honeyPot) {
+            $this->addFlash('info', 'Oh hi Mark !');
+            return $this->redirectToRoute('app_home');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -41,7 +46,7 @@ class RegistrationController extends AbstractController
                 $this->addFlash('error', 'Adresse email invalide.');
                 return $this->redirectToRoute('app_profil');
             }
-            
+
             $sanitizedPseudo = $htmlSanitizer->sanitize($user->getPseudo());
 
             $user->setPseudo($sanitizedPseudo);
@@ -58,7 +63,9 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
                 (new TemplatedEmail())
                     ->from(new Address('admin@whocanplay.com', 'WhoCanUse Email Verifier'))
                     ->to($user->getEmail())

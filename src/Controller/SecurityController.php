@@ -7,31 +7,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    private $honeypotChecker;
-
-    public function __construct(HoneypotChecker $honeypotChecker)
-    {
-        $this->honeypotChecker = $honeypotChecker;
-    }
-
     // Méthode pour la connexion
     #[Route(path: '/login', name: 'app_login')]
-    public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        // honeypot verification
+        $honeyPot = filter_input(INPUT_POST, 'email_confirm', FILTER_SANITIZE_SPECIAL_CHARS);
+        if ($honeyPot) {
+            $this->addFlash('info', 'Oh hi Mark !');
+            return $this->redirectToRoute('app_home');
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
-        // honeypot verification
-        $honeypotValue = $request->request->get('email_confirm', '');
-        $this->honeypotChecker->checkHoneypot($honeypotValue);
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
