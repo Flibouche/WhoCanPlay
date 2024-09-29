@@ -113,6 +113,7 @@
         </div>
         {% endfor %}
 
+        {% if app.user %}
         <details class="mt-5">
             <summary class="bg-white dark:bg-neutral-800 p-4 rounded-lg cursor-pointer shadow-md mb-4">
                 <span class="font-semibold text-black dark:text-white">Add message</span>
@@ -136,6 +137,7 @@
                 {{ form_end(formAddPost) }}
             </div>
         </details>
+        {% endif %}
 
     </section>
 

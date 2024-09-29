@@ -119,6 +119,7 @@
         </div>
 
         {# Onglet pour afficher le formulaire #}
+        {% if app.user %}
         <details class="mt-5">
             <summary class="bg-white dark:bg-neutral-800 p-4 rounded-lg cursor-pointer shadow-md mb-4">
                 <span class="font-semibold text-black dark:text-white">Create topic</span>
@@ -148,6 +149,7 @@
                 {{ form_end(formAddTopic) }}
             </div>
         </details>
+        {% endif %}
 
     </section>
 

@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class GameController extends AbstractController
 {
@@ -240,6 +241,7 @@ class GameController extends AbstractController
     }
 
     // Méthode privée pour ajouter un topic
+    #[IsGranted('ROLE_USER')]
     private function addTopic($form, $game): ?Response
     {
         // Je récupère l'entity manager et l'utilisateur connecté
@@ -335,6 +337,7 @@ class GameController extends AbstractController
     }
 
     // Méthode privée pour ajouter un post
+    #[IsGranted('ROLE_USER')]
     private function addPost($form, $topic): ?Response
     {
         // Je récupère l'entity manager et l'utilisateur connecté

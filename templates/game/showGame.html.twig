@@ -251,7 +251,11 @@
                                 <a href="{{ path('topic_game', {'id': topic.id, 'slug':topic.slug}) }}" class="text-gray-800 text-sm hover:text-indigo-800 dark:text-gray-200 dark:hover:text-indigo-200">{{ topic.title }}</a>
                             </td>
                             <td>
+                                {% if topic.user %}
                                 <a href="{{ path('app_user_profile', {'pseudo' : topic.user.pseudo}) }}" class="text-gray-800 text-sm hover:text-indigo-800 dark:text-gray-200 dark:hover:text-indigo-200">{{ topic.user }}</a>
+                                {% else %}
+                                <p class="text-gray-800 text-sm dark:text-gray-200">Deleted user</p>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
