@@ -39,7 +39,7 @@
                 <input type="text" id="email_confirm" name="email_confirm" value="">
             </div>
 
-            <div class="checkbox mb-2">
+            <div class="checkbox mb-2 text-black dark:text-white">
                 <input type="checkbox" name="_remember_me" id="_remember_me">
                 <label for="_remember_me">Remember me</label>
             </div>
@@ -52,8 +52,8 @@
 
         </form>
         
-        <div class="flex items-center justify-center dark:bg-gray-800 py-3">
-            <button class="w-full px-4 py-2 border flex justify-center gap-2 border-zinc-700 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150">
+        <div class="flex items-center justify-center py-3">
+            <button class="w-full px-4 py-2 border flex justify-center gap-2 border-zinc-700 dark:border-slate-700 rounded-lg text-slate-700 dark:bg-zinc-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150">
                 <img loading="lazy" class="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
                 <a href="{{ path('connect_google') }}">Login with Google</a>
             </button>

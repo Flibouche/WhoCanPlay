@@ -76,6 +76,13 @@
         <button type="submit" class="w-full my-2 text-white dark:text-black bg-indigo-800 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-800 dark:bg-indigo-200 dark:hover:bg-indigo-400 dark:focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Register</button>
         {{ form_end(registrationForm) }}
 
+        <div class="flex items-center justify-center py-3">
+            <button class="w-full px-4 py-2 border flex justify-center gap-2 border-zinc-700 dark:border-slate-700 rounded-lg text-slate-700 dark:bg-zinc-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150">
+                <img loading="lazy" class="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
+                <a href="{{ path('connect_google') }}">Login with Google</a>
+            </button>
+        </div>
+
         <p class="text-sm font-light text-gray-500 dark:text-gray-400">Already have an account ? <a href="{{ path('app_login') }}" class="font-medium text-indigo-800 hover:underline dark:text-indigo-200">Sign in</a></p>
 
     </div>
