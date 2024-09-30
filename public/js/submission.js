@@ -28,7 +28,7 @@ $(document).ready(function () {
                                     '<div class="flex">' + item.name + ' (' + item.date + ')' + '</div>' +
                                     `
                                         <div class="flex-shrink-0 ml-4">${item.cover && item.cover.image_id
-                                        ? `<img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_thumb/${item.cover.image_id}.jpg" alt="${item.name} cover" class="w-16 h-20 object-cover rounded">`
+                                        ? `<img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_thumb/${item.cover.image_id}.webp" alt="${item.name} cover" class="w-16 h-20 object-cover rounded">`
                                         : '<div class="w-16 h-20 bg-gray-300 rounded flex items-center justify-center text-gray-500">No image</div>'}
                                         </div>
                                     </li>
