@@ -10,22 +10,13 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 class TwitchAuthService
 {
-    // Déclaration des propriétés privées pour les dépendances
-    private HttpClientInterface $httpClient;
-    private string $clientId;
-    private string $clientSecret;
-    private LoggerInterface $logger;
-    private CacheInterface $cache;
-
-    // Constructeur pour injecter les dépendances HttpClientInterface, clientId, clientSecret et LoggerInterface
-    public function __construct(HttpClientInterface $httpClient, string $clientId, string $clientSecret, LoggerInterface $logger, CacheInterface $cache)
-    {
-        $this->httpClient = $httpClient;
-        $this->clientId = $clientId;
-        $this->clientSecret = $clientSecret;
-        $this->logger = $logger;
-        $this->cache = $cache;
-    }
+    public function __construct(
+        private HttpClientInterface $httpClient,
+        private string $clientId,
+        private string $clientSecret,
+        private LoggerInterface $logger,
+        private CacheInterface $cache
+    ) {}
 
     // Méthode pour obtenir le token d'accès
     public function getAccessToken(): string
