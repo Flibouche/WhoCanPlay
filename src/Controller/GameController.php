@@ -11,6 +11,7 @@ use App\Form\TopicType;
 use App\Service\IgdbApiService;
 use App\Repository\GameRepository;
 use App\Repository\PostRepository;
+use App\Service\InsultFilter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +29,7 @@ class GameController extends AbstractController
     private $htmlSanitizer;
     private $entityManager;
 
-    public function __construct(IgdbApiService $igdbApiService, HtmlSanitizerInterface $htmlSanitizer, EntityManagerInterface $entityManager)
+    public function __construct(IgdbApiService $igdbApiService, HtmlSanitizerInterface $htmlSanitizer, EntityManagerInterface $entityManager, private InsultFilter $insultFilter)
     {
         $this->igdbApiService = $igdbApiService;
         $this->htmlSanitizer = $htmlSanitizer;
@@ -351,6 +352,7 @@ class GameController extends AbstractController
             $post = $form->getData();
             // Je nettoie le contenu du post
             $sanitizedContent = $this->htmlSanitizer->sanitize($post->getContent());
+            $sanitizedContent = $this->insultFilter->filterInsults($sanitizedContent);
             // J'ajoute le contenu nettoyé au post et j'ajoute le user et le topic
             $post->setContent($sanitizedContent);
             $post->setUser($user);

@@ -32,6 +32,10 @@ services:
             $clientSecret: '%env(TWITCH_CLIENT_SECRET)%'
             $logger: '@logger'
 
+    App\Service\InsultFilter:
+        arguments:
+            $insultList: ['stupid', 'idiot', 'dumb']
+
     App\Security\Redirect403:
         arguments: ['@router']
         tags:
