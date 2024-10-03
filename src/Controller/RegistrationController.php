@@ -51,8 +51,10 @@ class RegistrationController extends AbstractController
 
             $user->setPseudo($sanitizedPseudo);
 
-            // encode the plain password
+            // Hashage du mot de passe
             $user->setPassword(
+                // Utilisation de l'interface UserPasswordHasherInterface pour hasher le mot de passe
+                // hashPassword prend en paramètre l'entité User et le mot de passe en clair
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
