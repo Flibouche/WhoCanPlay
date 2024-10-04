@@ -61,6 +61,14 @@ class GameRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+
+            /* Pour avoir tous les jeux contenant le mot "dark" dans leur nom
+            SELECT g.*
+            FROM Game g
+            WHERE LOWER(g.name) LIKE LOWER('%dark%')
+            ORDER BY g.name ASC
+            LIMIT 10
+            */
     }
 
     //    /**
