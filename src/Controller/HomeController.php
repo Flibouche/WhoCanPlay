@@ -14,17 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HomeController extends AbstractController
 {
-
-    private $igdbApiService;
-    private $gameRepository;
-    private $featureRepository;
-
-    public function __construct(IgdbApiService $igdbApiService, GameRepository $gameRepository, FeatureRepository $featureRepository)
-    {
-        $this->igdbApiService = $igdbApiService;
-        $this->gameRepository = $gameRepository;
-        $this->featureRepository = $featureRepository;
-    }
+    public function __construct(private IgdbApiService $igdbApiService, private GameRepository $gameRepository, private FeatureRepository $featureRepository) {}
 
     #region Home
     // Méthode pour afficher la page d'accueil
