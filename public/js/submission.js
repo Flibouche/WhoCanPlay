@@ -19,13 +19,13 @@ $(document).ready(function () {
                         resultDiv.empty();
 
                         if (data.length > 0) {
-                            var list = $('<ul class="absolute w-[100%] z-50 p-0 m-0 bg-gray-200"></ul>');
+                            var list = $('<ul class="absolute w-[100%] z-50 mt-2"></ul>');
                             data.forEach(function (item) {
                                 console.log(item);
                                 $('#spinner').addClass('hidden');
                                 list.append(
-                                    '<li class="result-item flex items-center px-10 justify-between cursor-pointer hover:bg-indigo-200 my-2" data-id="' + item.id + '">' +
-                                    '<div class="flex">' + item.name + ' (' + item.date + ')' + '</div>' +
+                                    '<li class="result-item flex items-center px-10 py-2 bg-white dark:bg-neutral-800 border-b border-indigo-800 dark:border-indigo-200 justify-between cursor-pointer hover:bg-indigo-200 dark:hover:bg-indigo-800" data-id="' + item.id + '">' +
+                                    '<div class="flex text-black dark:text-white">' + item.name + ' (' + item.date + ')' + '</div>' +
                                     `
                                         <div class="flex-shrink-0 ml-4">${item.cover && item.cover.image_id
                                         ? `<img loading="lazy" src="https://images.igdb.com/igdb/image/upload/t_thumb/${item.cover.image_id}.webp" alt="${item.name} cover" class="w-16 h-20 object-cover rounded">`
