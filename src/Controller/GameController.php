@@ -6,7 +6,6 @@ use App\Entity\Game;
 use App\Entity\Post;
 use App\Entity\Topic;
 use App\Form\PostType;
-use App\Entity\Feature;
 use App\Form\TopicType;
 use App\Service\IgdbApiService;
 use App\Repository\GameRepository;
@@ -16,25 +15,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class GameController extends AbstractController
 {
-
-    private $igdbApiService;
-    private $htmlSanitizer;
-    private $entityManager;
-
-    public function __construct(IgdbApiService $igdbApiService, HtmlSanitizerInterface $htmlSanitizer, EntityManagerInterface $entityManager, private InsultFilter $insultFilter)
-    {
-        $this->igdbApiService = $igdbApiService;
-        $this->htmlSanitizer = $htmlSanitizer;
-        $this->entityManager = $entityManager;
-    }
+    public function __construct(private IgdbApiService $igdbApiService, private HtmlSanitizerInterface $htmlSanitizer, private EntityManagerInterface $entityManager, private InsultFilter $insultFilter) {}
 
     #region Gamelist
     // Méthode pour afficher la liste des jeux
@@ -65,7 +52,7 @@ class GameController extends AbstractController
         // Récupération des IDs des jeux actifs ($gameApiIds) en utilisant array_map pour plus de lisibilité
         // array_map applique une fonction anonyme (fn($game)) à chaque élément du tableau $activeGames
         // La fonction anonyme prend chaque élément du tableau $activeGames (chaque jeu) et retourne l'ID du jeu API
-        $gameApiIds = array_map(fn ($game) => $game->getIdGameApi(), $activeGames); // Exemple : [0 => 26226, 1 => 2132, 2 => 299]
+        $gameApiIds = array_map(fn($game) => $game->getIdGameApi(), $activeGames); // Exemple : [0 => 26226, 1 => 2132, 2 => 299]
 
         // Je récupère les données des jeux actifs en utilisant les IDs des jeux API
         $gamesApiData = $this->igdbApiService->getGamesAndDetailsByIds($gameApiIds);
@@ -126,7 +113,7 @@ class GameController extends AbstractController
         // Je récupère les détails des fonctionnalités traitées du jeu en faisant appel à la méthode du repository
         $processedFeatures = $gameRepository->findProcessedFeaturesByGame($gameId);
 
-        if(count($processedFeatures) === 0) {
+        if (count($processedFeatures) === 0) {
             // throw new NotFoundHttpException('No features found for this game');
             throw $this->createNotFoundException('No features found for this game');
         }
@@ -245,12 +232,10 @@ class GameController extends AbstractController
     #[IsGranted('ROLE_USER')]
     private function addTopic($form, $game): ?Response
     {
-        // Je récupère l'entity manager et l'utilisateur connecté
-        $em = $this->entityManager;
         $user = $this->getUser();
 
         // Je commence la transaction
-        $em->beginTransaction();
+        $this->entityManager->beginTransaction();
         try {
             // Je récupère les données du formulaire
             $topic = $form->getData();
@@ -261,7 +246,7 @@ class GameController extends AbstractController
             // Je récupère le titre du topic et le contenu du post
             $topicTitle = $form->get('title')->getData();
             $postContent = $form->get('post')->getData();
-            
+
             // Je nettoie le contenu du titre et du post
             $sanitizedTitle = $this->htmlSanitizer->sanitize($topicTitle);
             $sanitizedContent = $this->htmlSanitizer->sanitize($postContent->getContent());
@@ -274,16 +259,16 @@ class GameController extends AbstractController
             $post->setTopic($topic);
 
             // Je persiste le topic et le post et je flush
-            $em->persist($topic);
-            $em->persist($post);
-            $em->flush();
+            $this->entityManager->persist($topic);
+            $this->entityManager->persist($post);
+            $this->entityManager->flush();
 
             // Je commit la transaction
-            $em->commit();
+            $this->entityManager->commit();
 
             // J'ajoute un message flash de succès
             $this->addFlash('success', 'Topic successfully created !');
-            
+
             // Je redirige vers le topic
             return $this->redirectToRoute('topic_game', [
                 'id' => $topic->getId(),
@@ -292,7 +277,7 @@ class GameController extends AbstractController
             // Si une exception est levée
         } catch (\Exception $e) {
             // Je rollback la transaction
-            $em->rollback();
+            $this->entityManager->rollback();
             $this->addFlash('error', 'An error occurred !');
             throw $e;
         }
@@ -341,12 +326,10 @@ class GameController extends AbstractController
     #[IsGranted('ROLE_USER')]
     private function addPost($form, $topic): ?Response
     {
-        // Je récupère l'entity manager et l'utilisateur connecté
-        $em = $this->entityManager;
         $user = $this->getUser();
-        
+
         // Je commence la transaction
-        $em->beginTransaction();
+        $this->entityManager->beginTransaction();
         try {
             // Je récupère les données du formulaire
             $post = $form->getData();
@@ -359,11 +342,11 @@ class GameController extends AbstractController
             $post->setTopic($topic);
 
             // Je persiste le post et je flush
-            $em->persist($post);
-            $em->flush();
+            $this->entityManager->persist($post);
+            $this->entityManager->flush();
 
             // Je commit la transaction
-            $em->commit();
+            $this->entityManager->commit();
 
             // J'ajoute un message flash de succès
             $this->addFlash('success', 'Post successfully created !');
@@ -375,7 +358,7 @@ class GameController extends AbstractController
             // Si une exception est levée
         } catch (\Exception $e) {
             // Je rollback la transaction
-            $em->rollback();
+            $this->entityManager->rollback();
             $this->addFlash('error', 'An error occurred !');
             throw $e;
         }
