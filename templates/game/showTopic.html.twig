@@ -2,6 +2,8 @@
 
 {% block title %}{{ topic }}{% endblock %}
 
+{% block meta %}Here you can view the differents posts of the topic {{ topic }}. To make a post you have to be registered.{% endblock %}
+
 {% block body %}
 
 <nav class="w-full flex text-sm" aria-label="Breadcrumb">
@@ -159,8 +161,11 @@
 
 </div>
 
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
 {# J'appelle mon script ajax pour éditer un post #}
 {#
 <script src="{{ asset('js/ajax.js') }}"></script> #}
-
 {% endblock %}
