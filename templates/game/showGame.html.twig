@@ -161,36 +161,9 @@
                                     <div class="swiper-button-next"></div>
                                     <div class="swiper-scrollbar"></div>
                                 </div>
-                                {# <div class="relative bg-black/20 dark:bg-black/50 rounded-xl overflow-hidden shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
-                                    <ul id="slider-{{ feature.id }}" class="relative">
-                                        {% for image in feature.images %}
-                                        <li class="hidden">
-                                            <div class="flex flex-col h-[40vh]">
-                                                <img loading="lazy" class="w-full h-full object-contain lg:object-none" src="{{ asset('assets/uploads/features/' ~ image.url) }}" alt="{{ image.altText }}">
-                                                <div class="p-4 bg-white/70 dark:bg-black/70 text-black dark:text-white">
-                                                    <h5 class="text-xl font-semibold mb-2">{{ image.title }}</h5>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                    <div class="absolute px-5 flex h-full w-full top-0 left-0">
-                                        <div class="my-auto w-full flex justify-between">
-                                            <button id="previous-slide-{{ feature.id }}" class="bg-white p-3 rounded-full bg-opacity-80 shadow-lg" aria-label="Previous slide">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-6 h-6 fill-current" aria-label="Left icon">
-                                                    <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
-                                                </svg>
-                                            </button>
-                                            <button id="next-slide-{{ feature.id }}" class="bg-white p-3 rounded-full bg-opacity-80 shadow-lg" aria-label="Next slide">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-6 h-6 fill-current" aria-label="Right icon">
-                                                    <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div> #}
                             </div>
                             {% endif %}
+
                         </li>
                         {% endfor %}
                     </ul>
@@ -298,84 +271,11 @@
 
 </div>
 
+{% endblock %}
+
 {% block javascripts %}
 {{ parent() }}
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script>
-    const swiper = new Swiper('.swiper', {
-        zoom: true,
-
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        scrollbar: {
-            el: '.swiper-scrollbar',
-        },
-    });
-</script>
-
-{#
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Fonction pour initialiser un carousel
-        function initCarousel(featureId) {
-            let currentSlideId = 1;
-            const sliderElement = document.getElementById(`slider-${featureId}`);
-            const slides = sliderElement.getElementsByTagName('li');
-            const totalSlides = slides.length;
-            const nextButton = document.getElementById(`next-slide-${featureId}`);
-            const previousButton = document.getElementById(`previous-slide-${featureId}`);
-
-            function showSlide() {
-                for (let index = 0; index < totalSlides; index++) {
-                    const element = slides[index];
-                    if (currentSlideId === index + 1) {
-                        element.classList.remove('hidden');
-                    } else {
-                        element.classList.add('hidden');
-                    }
-                }
-            }
-
-            function next() {
-                if (currentSlideId < totalSlides) {
-                    currentSlideId++;
-                } else {
-                    currentSlideId = 1;
-                }
-                showSlide();
-            }
-
-            function previous() {
-                if (currentSlideId > 1) {
-                    currentSlideId--;
-                } else {
-                    currentSlideId = totalSlides;
-                }
-                showSlide();
-            }
-
-            showSlide();
-            nextButton.addEventListener('click', next);
-            previousButton.addEventListener('click', previous);
-        }
-
-        // Initialiser tous les carousels
-        document.querySelectorAll('[id^="slider-"]').forEach(slider => {
-            const featureId = slider.id.split('-')[1];
-            initCarousel(featureId);
-        });
-    });
-</script> #}
-
+<script src="{{ asset('js/swiper.js') }}"></script>
 <script src="{{ asset('js/tabs.js') }}"></script>
-{% endblock %}
-
 {% endblock %}
