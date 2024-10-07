@@ -86,6 +86,12 @@
         {# Informations disabilities et diverses #}
         <div class="tab-section rounded-lg p-2 mb-5 w-full bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
             <nav aria-label="Game Information Tabs">
+                {% for disability in featuresByDisability %}
+                <p>{{disability[0].disabilityName}}</p>
+                {% if disability[0].disabilityName == 'Blind, Low-Vision and Color-Blindness' %}
+                    <p>hello</p>
+                {% endif %}
+                {% endfor %}
                 <div class="flex flex-col md:flex-row justify-center items-center">
                     {# Disabilities #}
                     <button class="px-4 py-2 font-medium flex items-center hover:text-indigo-800 dark:hover:text-indigo-200" data-tab-target="#tab1" aria-label="Disabilities button">
