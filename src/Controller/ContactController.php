@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Contact;
-use App\Form\ContactType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,16 +19,14 @@ class ContactController extends AbstractController
          */
         // Cette annotation permet d'enlever le problème de reconnaissance de la méthode getEmail()
         $user = $this->getUser();
-        
-        $form = $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $contact = $form->getData();
+        if ($request->isMethod('POST')) {
+            $contact = $request->request->all();
 
             $email = (new TemplatedEmail())
-                ->from($form->get('email')->getData())
+                ->from($contact['email'])
                 ->to('admin@whocanplay.com')
-                ->subject($contact->getSubject())
+                ->subject($contact['subject'])
                 ->htmlTemplate('emails/application.html.twig')
                 ->context([
                     'contact' => $contact,
@@ -45,7 +41,6 @@ class ContactController extends AbstractController
 
         return $this->render('contact/contact.html.twig', [
             'controller_name' => 'ContactController',
-            'formContact' => $form,
         ]);
     }
 }
