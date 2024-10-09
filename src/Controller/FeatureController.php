@@ -145,7 +145,9 @@ class FeatureController extends AbstractController
         }
 
         // J'ajoute l'utilisateur et l'id de l'API à la feature
-        $feature->setUser($user);
+        if ($feature->getId() === null) {
+            $feature->setUser($user);
+        }
         $feature->setIdGameApi($idGameApi);
 
         // Je persiste et flush la feature
