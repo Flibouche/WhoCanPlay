@@ -61,17 +61,26 @@
 
                 {# Developpeurs #}
                 <h2>
-                    <strong>Developer</strong> : {% for developer in gameApi[0].developers %}<span>{{ developer }}</span>{% endfor %}
+                    <strong>Developer</strong> :
+                    {% for developer in gameApi[0].developers %}
+                    <span class="underline">{{ developer }}{% if not loop.last %}</span><span> |</span> {% endif %}
+                    {% endfor %}
                 </h2>
 
                 {# Genres #}
                 <h2>
-                    <strong>Genres</strong> : {% for genre in gameApi[0].genres %}<span>{{ genre.name }} </span>{% endfor %}
+                    <strong>Genres</strong> : 
+                    {% for genre in gameApi[0].genres %}
+                    <span class="underline">{{ genre.name }}{% if not loop.last %}</span><span> |</span> {% endif %}
+                    {% endfor %}
                 </h2>
 
                 {# Platformes #}
                 <h2 class="pb-10">
-                    <strong>Platforms</strong> : {% for platform in gameApi[0].platforms %}<span>{{ platform.name }} </span>{% endfor %}
+                    <strong>Platforms</strong> : 
+                    {% for platform in gameApi[0].platforms %}
+                    <span class="underline">{{ platform.name }}{% if not loop.last %}</span><span> |</span> {% endif %}
+                    {% endfor %}
                 </h2>
 
                 {# Handicaps #}
@@ -86,113 +95,79 @@
         {# Informations disabilities et diverses #}
         <div class="tab-section rounded-lg p-2 mb-5 w-full bg-white dark:bg-neutral-800 shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
             <nav aria-label="Game Information Tabs">
-                {% for disability in featuresByDisability %}
-                <p>{{disability[0].disabilityName}}</p>
-                {% if disability[0].disabilityName == 'Blind, Low-Vision and Color-Blindness' %}
-                    <p>hello</p>
-                {% endif %}
-                {% endfor %}
-                <div class="flex flex-col md:flex-row justify-center items-center">
-                    {# Disabilities #}
-                    <button class="px-4 py-2 font-medium flex items-center hover:text-indigo-800 dark:hover:text-indigo-200" data-tab-target="#tab1" aria-label="Disabilities button">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 448 512" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-label="Disabilities icon">
-                            <path d="M320 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM204.5 121.3c-5.4-2.5-11.7-1.9-16.4 1.7l-40.9 30.7c-14.1 10.6-34.2 7.7-44.8-6.4s-7.7-34.2 6.4-44.8l40.9-30.7c23.7-17.8 55.3-21 82.1-8.4l90.4 42.5c29.1 13.7 36.8 51.6 15.2 75.5L299.1 224h97.4c30.3 0 53 27.7 47.1 57.4L415.4 422.3c-3.5 17.3-20.3 28.6-37.7 25.1s-28.6-20.3-25.1-37.7L377 288H306.7c8.6 19.6 13.3 41.2 13.3 64c0 88.4-71.6 160-160 160S0 440.4 0 352s71.6-160 160-160c11.1 0 22 1.1 32.4 3.3l54.2-54.2-42.1-19.8zM160 448a96 96 0 1 0 0-192 96 96 0 1 0 0 192z" />
-                        </svg>
-                        Disabilities
+                <div class="flex flex-col md:flex-row justify-center items-center text-sm">
+                    {% set disabilityNames = featuresByDisability|keys %}
+                    {% for i in 0..(disabilityNames|length - 1) %}
+                    {% set disability = disabilityNames[i] %}
+                    <button class="px-4 py-2 font-medium flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200" data-tab-target="#tab{{ i + 1 }}" aria-label="{{ disability }}">
+                        <div class="flex flex-row items-center gap-2">
+                            <img loading="lazy" src="{{ asset(featuresByDisability[disability][0].icon) }}" alt="{{ disability }}" title="{{ disability }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+                            {{ disability }}
+                        </div>
                     </button>
-
-                    {# Media #}
-                    <button class="px-4 py-2 font-medium flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200" data-tab-target="#tab2" aria-label="Media button">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" aria-label="Media icon">
-                            <path d="M192 64C86 64 0 150 0 256S86 448 192 448H448c106 0 192-86 192-192s-86-192-192-192H192zM496 168a40 40 0 1 1 0 80 40 40 0 1 1 0-80zM392 304a40 40 0 1 1 80 0 40 40 0 1 1 -80 0zM168 200c0-13.3 10.7-24 24-24s24 10.7 24 24v32h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H216v32c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V200z" />
-                        </svg>
-                        Media
-                    </button>
-
-                    {# Related Content #}
-                    <button class="px-4 py-2 font-medium flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200" data-tab-target="#tab3" aria-label="Related Content button">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 448 512" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-label="Related Content icon">
-                            <path d="M320 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM204.5 121.3c-5.4-2.5-11.7-1.9-16.4 1.7l-40.9 30.7c-14.1 10.6-34.2 7.7-44.8-6.4s-7.7-34.2 6.4-44.8l40.9-30.7c23.7-17.8 55.3-21 82.1-8.4l90.4 42.5c29.1 13.7 36.8 51.6 15.2 75.5L299.1 224h97.4c30.3 0 53 27.7 47.1 57.4L415.4 422.3c-3.5 17.3-20.3 28.6-37.7 25.1s-28.6-20.3-25.1-37.7L377 288H306.7c8.6 19.6 13.3 41.2 13.3 64c0 88.4-71.6 160-160 160S0 440.4 0 352s71.6-160 160-160c11.1 0 22 1.1 32.4 3.3l54.2-54.2-42.1-19.8zM160 448a96 96 0 1 0 0-192 96 96 0 1 0 0 192z" />
-                        </svg>
-                        Related Content
-                    </button>
-
-                    {# Others #}
-                    <button class="px-4 py-2 font-medium flex items-center text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200" data-tab-target="#tab4" aria-label="Others button">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 448 512" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-label="Others icon">
-                            <path d="M320 48a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zM204.5 121.3c-5.4-2.5-11.7-1.9-16.4 1.7l-40.9 30.7c-14.1 10.6-34.2 7.7-44.8-6.4s-7.7-34.2 6.4-44.8l40.9-30.7c23.7-17.8 55.3-21 82.1-8.4l90.4 42.5c29.1 13.7 36.8 51.6 15.2 75.5L299.1 224h97.4c30.3 0 53 27.7 47.1 57.4L415.4 422.3c-3.5 17.3-20.3 28.6-37.7 25.1s-28.6-20.3-25.1-37.7L377 288H306.7c8.6 19.6 13.3 41.2 13.3 64c0 88.4-71.6 160-160 160S0 440.4 0 352s71.6-160 160-160c11.1 0 22 1.1 32.4 3.3l54.2-54.2-42.1-19.8zM160 448a96 96 0 1 0 0-192 96 96 0 1 0 0 192z" />
-                        </svg>
-                        Others
-                    </button>
+                    {% endfor %}
                 </div>
             </nav>
 
+            {# Récupération des clés du tableau featuresByDisability #}
+            {% set disabilityNames = featuresByDisability|keys %}
+
             {# Tab Disabilities #}
-            <div id="tab1" class="w-full tab-content hidden px-5 mt-5 py-5">
-                {# Boucle pour récupérer et trier les features par disability sans doublons #}
-                {% for disability, features in featuresByDisability %}
-                {# En-tête disability #}
-                <article id="disability">
-                    <header class="flex gap-3 brd-purple" aria-label="Disability name and icon header">
-                        <img loading="lazy" src="{{ asset(features[0].icon) }}" alt="{{ features[0].disabilityName }}" title="{{ features[0].disabilityName }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
-                        <h2 class="text-2xl fond-bold dark:text-white">{{ disability }}</h2>
-                    </header>
+            <div class="tab-contents">
+                {% for i in 0..(disabilityNames|length -1) %}
+                {% set disability = disabilityNames[i] %}
+                <div id="tab{{ i+1 }}" class="w-full tab-content hidden px-5 mt-5 py-5">
+                    <article id="disability">
+                        <header class="flex gap-3 brd-purple" aria-label="Disability name and icon header">
+                            <img loading="lazy" src="{{ asset(featuresByDisability[disability][0].icon) }}" alt="{{ disability }}" title="{{ disability }}" width="25" height="25" class="dark:invert dark:brightness-0 dark:filter">
+                            <h2 class="text-2xl fond-bold dark:text-white">{{ disability }}</h2>
+                        </header>
 
-                    <hr class="my-3 border-t-2 w-full border-amber-800 dark:border-yellow-200" />
+                        <hr class="my-3 border-t-2 w-full border-amber-800 dark:border-yellow-200" />
 
-                    {# Liste des features par disability #}
-                    <ul id="feature-list">
-                        {% for feature in features %}
-                        <li id="feature" class="mb-5 relative">
-                            <h3 class="text-xl font-bold pb-2 dark:text-white">{{ feature.name }} <span class="text-sm">({{ feature.id }}#)</span></h3>
-                            <span class="absolute text-sm top-0 right-0 text-black dark:text-white"><a href="{{ path('app_user_profile', {'pseudo': feature.user} )}}">by {{ feature.user }}</a></span>
-                            <div id="feature-content" class="dark:text-white">
-                                {{ feature.content|raw }}
-                            </div>
-
-                            {% if feature.images is not empty %}
-                            <div class="my-3 w-full">
-                                <h4 class="text-md font-bold pb-2 text-black dark:text-white">Content image(s) :</h4>
-                                <!-- Carousel -->
-                                <div class="swiper">
-                                    <div class="swiper-wrapper">
-                                        {% for image in feature.images %}
-                                        <div class="swiper-slide">
-                                            <div class="swiper-zoom-container" data-swiper-zoom="5">
-                                                <img loading="lazy" class="w-full h-full object-contain lg:object-none" src="{{ asset('assets/uploads/features/' ~ image.url) }}" alt="{{ image.altText }}">
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="swiper-pagination"></div>
-                                    <div class="swiper-button-prev"></div>
-                                    <div class="swiper-button-next"></div>
-                                    <div class="swiper-scrollbar"></div>
+                        <ul id="feature-list">
+                            {% for feature in featuresByDisability[disability] %}
+                            <li id="feature" class="mb-5 relative">
+                                <h3 class="text-xl font-bold pb-2 dark:text-white">{{ feature.name }} <span class="text-sm">({{ feature.id }}#)</span></h3>
+                                <span class="hidden sm:block absolute text-sm italic top-0 right-0 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
+                                    <a href="{{ path('app_user_profile', {'pseudo': feature.user} )}}">by {{ feature.user }}</a>
+                                </span>
+                                <div class="sm:hidden mb-2">
+                                    <span class="text-sm italic text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
+                                        <a href="{{ path('app_user_profile', {'pseudo': feature.user} )}}">by {{ feature.user }}</a>
+                                    </span>
                                 </div>
-                            </div>
-                            {% endif %}
+                                <div id="feature-content" class="dark:text-white">
+                                    {{ feature.content|raw }}
+                                </div>
 
-                        </li>
-                        {% endfor %}
-                    </ul>
+                                {% if feature.images is not empty %}
+                                <div class="my-3 w-full">
+                                    <h4 class="text-md font-bold pb-2 text-black dark:text-white">Content image(s) :</h4>
+                                    <div class="swiper">
+                                        <div class="swiper-wrapper">
+                                            {% for image in feature.images %}
+                                            <div class="swiper-slide">
+                                                <div class="swiper-zoom-container" data-swiper-zoom="5">
+                                                    <img loading="lazy" class="w-full h-full object-contain lg:object-none" src="{{ asset('assets/uploads/features/' ~ image.url) }}" alt="{{ image.altText }}">
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="swiper-pagination"></div>
+                                        <div class="swiper-button-prev"></div>
+                                        <div class="swiper-button-next"></div>
+                                        <div class="swiper-scrollbar"></div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
 
-                </article>
+                    </article>
+                </div>
                 {% endfor %}
-            </div>
-
-            {# Tab media #}
-            <div id="tab2" class="w-full tab-content hidden">
-                <h2>Test 2</h2>
-            </div>
-
-            {# Tab Related Content #}
-            <div id="tab3" class="w-full tab-content hidden">
-                <h2>Test 3</h2>
-            </div>
-
-            {# Tab others #}
-            <div id="tab4" class="w-full tab-content hidden">
-                <h2>Test 4</h2>
             </div>
 
         </div>
