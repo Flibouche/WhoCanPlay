@@ -199,9 +199,9 @@
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4">{% for developer in game.api.developers %} {{ developer }} {% endfor %}</td>
-                    <td class="px-6 py-4">{% for genre in game.api.genres %} {{ genre.name }} {% endfor %}</td>
-                    <td class="px-6 py-4">{% for platform in game.api.platforms %} {{ platform.name }} {% endfor %}</td>
+                    <td class="px-6 py-4"><p class="line-clamp-2">{% for developer in game.api.developers %} {{ developer }} {% endfor %}</p></td>
+                    <td class="px-6 py-4"><p class="line-clamp-2">{% for genre in game.api.genres %} {{ genre.name }} {% endfor %}</p></td>
+                    <td class="px-6 py-4"><p class="line-clamp-2">{% for platform in game.api.platforms %} {{ platform.name }} {% endfor %}</p></td>
                     <td class="px-6 py-4">
                         <div class="flex gap-1">
                             {% for disability in game.uniqueDisabilities %}
