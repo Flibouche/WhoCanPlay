@@ -30,10 +30,13 @@ class FeatureController extends AbstractController
     {
         // Récupère le nom du jeu si je suis en mode édition
         $gameName = null;
+        $isEdit = false;
 
         // Si la feature n'existe pas, on en crée une nouvelle
         if (!$feature) {
             $feature = new Feature();
+        } else {
+            $isEdit = true;
         }
 
         // Si la feature existe, on récupère le nom du jeu
@@ -61,9 +64,15 @@ class FeatureController extends AbstractController
                 if (!$this->sendFeatureToGame($feature, $form)) {
                     $this->addFlash('error', 'The game ID provided does not exist. Please check and try again.');
                 } else {
-                    // Sinon, ajouter un message de succès
-                    $this->addFlash('success', 'Your feature has been sent to the moderators for processing.');
-                    return $this->redirectToRoute('app_home');
+                    // Si c'est une modification
+                    if ($isEdit) {
+                        $this->addFlash('success', 'Your feature has been updated.');
+                        return $this->redirectToRoute('show_moderator', ['id' => $feature->getId(), 'slug' => $feature->getSlug()]);
+                    } else {
+                        // Sinon, ajouter un message de succès
+                        $this->addFlash('success', 'Your feature has been sent to the moderators for processing.');
+                        return $this->redirectToRoute('app_home');
+                    }
                 }
             } else {
                 $this->addFlash('error', 'There was an error with your submission. Please check the form and try again.');

@@ -166,7 +166,8 @@ class ModeratorController extends AbstractController
         }
 
         // Je redirige l'utilisateur vers la route 'app_moderator' après la validation des opérations
-        return $this->redirectToRoute('app_moderator');
+        $this->addFlash('success', 'The feature has been validated successfully !');
+        return $this->redirectToRoute('show_game', ['id' => $game->getId(), 'slug' => $game->getSlug()]);
     }
 
     // Méthode privée pour obtenir ou créer un jeu basé sur l'ID de l'API du jeu
@@ -204,6 +205,7 @@ class ModeratorController extends AbstractController
         $this->updateGameStatus($feature->getGame(), $gameRepository);
 
         // Je redirige l'utilisateur vers la route 'app_moderator' après la validation des opérations
+        $this->addFlash('success', 'The feature has been denied successfully !');
         return $this->redirectToRoute('app_moderator');
     }
 
