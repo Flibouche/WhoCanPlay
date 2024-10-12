@@ -77,6 +77,7 @@ class DisabilityAdminController extends AbstractController
             $this->entityManager->persist($disability);
             $this->entityManager->flush();
 
+            $this->addFlash('success', 'Disability created successfully');
             return $this->redirectToRoute('app_admin_disability_show', ['secret' => $this->admin_secret]);
         }
 
@@ -111,6 +112,7 @@ class DisabilityAdminController extends AbstractController
         $this->entityManager->remove($disability);
         $this->entityManager->flush();
 
+        $this->addFlash('success', 'Disability deleted successfully');
         return $this->redirectToRoute('app_admin_disability_show', ['secret' => $this->admin_secret]);
     }
 }

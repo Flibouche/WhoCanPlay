@@ -78,6 +78,7 @@ class ImageAdminController extends AbstractController
         $this->entityManager->remove($image);
         $this->entityManager->flush();
 
+        $this->addFlash('success', 'Image deleted successfully');
         return $this->redirectToRoute('app_admin_image_show', ['secret' => $this->admin_secret]);
     }
 }

@@ -72,6 +72,7 @@ class PostAdminController extends AbstractController
             $this->entityManager->persist($post);
             $this->entityManager->flush();
 
+            $this->addFlash('success', 'Post updated successfully');
             return $this->redirectToRoute('app_admin_post_show', ['secret' => $this->admin_secret]);
         }
 
@@ -105,6 +106,7 @@ class PostAdminController extends AbstractController
         $this->entityManager->remove($post);
         $this->entityManager->flush();
 
+        $this->addFlash('success', 'Post deleted successfully');
         return $this->redirectToRoute('app_admin_post_show', ['secret' => $this->admin_secret]);
     }
 }

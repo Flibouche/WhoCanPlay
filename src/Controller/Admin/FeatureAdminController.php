@@ -78,6 +78,7 @@ class FeatureAdminController extends AbstractController
         $this->entityManager->remove($feature);
         $this->entityManager->flush();
 
+        $this->addFlash('success', 'Feature deleted successfully');
         return $this->redirectToRoute('app_admin_feature_show', ['secret' => $this->admin_secret]);
     }
 }

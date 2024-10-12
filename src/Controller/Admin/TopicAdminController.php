@@ -81,6 +81,7 @@ class TopicAdminController extends AbstractController
         $this->entityManager->remove($topic);
         $this->entityManager->flush();
 
+        $this->addFlash('success', 'Topic deleted successfully');
         return $this->redirectToRoute('app_admin_topic_show', ['secret' => $this->admin_secret]);
     }
 
@@ -108,6 +109,7 @@ class TopicAdminController extends AbstractController
         $this->entityManager->persist($topic);
         $this->entityManager->flush();
 
+        $this->addFlash('success', 'Topic has been locked');
         return $this->redirectToRoute('app_admin_topic_show', ['secret' => $this->admin_secret]);
     }
 
@@ -135,6 +137,7 @@ class TopicAdminController extends AbstractController
         $this->entityManager->persist($topic);
         $this->entityManager->flush();
 
+        $this->addFlash('success', 'Topic has been unlocked');
         return $this->redirectToRoute('app_admin_topic_show', ['secret' => $this->admin_secret]);
     }
 }
