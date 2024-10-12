@@ -3,33 +3,31 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Image;
-use App\Form\ImageType;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/admin-{secret}/image', name: 'app_admin_image_')]
 #[IsGranted('ROLE_ADMIN')]
 class ImageAdminController extends AbstractController
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private string $admin_secret)
     {
-        $this->entityManager = $entityManager;
     }
 
     // Méthode pour afficher toutes les images
     #[Route('/', name: 'show')]
     #[IsGranted('ROLE_ADMIN')]
-    public function showImages(string $secret, ImageRepository $imageRepository): Response
+    public function showImages(ImageRepository $imageRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -44,10 +42,10 @@ class ImageAdminController extends AbstractController
     // Méthode pour afficher les détails d'une image
     #[Route('/details/{id}', name: 'details')]
     #[IsGranted('ROLE_ADMIN')]
-    public function detailsImage(string $secret, Image $image): Response
+    public function detailsImage(Image $image): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -60,10 +58,10 @@ class ImageAdminController extends AbstractController
     // Méthode pour supprimer une image
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function deleteImage(string $secret, Image $image): Response
+    public function deleteImage(Image $image, CsrfTokenManagerInterface $csrfTokenManager, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -71,9 +69,15 @@ class ImageAdminController extends AbstractController
             throw $this->createNotFoundException('No image found');
         }
 
+        $token = new CsrfToken('delete_item', $request->request->get('_token'));
+
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw $this->createAccessDeniedException('Token not valid');
+        }
+
         $this->entityManager->remove($image);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('app_admin_image_show', ['secret' => $secret]);
+        return $this->redirectToRoute('app_admin_image_show', ['secret' => $this->admin_secret]);
     }
 }

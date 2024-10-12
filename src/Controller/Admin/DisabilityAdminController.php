@@ -18,20 +18,17 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 #[IsGranted('ROLE_ADMIN')]
 class DisabilityAdminController extends AbstractController
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private string $admin_secret)
     {
-        $this->entityManager = $entityManager;
     }
 
     // Méthode pour afficher la liste des handicaps
     #[Route('/', name: 'show')]
     #[IsGranted('ROLE_ADMIN')]
-    public function showDisabilities(string $secret, DisabilityRepository $disabilityRepository): Response
+    public function showDisabilities(DisabilityRepository $disabilityRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -46,10 +43,10 @@ class DisabilityAdminController extends AbstractController
     // Méthode pour afficher les détails d'un handicap
     #[Route('/details/{id}', name: 'details')]
     #[IsGranted('ROLE_ADMIN')]
-    public function detailsDisability(string $secret, Disability $disability): Response
+    public function detailsDisability(Disability $disability): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -63,10 +60,10 @@ class DisabilityAdminController extends AbstractController
     #[Route('/create', name: 'create')]
     #[Route('/edit/{id}', name: 'edit')]
     #[IsGranted('ROLE_ADMIN')]
-    public function createOrEditDisability(string $secret, ?Disability $disability, Request $request): Response
+    public function createOrEditDisability(?Disability $disability, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -80,7 +77,7 @@ class DisabilityAdminController extends AbstractController
             $this->entityManager->persist($disability);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_admin_disability_show', ['secret' => $secret]);
+            return $this->redirectToRoute('app_admin_disability_show', ['secret' => $this->admin_secret]);
         }
 
         return $this->render('admin/disabilities/create.html.twig', [
@@ -94,10 +91,10 @@ class DisabilityAdminController extends AbstractController
     // Méthode pour supprimer un handicap
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function deleteDisability(string $secret, Disability $disability, CsrfTokenManagerInterface $csrfTokenManager, Request $request): Response
+    public function deleteDisability(Disability $disability, CsrfTokenManagerInterface $csrfTokenManager, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -114,6 +111,6 @@ class DisabilityAdminController extends AbstractController
         $this->entityManager->remove($disability);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('app_admin_disability_show', ['secret' => $secret]);
+        return $this->redirectToRoute('app_admin_disability_show', ['secret' => $this->admin_secret]);
     }
 }

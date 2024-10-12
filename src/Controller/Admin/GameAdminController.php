@@ -3,33 +3,31 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Game;
-use App\Form\GameType;
 use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/admin-{secret}/game', name: 'app_admin_game_')]
 #[IsGranted('ROLE_ADMIN')]
 class GameAdminController extends AbstractController
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private string $admin_secret)
     {
-        $this->entityManager = $entityManager;
     }
 
     // Méthode pour afficher la liste des jeux
     #[Route('/', name: 'show')]
     #[IsGranted('ROLE_ADMIN')]
-    public function showGames(string $secret, GameRepository $gameRepository): Response
+    public function showGames(GameRepository $gameRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -44,10 +42,10 @@ class GameAdminController extends AbstractController
     // Méthode pour afficher les détails d'un jeu
     #[Route('/details/{id}', name: 'details')]
     #[IsGranted('ROLE_ADMIN')]
-    public function detailsGame(string $secret, Game $game): Response
+    public function detailsGame(Game $game): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -60,10 +58,10 @@ class GameAdminController extends AbstractController
     // Méthode pour supprimer un jeu
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function deleteGame(string $secret, Game $game): Response
+    public function deleteGame(Game $game, CsrfTokenManagerInterface $csrfTokenManager, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -71,10 +69,16 @@ class GameAdminController extends AbstractController
             throw $this->createNotFoundException('Game not found');
         }
 
+        $token = new CsrfToken('delete_item', $request->request->get('_token'));
+
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw $this->createAccessDeniedException('Token not valid');
+        }
+
         $this->entityManager->remove($game);
         $this->entityManager->flush();
 
         $this->addFlash('success', 'Game deleted successfully');
-        return $this->redirectToRoute('app_admin_game_show', ['secret' => $secret]);
+        return $this->redirectToRoute('app_admin_game_show', ['secret' => $this->admin_secret]);
     }
 }

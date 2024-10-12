@@ -8,28 +8,27 @@ use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin-{secret}/post', name: 'app_admin_post_')]
 #[IsGranted('ROLE_ADMIN')]
 class PostAdminController extends AbstractController
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private string $admin_secret)
     {
-        $this->entityManager = $entityManager;
     }
 
     // Méthode pour afficher tous les commentaires
     #[Route('/', name: 'show')]
     #[IsGranted('ROLE_ADMIN')]
-    public function showPosts(string $secret, PostRepository $postRepository): Response
+    public function showPosts(PostRepository $postRepository): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -44,10 +43,10 @@ class PostAdminController extends AbstractController
     // Méthode pour afficher les détails d'un commentaire
     #[Route('/details/{id}', name: 'details')]
     #[IsGranted('ROLE_ADMIN')]
-    public function detailsPost(string $secret, Post $post): Response
+    public function detailsPost(Post $post): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -60,10 +59,10 @@ class PostAdminController extends AbstractController
     // Méthode pour modifier un commentaire
     #[Route('/edit/{id}', name: 'edit')]
     #[IsGranted('ROLE_ADMIN')]
-    public function editPost(string $secret, ?Post $post, Request $request): Response
+    public function editPost(?Post $post, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -73,7 +72,7 @@ class PostAdminController extends AbstractController
             $this->entityManager->persist($post);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_admin_post_show', ['secret' => $secret]);
+            return $this->redirectToRoute('app_admin_post_show', ['secret' => $this->admin_secret]);
         }
 
         return $this->render('admin/posts/edit.html.twig', [
@@ -86,10 +85,10 @@ class PostAdminController extends AbstractController
     // Méthode pour supprimer un commentaire
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function deletePost(string $secret, Post $post): Response
+    public function deletePost(Post $post, CsrfTokenManagerInterface $csrfTokenManager, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
-        if ($secret !== $expectedSecret) {
+        if ($this->admin_secret !== $expectedSecret) {
             throw $this->createAccessDeniedException('Page not found');
         }
 
@@ -97,9 +96,15 @@ class PostAdminController extends AbstractController
             throw $this->createNotFoundException('Post not found');
         }
 
+        $token = new CsrfToken('delete_item', $request->request->get('_token'));
+
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw $this->createAccessDeniedException('Token not valid');
+        }
+
         $this->entityManager->remove($post);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('app_admin_post_show', ['secret' => $secret]);
+        return $this->redirectToRoute('app_admin_post_show', ['secret' => $this->admin_secret]);
     }
 }

@@ -2,9 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Game;
 use App\Entity\Topic;
-use App\Form\TopicType;
 use App\Repository\GameRepository;
 use App\Repository\TopicRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -89,7 +87,7 @@ class TopicAdminController extends AbstractController
     // Méthode pour verrouiller un sujet
     #[Route('/lock/{id}', name: 'lock')]
     #[IsGranted('ROLE_ADMIN')]
-    public function lockTopic(Topic $topic): Response
+    public function lockTopic(Topic $topic, CsrfTokenManagerInterface $csrfTokenManager, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($this->admin_secret !== $expectedSecret) {
@@ -98,6 +96,12 @@ class TopicAdminController extends AbstractController
 
         if (!$topic) {
             throw $this->createNotFoundException('No topic found');
+        }
+
+        $token = new CsrfToken('lock_item', $request->request->get('_token'));
+
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw $this->createAccessDeniedException('Token not valid');
         }
 
         $topic->setLocked(true);
@@ -110,7 +114,7 @@ class TopicAdminController extends AbstractController
     // Méthode pour déverrouiller un sujet
     #[Route('/unlock/{id}', name: 'unlock')]
     #[IsGranted('ROLE_ADMIN')]
-    public function unlockTopic(Topic $topic): Response
+    public function unlockTopic(Topic $topic, CsrfTokenManagerInterface $csrfTokenManager, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($this->admin_secret !== $expectedSecret) {
@@ -119,6 +123,12 @@ class TopicAdminController extends AbstractController
 
         if (!$topic) {
             throw $this->createNotFoundException('No topic found');
+        }
+
+        $token = new CsrfToken('unlock_item', $request->request->get('_token'));
+
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw $this->createAccessDeniedException('Token not valid');
         }
 
         $topic->setLocked(false);
