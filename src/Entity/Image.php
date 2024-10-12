@@ -71,10 +71,6 @@ class Image
 
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?Feature $feature = null;
-
-    #[ORM\ManyToOne(inversedBy: 'images')]
-    private ?User $user = null;
-
     #endregion
 
     #region CONSTRUCT
@@ -216,21 +212,6 @@ class Image
 
         return $this;
     }
-
-    // =================== User ===================
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     #endregion
 
     #region MAGIC(S) METHOD(S)

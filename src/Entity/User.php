@@ -95,12 +95,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'user')]
     private Collection $posts;
 
-    /**
-     * @var Collection<int, Image>
-     */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'user')]
-    private Collection $images;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $biography = null;
 
@@ -118,7 +112,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->features = new ArrayCollection();
         $this->topics = new ArrayCollection();
         $this->posts = new ArrayCollection();
-        $this->images = new ArrayCollection();
         $this->registrationDate = new \DateTimeImmutable();
     }
 
@@ -283,7 +276,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     // =================== Avatar ===================
-    
+
     public function getAvatar(): ?string
     {
         return $this->avatar;
@@ -309,7 +302,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
+
     #endregion
 
     #region COLLECTION(S)
@@ -412,39 +405,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    // =================== Images ===================
-
-    /**
-     * @return Collection<int, Image>
-     */
-    public function getImages(): Collection
-    {
-        return $this->images;
-    }
-
-    public function addImage(Image $image): static
-    {
-        if (!$this->images->contains($image)) {
-            $this->images->add($image);
-            $image->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): static
-    {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getUser() === $this) {
-                $image->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
     #endregion
 
     #region MAGIC(S) METHOD(S)
