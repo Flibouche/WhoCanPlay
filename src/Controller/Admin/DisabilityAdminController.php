@@ -8,9 +8,11 @@ use App\Repository\DisabilityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/admin-{secret}/disability', name: 'app_admin_disability_')]
 #[IsGranted('ROLE_ADMIN')]
@@ -92,7 +94,7 @@ class DisabilityAdminController extends AbstractController
     // Méthode pour supprimer un handicap
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('ROLE_ADMIN')]
-    public function deleteDisability(string $secret, Disability $disability): Response
+    public function deleteDisability(string $secret, Disability $disability, CsrfTokenManagerInterface $csrfTokenManager, Request $request): Response
     {
         $expectedSecret = $this->getParameter('admin_secret');
         if ($secret !== $expectedSecret) {
@@ -101,6 +103,12 @@ class DisabilityAdminController extends AbstractController
 
         if (!$disability) {
             throw $this->createNotFoundException('Disability not found');
+        }
+
+        $token = new CsrfToken('delete_item', $request->request->get('_token'));
+
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw $this->createAccessDeniedException('Token not valid');
         }
 
         $this->entityManager->remove($disability);
