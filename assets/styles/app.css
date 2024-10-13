@@ -8,6 +8,9 @@
 /* Raleway font */
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 
+/* Oswald font */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
 @layer base {
     * {
         font-family: "Atkinson Hyperlegible", sans-serif;
@@ -35,23 +38,3 @@
         @apply ml-4;
     }
 }
-
-/* @font-face {
-    font-family: "Luciole";
-    src: url('/fonts/Visual_Impairment/LucioleFont/Luciole-Regular.ttf') format('truetype');
-} */
-
-/* @font-face {
-    font-family: "Luciole Italic";
-    src: url('/Fonts/Visual_Impairment/LucioleFont/Luciole-Regular-Italic.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: "Luciole Bold";
-    src: url('/Fonts/Visual_Impairment/LucioleFont/Luciole-Bold.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: "Luciole Bold Italic";
-    src: url('/Fonts/Visual_Impairment/LucioleFont/Luciole-Bold-Italic.ttf') format('truetype');
-} */

@@ -10,7 +10,7 @@ module.exports = {
       fontFamily: {
         'atkinson': ['Atkinson Hyperlegible', 'sans-serif'],
         'raleway': ['Raleway', 'sans-serif'],
-        'luciole': ['Luciole', 'sans-serif'],
+        'oswald': ['Oswald', 'sans-serif'],
       },
     },
   },

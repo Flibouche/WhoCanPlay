@@ -13,7 +13,6 @@
                 <tr>
                     <th scope="col" class="px-6 py-3">ID</th>
                     <th scope="col" class="px-6 py-3">Feature ID</th>
-                    <th scope="col" class="px-6 py-3">User ID</th>
                     <th scope="col" class="px-6 py-3">URL</th>
                     <th scope="col" class="px-6 py-3">Title</th>
                     <th scope="col" class="px-6 py-3">Alt Text</th>
@@ -32,7 +31,6 @@
                 <tr class="group cursor-pointer" data-href="{{ path('app_admin_image_details', {'id': image.id, 'secret': admin_secret}) }}">
                     <td scope="row" class="px-6 py-4 text-black dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200 font-bold">{{ image.id }}</td>
                     <td scope="row" class="px-6 py-4 text-black dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.feature }}</td>
-                    <td scope="row" class="px-6 py-4 text-black dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.user }}</td>
                     <td scope="row" class="px-6 py-4 text-black dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.url }}</td>
                     <td scope="row" class="px-6 py-4 text-black dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.title }}</td>
                     <td scope="row" class="px-6 py-4 text-black dark:text-white group-hover:text-indigo-800 dark:group-hover:text-indigo-200">{{ image.altText }}</td>

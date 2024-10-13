@@ -40,116 +40,116 @@
         {% block importmap %}
         {{ importmap('app') }}
         {% endblock %}
-
-        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
-        <script>
-            let routeTemplate = "{{ path('show_game', { 'id': 'ID_PLACEHOLDER', 'slug': 'SLUG_PLACEHOLDER' }) }}";
-            $(document).ready(function () {
-                var searchTimeout;
-                $('#searchBar').on('input', function () {
-                    var query = $(this).val();
-                    clearTimeout(searchTimeout);
-                    if (query.length > 2) {
-                        searchTimeout = setTimeout(function () {
-                            $.ajax({
-                                url: '/searchGame',
-                                type: 'GET',
-                                data: { search: query },
-                                success: function (data) {
-                                    var resultDivBar = $('#resultBar');
-                                    resultDivBar.empty();
-                                    if (data.length > 0) {
-                                        var list = $('<ul class="absolute w-[100%] z-50 p-0 m-0 bg-gray-700"></ul>');
-                                        data.forEach(function (item) {
-                                            let itemUrl = routeTemplate.replace('ID_PLACEHOLDER', item.id).replace('SLUG_PLACEHOLDER', item.slug);
-                                            list.append(
-                                                '<li class="result-item flex items-center px-2 justify-between cursor-pointer hover:bg-indigo-200 my-2" data-id="' + item.id + '">' +
-                                                '<a href="' + itemUrl + '" class="flex items-center justify-between w-full">' +
-                                                '<span class="name-date">' + item.name + '</span>' +
-                                                `<img loading="lazy" src='https://images.igdb.com/igdb/image/upload/t_thumb/${item.imageUrl}.webp' alt='${item.name} cover' class="w-20 h-10 object-cover">` +
-                                                '</a>' +
-                                                '</li>'
-
-                                            );
-                                        });
-                                        resultDivBar.append(list);
-                                    } else {
-                                        $('#result').html('<div>No result found</div>');
-                                    }
-                                }
-                            });
-                        }, 300);
-                    } else {
-                        $('#result').empty();
-                    }
-                });
-            });
-        </script>
-
-        <script src="{{ asset('js/script.js') }}"></script>
-
-        <script src="{{ asset('js/tarteaucitron/tarteaucitron.js') }}"></script>
-
-        <script type="text/javascript">
-            (tarteaucitron.job = tarteaucitron.job || []).push('googlesignin');
-        </script>
-
-        <script type="text/javascript">
-            tarteaucitron.init({
-                "privacyUrl": "{{ path('app_privacy_policy') }}", /* Privacy policy url */
-                "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
-
-                "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
-                "cookieName": "tarteaucitron", /* Cookie name */
-
-                "orientation": "middle", /* Banner position (top - bottom) */
-
-                "groupServices": false, /* Group services by category */
-                "showDetailsOnClick": true, /* Click to expand the description */
-                "serviceDefaultState": "wait", /* Default state (true - wait - false) */
-
-                "showAlertSmall": false, /* Show the small banner on bottom right */
-                "cookieslist": true, /* Show the cookie list */
-
-                "closePopup": false, /* Show a close X on the banner */
-
-                "showIcon": true, /* Show cookie icon to manage cookies */
-                //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
-                "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
-
-                "adblocker": false, /* Show a Warning if an adblocker is detected */
-
-                "DenyAllCta": true, /* Show the deny all button */
-                "AcceptAllCta": true, /* Show the accept all button when highPrivacy on */
-                "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
-                "alwaysNeedConsent": false, /* Ask the consent for "Privacy by design" services */
-
-                "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
-
-                "removeCredit": false, /* Remove credit link */
-                "moreInfoLink": true, /* Show more info link */
-
-                "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
-                "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
-
-                //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
-
-                "readmoreLink": "", /* Change the default readmore link */
-
-                "mandatory": true, /* Show a message about mandatory cookies */
-                "mandatoryCta": true, /* Show the disabled accept button when mandatory on */
-
-                //"customCloserId": "", /* Optional a11y: Custom element ID used to open the panel */
-
-                "googleConsentMode": true, /* Enable Google Consent Mode v2 for Google ads and GA4 */
-
-                "partnersList": false /* Show the number of partners on the popup/middle banner */
-            });
-        </script>
-
-        {% endblock %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <script>
+        let routeTemplate = "{{ path('show_game', { 'id': 'ID_PLACEHOLDER', 'slug': 'SLUG_PLACEHOLDER' }) }}";
+        $(document).ready(function () {
+            var searchTimeout;
+            $('#searchBar').on('input', function () {
+                var query = $(this).val();
+                clearTimeout(searchTimeout);
+                if (query.length > 2) {
+                    searchTimeout = setTimeout(function () {
+                        $.ajax({
+                            url: '/searchGame',
+                            type: 'GET',
+                            data: { search: query },
+                            success: function (data) {
+                                var resultDivBar = $('#resultBar');
+                                resultDivBar.empty();
+                                if (data.length > 0) {
+                                    var list = $('<ul class="absolute w-[100%] z-50 p-0 m-0 bg-gray-700"></ul>');
+                                    data.forEach(function (item) {
+                                        let itemUrl = routeTemplate.replace('ID_PLACEHOLDER', item.id).replace('SLUG_PLACEHOLDER', item.slug);
+                                        list.append(
+                                            '<li class="result-item flex items-center px-2 justify-between cursor-pointer hover:bg-indigo-200 my-2" data-id="' + item.id + '">' +
+                                            '<a href="' + itemUrl + '" class="flex items-center justify-between w-full">' +
+                                            '<span class="name-date">' + item.name + '</span>' +
+                                            `<img loading="lazy" src='https://images.igdb.com/igdb/image/upload/t_thumb/${item.imageUrl}.webp' alt='${item.name} cover' class="w-20 h-10 object-cover">` +
+                                            '</a>' +
+                                            '</li>'
+
+                                        );
+                                    });
+                                    resultDivBar.append(list);
+                                } else {
+                                    $('#result').html('<div>No result found</div>');
+                                }
+                            }
+                        });
+                    }, 300);
+                } else {
+                    $('#result').empty();
+                }
+            });
+        });
+    </script>
+
+    <script src="{{ asset('js/script.js') }}"></script>
+
+    <script src="{{ asset('js/tarteaucitron/tarteaucitron.js') }}"></script>
+
+    <script type="text/javascript">
+        (tarteaucitron.job = tarteaucitron.job || []).push('googlesignin');
+    </script>
+
+    <script type="text/javascript">
+        tarteaucitron.init({
+            "privacyUrl": "{{ path('app_privacy_policy') }}", /* Privacy policy url */
+            "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
+
+            "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
+            "cookieName": "tarteaucitron", /* Cookie name */
+
+            "orientation": "middle", /* Banner position (top - bottom) */
+
+            "groupServices": false, /* Group services by category */
+            "showDetailsOnClick": true, /* Click to expand the description */
+            "serviceDefaultState": "wait", /* Default state (true - wait - false) */
+
+            "showAlertSmall": false, /* Show the small banner on bottom right */
+            "cookieslist": true, /* Show the cookie list */
+
+            "closePopup": false, /* Show a close X on the banner */
+
+            "showIcon": true, /* Show cookie icon to manage cookies */
+            //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
+            "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
+
+            "adblocker": false, /* Show a Warning if an adblocker is detected */
+
+            "DenyAllCta": true, /* Show the deny all button */
+            "AcceptAllCta": true, /* Show the accept all button when highPrivacy on */
+            "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
+            "alwaysNeedConsent": false, /* Ask the consent for "Privacy by design" services */
+
+            "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+
+            "removeCredit": false, /* Remove credit link */
+            "moreInfoLink": true, /* Show more info link */
+
+            "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+            "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
+
+            //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
+
+            "readmoreLink": "", /* Change the default readmore link */
+
+            "mandatory": true, /* Show a message about mandatory cookies */
+            "mandatoryCta": true, /* Show the disabled accept button when mandatory on */
+
+            //"customCloserId": "", /* Optional a11y: Custom element ID used to open the panel */
+
+            "googleConsentMode": true, /* Enable Google Consent Mode v2 for Google ads and GA4 */
+
+            "partnersList": false /* Show the number of partners on the popup/middle banner */
+        });
+    </script>
+
+    {% endblock %}
 </body>
 
 </html>
