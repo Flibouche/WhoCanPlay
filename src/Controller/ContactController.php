@@ -8,39 +8,71 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ContactController extends AbstractController
 {
     #[Route('/contact', name: 'app_contact')]
-    public function contact(Request $request, MailerInterface $mailer): Response
+    public function contact(Request $request, MailerInterface $mailer, CsrfTokenManagerInterface $csrfTokenManager, ValidatorInterface $validator): Response
     {
-        /**
-         * @var User|null $user
-         */
-        // Cette annotation permet d'enlever le problème de reconnaissance de la méthode getEmail()
-        $user = $this->getUser();
+        $errors = [];
 
         if ($request->isMethod('POST')) {
-            $contact = $request->request->all();
+            $token = $request->request->get('_csrf_token');
+            if (!$csrfTokenManager->isTokenValid(new CsrfToken('contact', $token))) {
+                throw $this->createAccessDeniedException('Invalid CSRF token.');
+            }
 
-            $email = (new TemplatedEmail())
-                ->from($contact['email'])
-                ->to('admin@whocanplay.com')
-                ->subject($contact['subject'])
-                ->htmlTemplate('emails/application.html.twig')
-                ->context([
-                    'contact' => $contact,
-                ]);
+            $email = trim($request->request->get('email'));
+            $subject = trim($request->request->get('subject'));
+            $message = trim($request->request->get('message'));
 
-            $mailer->send($email);
+            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Please enter a valid email address.';
+            }
 
-            $this->addFlash('success', 'Your message has been sent successfully!');
+            if (empty($subject)) {
+                $errors['subject'] = 'Please enter a subject.';
+            }
 
-            return $this->redirectToRoute('app_home');
+            if (empty($message)) {
+                $errors['message'] = 'Please enter a message.';
+            }
+
+            if (empty($errors)) {
+                $email = (new TemplatedEmail())
+                    ->from($email)
+                    ->to('admin@whocanplay.com')
+                    ->subject($subject)
+                    ->htmlTemplate('emails/application.html.twig')
+                    ->html(sprintf(
+                        '<p>%s</p>',
+                        nl2br(htmlspecialchars($message))
+                    ));
+
+                try {
+                    $mailer->send($email);
+                    $this->addFlash('success', 'Your message has been sent successfully!');
+                    return $this->redirectToRoute('app_home');
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'There was an error sending your message. Please try again later.');
+                }
+            } else {
+                // Ajouter un flash message pour les erreurs globales si nécessaire
+                $this->addFlash('error', 'Please correct the errors below.');
+            }
+
+            // Passer les erreurs au template
+            return $this->render('contact/contact.html.twig', [
+                'errors' => $errors,
+            ]);
         }
 
         return $this->render('contact/contact.html.twig', [
             'controller_name' => 'ContactController',
+            'errors' => [],
         ]);
     }
 }

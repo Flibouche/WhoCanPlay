@@ -54,37 +54,38 @@
         <div class="w-full">
             <div class="p-6">
 
-                {{ form_start(formContact) }}
-
-                <div class="mb-2">
-                    {{ form_label(formContact.email, 'Email <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'font-bold text-black dark:text-white'}}) }}
-                    {{ form_widget(formContact.email, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter your email'}}) }}
-                    <div class="text-red-500">
-                        {{ form_errors(formContact.email) }}
+                <form action="{{ path('app_contact') }}" method="POST">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('contact_form') }}">
+                    <div>
+                        <label for="email" class="font-bold text-black dark:text-white">Email <span class="text-red-500">*</span></label>
+                        <input type="email" id="email" name="email" required class="w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white" placeholder="Enter your email">
+                        {% if errors is not empty and errors.email is defined %}
+                        <div class="text-red-500">{{ errors.email }}</div>
+                    {% endif %}
                     </div>
-                </div>
 
-                <div class="mb-2">
-                    {{ form_label(formContact.subject, 'Subject <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'font-bold text-black dark:text-white'}}) }}
-                    {{ form_widget(formContact.subject, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter the subject'}}) }}
-                    <div class="text-red-500">
-                        {{ form_errors(formContact.subject) }}
+                    <div>
+                        <label for="subject" class="font-bold text-black dark:text-white">Subject <span class="text-red-500">*</span></label>
+                        <input type="text" id="subject" name="subject" required class="w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white" placeholder="Enter the subject">
+                        {% if errors is not empty and errors.subject is defined %}
+                        <div class="text-red-500">{{ errors.subject }}</div>
+                        {% endif %}
                     </div>
-                </div>
 
-                <div class="mb-2">
-                    {{ form_label(formContact.message, 'Message <span class="text-red-500">*</span>', {'label_html': true, 'label_attr': {'class': 'font-bold text-black dark:text-white'}}) }}
-                    {{ form_widget(formContact.message, {'attr': {'class': 'w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white', 'placeholder': 'Enter the message', 'rows': '4'}}) }}
-                    <div class="text-red-500">
-                        {{ form_errors(formContact.message) }}
+                    <div>
+                        <label for="message" class="font-bold text-black dark:text-white">Message <span class="text-red-500">*</span></label>
+                        <textarea id="message" name="message" required rows="4" class="w-full px-5 py-4 text-black/80 rounded-lg mt-2 bg-neutral-200 dark:bg-zinc-700 border border-gray-300 text-black dark:text-white" placeholder="Enter the message"></textarea>
+                        {% if errors is not empty and errors.message is defined %}
+                        <div class="text-red-500">{{ errors.message }}</div>
+                        {% endif %}
                     </div>
-                </div>
 
-                <div class="mb-2">
-                    {{ form_widget(formContact.submit, {'attr': {'class': 'w-full my-2 text-white dark:text-black bg-indigo-800 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-800 dark:bg-indigo-200 dark:hover:bg-indigo-400 dark:focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center'}}) }}
-                </div>
-
-                {{ form_end(formContact) }}
+                    <div>
+                        <button type="submit" class="w-full my-2 text-white dark:text-black bg-indigo-800 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-800 dark:bg-indigo-200 dark:hover:bg-indigo-400 dark:focus:ring-indigo-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
