@@ -104,7 +104,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatar = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: true, options: ['default' => false])]
     private ?bool $googleUser = null;
 
     public function __construct()

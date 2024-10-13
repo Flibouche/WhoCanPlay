@@ -6,12 +6,15 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Entity\Feature;
 use App\Enum\FeatureState;
+use App\Service\IgdbApiService;
 use App\Form\EditPasswordFormType;
 use App\Repository\UserRepository;
-use App\Service\IgdbApiService;
+use App\Service\JWTService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -58,8 +61,8 @@ class UserController extends AbstractController
     private function updateUser($security, $form, $entityManager): Response
     {
         /**
-        * @var User|null $user
-        */
+         * @var User|null $user
+         */
         // Je récupère l'utilisateur connecté
         $user = $security->getUser();
 
@@ -145,10 +148,10 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_user');
     }
 
-    // Méthode pour supprimer le compte de l'utilisateur et d'anonymiser les données
-    #[Route('/profile/delete-account', name: 'app_user_delete_account')]
+    // Méthode pour envoyer un mail de confirmation pour la suppression du compte de l'utilisateur
+    #[Route('/profile/verify-account-delete', name: 'app_user_verify_account_delete')]
     #[IsGranted('ROLE_USER')]
-    public function deleteAccount(EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
+    public function verifyAccountDelete(MailerInterface $mailer, JWTService $jwts): Response
     {
         /**
          * @var User|null $user
@@ -160,26 +163,81 @@ class UserController extends AbstractController
             throw new AccessDeniedException('Access denied');
         }
 
-        $topics = $user->getTopics();
-        foreach ($topics as $topic) {
-            $topic->setUser(null);
-            $entityManager->persist($topic);
+        $header = [
+            'alg' => 'HS256',
+            'typ' => 'JWT'
+        ];
+
+        $payload = [
+            'id' => $user->getId(),
+        ];
+
+        $token = $jwts->generate($header, $payload, $_ENV['APP_SECRET'], 3600);
+
+        $userEmail = $user->getEmail();
+
+        $email = (new TemplatedEmail())
+            ->from($userEmail)
+            ->to('admin@whocanplay.com')
+            ->subject('Delete account')
+            ->htmlTemplate('emails/resetPassword.html.twig')
+            ->context([
+                'token' => $token,
+            ]);
+
+        $mailer->send($email);
+
+        $this->addFlash('success', 'An email has been sent to confirm the deletion of your account');
+        return $this->redirectToRoute('app_user_account');
+    }
+
+    // Méthode pour supprimer le compte de l'utilisateur et d'anonymiser les données
+    #[Route('/verify/{token}', name: 'verify_user')]
+    #[IsGranted('ROLE_USER')]
+    public function deleteAccount(EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, JWTService $jwt, string $token): Response
+    {
+        // On vérifie si le token est valide (cohérent, pas expiré et signature correcte)
+        if ($jwt->isValid($token) && !$jwt->isExpired($token) && $jwt->check($token, $_ENV['APP_SECRET'])) {
+            // Si le token est valide, on récupère les données (payload)
+            /**
+             * @var User|null $user
+             */
+            // Je récupère l'utilisateur actuellement connecté
+            $user = $this->getUser();
+
+            if (!$user instanceof UserInterface) {
+                throw new AccessDeniedException('Access denied');
+            }
+
+            $topics = $user->getTopics();
+            foreach ($topics as $topic) {
+                $topic->setUser(null);
+                $entityManager->persist($topic);
+            }
+
+            $posts = $user->getPosts();
+            foreach ($posts as $post) {
+                $post->setUser(null);
+                $entityManager->persist($post);
+            }
+
+            $features = $user->getFeatures();
+            foreach ($features as $feature) {
+                $feature->setUser(null);
+                $entityManager->persist($feature);
+            }
+
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+            $tokenStorage->setToken(null);
+
+            $this->addFlash('success', 'Account deleted successfully');
+            return $this->redirectToRoute('app_home');
+        } else {
+            $this->addFlash('error', 'You are not authorized to delete this account');
+            return $this->redirectToRoute('app_home');
         }
-
-        $posts = $user->getPosts();
-        foreach ($posts as $post) {
-            $post->setUser(null);
-            $entityManager->persist($post);
-        }
-
-        $entityManager->remove($user);
-        $entityManager->flush();
-
-        $tokenStorage->setToken(null);
-
-        $this->addFlash('success', 'Account deleted successfully');
-
-        return $this->redirectToRoute('app_home');
     }
     #endregion
 
