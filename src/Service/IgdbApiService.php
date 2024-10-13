@@ -202,7 +202,7 @@ class IgdbApiService
         if ($gameId !== null) {
             $queryString = "fields name,genres.name,platforms.name,screenshots.url,screenshots.image_id,cover.image_id,involved_companies.company.name,involved_companies.developer; where id = $gameId;";
         } elseif ($gameName !== null) {
-            $queryString = "fields *; where name ~ \"$gameName\";";
+            $queryString = "fields name,genres.name,platforms.name,screenshots.url,screenshots.image_id,cover.image_id,involved_companies.company.name,involved_companies.developer; where name ~ \"$gameName\";";
         }
 
         // Envoi de la requête à l'API IGDB
