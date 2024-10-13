@@ -46,11 +46,12 @@ class FeatureController extends AbstractController
         }
 
         // Je crée le formulaire
-        $form = $this->createForm(FeatureType::class, $feature, [
-            'is_edit' => $feature->getId() !== null,
+        $form = $this->createForm(FeatureType::class, $feature, [ // Je passe des options au formulaire
+            'is_edit' => $feature->getId() !== null, // Si l'id de la feature est différent de null, c'est une modification
         ]);
         $form->handleRequest($request);
 
+        // Si le formulaire est soumis et le honeypot rempli, je redirige vers la page d'accueil
         $honeyPot = filter_input(INPUT_POST, 'email_confirm', FILTER_SANITIZE_SPECIAL_CHARS);
         if ($honeyPot) {
             $this->addFlash('info', 'Oh hi Mark !');

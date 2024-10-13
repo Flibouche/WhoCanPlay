@@ -32,10 +32,10 @@ class GameRepository extends ServiceEntityRepository
                 'i.submissionDate',
                 'u.pseudo'
             )
-            ->innerJoin('g.features', 'f')
-            ->innerJoin('f.disability', 'd')
-            ->innerJoin('f.images', 'i')
-            ->innerJoin('f.user', 'u')
+            ->leftJoin('g.features', 'f')
+            ->leftJoin('f.disability', 'd')
+            ->leftJoin('f.images', 'i')
+            ->leftJoin('f.user', 'u')
             ->where('f.state = :processed')
             ->andWhere('g.id = :gameId')
             ->setParameter('processed', 'Processed')
