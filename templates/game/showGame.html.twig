@@ -114,8 +114,8 @@
 
             {# Tab Disabilities #}
             <div class="tab-contents">
-                {% for i in 0..(disabilityNames|length -1) %}
-                {% set disability = disabilityNames[i] %}
+                {% for i in 0..(disabilityNames|length -1) %} {# Boucle sur les clés du tableau featuresByDisability #}
+                {% set disability = disabilityNames[i] %} {# Récupération de la clé #}
                 <div id="tab{{ i+1 }}" class="w-full tab-content hidden px-5 mt-5 py-5">
                     <article id="disability">
                         <header class="flex gap-3" aria-label="Disability name and icon header">
@@ -126,7 +126,7 @@
                         <hr class="my-3 border-t-2 w-full border-amber-800 dark:border-yellow-200" />
 
                         <ul id="feature-list">
-                            {% for feature in featuresByDisability[disability] %}
+                            {% for feature in featuresByDisability[disability] %} {# Boucle sur les valeurs du tableau featuresByDisability #}
                             <li id="feature" class="mb-5 relative">
                                 <h3 class="text-xl font-bold pb-2 dark:text-white">{{ feature.name }} <span class="text-sm">({{ feature.id }}#)</span></h3>
                                 <span class="hidden sm:block absolute text-sm italic top-0 right-0 text-black dark:text-white hover:text-indigo-800 dark:hover:text-indigo-200">
