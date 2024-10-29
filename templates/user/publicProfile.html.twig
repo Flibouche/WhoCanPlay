@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block title %} {{ user.pseudo }} profile{% endblock %}
 
 {% block body %}
 
@@ -18,7 +18,7 @@
         <div class="flex flex-col text-black dark:text-white bg-white dark:bg-neutral-800 p-5 rounded-lg shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
             <h2 class="text-2xl font-bold text-center mb-2">Informations</h2>
             <div class="flex flex-col flex-grow justify-center bg-neutral-200 dark:bg-zinc-700 rounded-lg py-5 px-5 border border-amber-800 dark:border-yellow-200">
-                
+
                 <div class="flex gap-5">
                     <table class="w-full">
                         <tbody>
@@ -58,7 +58,7 @@
                             {% for topic in user.topics %}
                             <tr>
                                 <td>
-                                <a href="{{ path('topic_game', {'id': topic.id, 'slug': topic.slug}) }}" class="hover:text-indigo-800 dark:hover:text-indigo-200 hover:underline">{{ topic.title }}</a>
+                                    <a href="{{ path('topic_game', {'id': topic.id, 'slug': topic.slug}) }}" class="hover:text-indigo-800 dark:hover:text-indigo-200 hover:underline">{{ topic.title }}</a>
                                 </td>
                                 <td>{{ topic.creationDate|date('d.m.Y') }}</td>
                             </tr>
@@ -79,15 +79,15 @@
 
                 <div class="flex gap-5 justify-between">
                     <svg class="w-4 h-4 mr-2 fill-current dark:invert dark:brightness-0 dark:filter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-label="Open quote icon">
-                        <path d="M0 216C0 149.7 53.7 96 120 96l8 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-8 0c-30.9 0-56 25.1-56 56l0 8 64 0c35.3 0 64 28.7 64 64l0 64c0 35.3-28.7 64-64 64l-64 0c-35.3 0-64-28.7-64-64l0-32 0-32 0-72zm256 0c0-66.3 53.7-120 120-120l8 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-8 0c-30.9 0-56 25.1-56 56l0 8 64 0c35.3 0 64 28.7 64 64l0 64c0 35.3-28.7 64-64 64l-64 0c-35.3 0-64-28.7-64-64l0-32 0-32 0-72z"/>
+                        <path d="M0 216C0 149.7 53.7 96 120 96l8 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-8 0c-30.9 0-56 25.1-56 56l0 8 64 0c35.3 0 64 28.7 64 64l0 64c0 35.3-28.7 64-64 64l-64 0c-35.3 0-64-28.7-64-64l0-32 0-32 0-72zm256 0c0-66.3 53.7-120 120-120l8 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-8 0c-30.9 0-56 25.1-56 56l0 8 64 0c35.3 0 64 28.7 64 64l0 64c0 35.3-28.7 64-64 64l-64 0c-35.3 0-64-28.7-64-64l0-32 0-32 0-72z" />
                     </svg>
                     {% if user.biography %}
-                        <p>{{ user.biography|raw }}</p>
+                    <p>{{ user.biography|raw }}</p>
                     {% else %}
-                        <p><i>No biography yet</i></p>
+                    <p><i>No biography yet</i></p>
                     {% endif %}
                     <svg class="w-4 h-4 mr-2 fill-current dark:invert dark:brightness-0 dark:filter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-label="Close quote icon">
-                        <path d="M448 296c0 66.3-53.7 120-120 120l-8 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l8 0c30.9 0 56-25.1 56-56l0-8-64 0c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l64 0c35.3 0 64 28.7 64 64l0 32 0 32 0 72zm-256 0c0 66.3-53.7 120-120 120l-8 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l8 0c30.9 0 56-25.1 56-56l0-8-64 0c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l64 0c35.3 0 64 28.7 64 64l0 32 0 32 0 72z"/>
+                        <path d="M448 296c0 66.3-53.7 120-120 120l-8 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l8 0c30.9 0 56-25.1 56-56l0-8-64 0c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l64 0c35.3 0 64 28.7 64 64l0 32 0 32 0 72zm-256 0c0 66.3-53.7 120-120 120l-8 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l8 0c30.9 0 56-25.1 56-56l0-8-64 0c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l64 0c35.3 0 64 28.7 64 64l0 32 0 32 0 72z" />
                     </svg>
                 </div>
 

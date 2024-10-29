@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ApiController!{% endblock %}
+{% block title %} {{ feature.slug }} {% endblock %}
 
 {% block body %}
 
@@ -130,56 +130,56 @@
         </div>
     </div>
 
-<script>
-    // J'attends que le DOM soit chargé
-    document.addEventListener('DOMContentLoaded', function () {
-        // Je récupère tous les éléments dont j'ai besoin
-        let currentSlideId = 1;
-        const sliderElement = document.getElementById('slider');
-        const slides = sliderElement.getElementsByTagName('li');
-        const totalSlides = slides.length;
-        const nextButton = document.getElementById('next-slide');
-        const previousButton = document.getElementById('previous-slide');
+    <script>
+        // J'attends que le DOM soit chargé
+        document.addEventListener('DOMContentLoaded', function () {
+            // Je récupère tous les éléments dont j'ai besoin
+            let currentSlideId = 1;
+            const sliderElement = document.getElementById('slider');
+            const slides = sliderElement.getElementsByTagName('li');
+            const totalSlides = slides.length;
+            const nextButton = document.getElementById('next-slide');
+            const previousButton = document.getElementById('previous-slide');
 
-        // Fonction pour afficher la diapositive actuelle
-        function showSlide() {
-            for (let index = 0; index < totalSlides; index++) {
-                const element = slides[index];
-                if (currentSlideId === index + 1) {
-                    element.classList.remove('hidden');
-                } else {
-                    element.classList.add('hidden');
+            // Fonction pour afficher la diapositive actuelle
+            function showSlide() {
+                for (let index = 0; index < totalSlides; index++) {
+                    const element = slides[index];
+                    if (currentSlideId === index + 1) {
+                        element.classList.remove('hidden');
+                    } else {
+                        element.classList.add('hidden');
+                    }
                 }
             }
-        }
 
-        // Fonctions pour passer à la diapositive suivante
-        function next() {
-            if (currentSlideId < totalSlides) {
-                currentSlideId++;
-            } else {
-                currentSlideId = 1; // Revenir au début si on est à la fin
+            // Fonctions pour passer à la diapositive suivante
+            function next() {
+                if (currentSlideId < totalSlides) {
+                    currentSlideId++;
+                } else {
+                    currentSlideId = 1; // Revenir au début si on est à la fin
+                }
+                showSlide();
             }
-            showSlide();
-        }
 
-        // Fonctions pour passer à la diapositive précédente
-        function previous() {
-            if (currentSlideId > 1) {
-                currentSlideId--;
-            } else {
-                currentSlideId = totalSlides; // Aller à la dernière diapositive si on est au début
+            // Fonctions pour passer à la diapositive précédente
+            function previous() {
+                if (currentSlideId > 1) {
+                    currentSlideId--;
+                } else {
+                    currentSlideId = totalSlides; // Aller à la dernière diapositive si on est au début
+                }
+                showSlide();
             }
+
+            // Initialisation de la diapositive au chargement de la page
             showSlide();
-        }
 
-        // Initialisation de la diapositive au chargement de la page
-        showSlide();
+            // Ajout des écouteurs d'événements aux boutons
+            nextButton.addEventListener('click', next);
+            previousButton.addEventListener('click', previous);
+        });
+    </script>
 
-        // Ajout des écouteurs d'événements aux boutons
-        nextButton.addEventListener('click', next);
-        previousButton.addEventListener('click', previous);
-    });
-</script>
-
-{% endblock %}
+    {% endblock %}
