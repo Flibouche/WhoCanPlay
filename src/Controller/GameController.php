@@ -280,6 +280,11 @@ class GameController extends AbstractController
             $this->entityManager->rollback();
             $this->addFlash('error', 'An error occurred !');
             throw $e;
+        } finally {
+            // Assure que la transaction est correctement fermée
+            if ($this->entityManager->getConnection()->isTransactionActive()) {
+                $this->entityManager->rollback();
+            }
         }
     }
     #endregion
